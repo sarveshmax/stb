@@ -1,0 +1,54 @@
+/* ---> Add this at the very top */
+@import "@solana/wallet-adapter-react-ui/styles.css";
+
+/* Your existing imports */
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --mobile-bottom-bar-height: 0px;
+  --cleaner-bottom-bar-height: 0px;
+}
+
+/* Mobile only */
+@media (max-width: 768px) {
+  :root {
+    --mobile-bottom-bar-height: 56px; /* adjust as needed */
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
