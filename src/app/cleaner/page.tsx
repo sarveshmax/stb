@@ -441,8 +441,8 @@ export default function CleanerPage() {
           toasts={toasts}
           offsetBottom={
             typeof window !== "undefined" && window.innerWidth < 640
-              ? "8rem"
-              : "5rem"
+              ? "9rem"
+              : "6rem"
           }
         />
 
@@ -667,15 +667,23 @@ export default function CleanerPage() {
         {tokens.length >= 0 && (
           <div
             className="
-    fixed bottom-[var(--mobile-bottom-bar-height)] left-0 right-0 md:ml-64
-    bg-[#18181b]
-    border-t border-gray-900
-    p-3 sm:p-4
-    flex flex-col sm:flex-row 
-    sm:justify-between sm:items-center 
-    gap-3
-    z-[55]
-  "
+      fixed
+      bottom-[calc(var(--mobile-bottom-bar-height)+12px)]
+      left-3 right-3
+      md:left-[calc(16rem+12px)] md:right-3
+      bg-[#18181b]/70
+      backdrop-blur-2xl backdrop-saturate-150
+      rounded-2xl
+      border border-white/10
+      shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_12px_25px_rgba(0,0,0,0.6),_0_2px_8px_rgba(0,0,0,0.4)]
+
+      ring-1 ring-white/5
+      p-3 sm:p-4
+      flex flex-col sm:flex-row
+      sm:justify-between sm:items-center
+      gap-3
+      z-[40]
+    "
           >
             <div className="flex items-center gap-4 bg-[#1a1a1c] px-4 py-2 rounded-xl border border-white/10">
               <span className="text-lg font-semibold text-white">
