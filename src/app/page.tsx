@@ -44,9 +44,7 @@ import {
   toRawAmount,
 } from "@/utils/NumberHelpers";
 import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
-import {
-  STABLECOINS_CA,
-} from "@/constants/valuableTokens";
+import { STABLECOINS_CA } from "@/constants/valuableTokens";
 import { ExternalLink, Loader2, RefreshCcw } from "lucide-react";
 
 /* ------------------------------------
@@ -251,30 +249,30 @@ export default function Page() {
         ? burnFeeToken2022
         : burnFee;
 
-        ///////////// 🔵 BURN /////////////
-        tx.add(
-          createBurnCheckedInstruction(
-            ata, // token account
-            mint, // mint
-            publicKey, // owner
-            rawAmount,
-            t.decimals,
-            [], // multisig (not used)
-            t.programId,
-          ),
-        );
+      ///////////// 🔵 BURN /////////////
+      tx.add(
+        createBurnCheckedInstruction(
+          ata, // token account
+          mint, // mint
+          publicKey, // owner
+          rawAmount,
+          t.decimals,
+          [], // multisig (not used)
+          t.programId,
+        ),
+      );
 
-        // Fee transfer
-        tx.add(
-          SystemProgram.transfer({
-            fromPubkey: publicKey,
-            toPubkey: burnFeeWallet,
-            // toPubkey: new PublicKey(
-            //   "F9SiLkobRc2WArLohabXHY65A6XgyP6TTVsNtxU2fXnS",
-            // ),
-            lamports: Math.floor(feeToBurn * LAMPORTS_PER_SOL),
-          }),
-        );
+      // Fee transfer
+      tx.add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: burnFeeWallet,
+          // toPubkey: new PublicKey(
+          //   "F9SiLkobRc2WArLohabXHY65A6XgyP6TTVsNtxU2fXnS",
+          // ),
+          lamports: Math.floor(feeToBurn * LAMPORTS_PER_SOL),
+        }),
+      );
 
       // Always get fresh blockhash before sending
       const { blockhash, lastValidBlockHeight } =
@@ -291,9 +289,9 @@ export default function Page() {
       push("success", "Burn Complete");
       setTxStatus((s) => ({ ...s, [t.mint]: "done" }));
 
-        setStatus(
-          `Burn Confirmed: <a href="${explorerURL}/tx/${signature}" target="_blank" class="no-underline hover:underline text-inherit">${signature}</a>`,
-        );
+      setStatus(
+        `Burn Confirmed: <a href="${explorerURL}/tx/${signature}" target="_blank" class="no-underline hover:underline text-inherit">${signature}</a>`,
+      );
     } catch (err) {
       console.error(err);
       push("error", "Burn Failed");

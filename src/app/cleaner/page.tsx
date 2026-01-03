@@ -667,23 +667,33 @@ export default function CleanerPage() {
         {tokens.length >= 0 && (
           <div
             className="
-      fixed
-      bottom-[calc(var(--mobile-bottom-bar-height)+12px)]
-      left-3 right-3
-      md:left-[calc(16rem+12px)] md:right-3
-      bg-[#18181b]/70
-      backdrop-blur-2xl backdrop-saturate-150
-      rounded-2xl
-      border border-white/10
-      shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_12px_25px_rgba(0,0,0,0.6),_0_2px_8px_rgba(0,0,0,0.4)]
+    fixed
+    bottom-[calc(var(--mobile-bottom-bar-height)+12px)]
+    left-3 right-3
+    md:left-[calc(16rem+12px)] md:right-3
 
-      ring-1 ring-white/5
-      p-3 sm:p-4
-      flex flex-col sm:flex-row
-      sm:justify-between sm:items-center
-      gap-3
-      z-[40]
-    "
+    /* MOBILE (default) — darker, denser */
+    bg-[#121214]/85
+    border border-white/5
+    shadow-[inset_0_1px_0_rgba(255,255,255,0.03),_0_14px_28px_rgba(0,0,0,0.7),_0_4px_10px_rgba(0,0,0,0.5)]
+    ring-1 ring-black/40
+
+    /* DESKTOP — lighter glass */
+    md:bg-[#18181b]/70
+    md:border-white/10
+    md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_12px_25px_rgba(0,0,0,0.6),_0_2px_8px_rgba(0,0,0,0.4)]
+    md:ring-white/5
+
+    backdrop-blur-2xl backdrop-saturate-150
+    rounded-2xl
+
+    p-3 sm:p-4
+    flex flex-col sm:flex-row
+    sm:justify-between sm:items-center
+    gap-3
+
+    z-[40]
+  "
           >
             <div className="flex items-center gap-4 bg-[#1a1a1c] px-4 py-2 rounded-xl border border-white/10">
               <span className="text-lg font-semibold text-white">
