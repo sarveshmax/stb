@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer
@@ -18,6 +20,17 @@ export default function Footer() {
           © {new Date().getFullYear()}{" "}
           <span className="text-white font-medium">SolTokenBurner.com</span> ·
           Made with <span className="opacity-85">❤️</span> for Solana
+          <span className="mx-1 opacity-40">·</span>
+          <Link
+            href="/terms"
+            className="
+              opacity-60 hover:opacity-100
+              hover:underline underline-offset-4
+              transition
+            "
+          >
+            T&amp;C
+          </Link>
         </span>
       </div>
     </footer>

@@ -30,6 +30,10 @@ const FAQ_ITEMS: FAQItemType[] = [
     a: "When you use the “💵 Cleaner” to close token accounts, you reclaim 0.002 SOL for each account. On Solana, you pay a small rent-exempt fee (storage fee) initially create a token account. By closing the account, this deposited rent is returned to your wallet.",
   },
   {
+    q: "Why do some tokens not appear in the Cleaner?",
+    a: "To protect users, high-value stablecoins are hidden to prevent accidental burns. Tokens that use Transfer Hooks or are Non-Transferable are also excluded, since they can fail or intentionally block burn and close actions.",
+  },
+  {
     q: "Why do some tokens show as 'Unknown' or 'UNK'?",
     a: "Some tokens lack proper metadata on-chain or through off-chain registries. If the name or symbol cannot be fetched reliably, SolTokenBurner displays them as 'Unknown' to prevent misidentification. Click on the token address to verify the name manually on Solscan.",
   },
