@@ -1,6 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title: "How to Get the Padlock on Dexscreener | LP Lock Badge Guide 2025",
@@ -18,6 +18,7 @@ export const metadata = {
     images: ["/og-image.png"],
   },
 };
+
 export default function DexPadlockGuide() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 text-gray-100">
@@ -32,8 +33,9 @@ export default function DexPadlockGuide() {
         Orca, Meteora, etc.) gives you when you create a liquidity pool.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔒 Why the Padlock Appears
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:locked" className="text-2xl" />
+        Why the Padlock Appears
       </h2>
 
       <p className="mb-6">
@@ -44,11 +46,15 @@ export default function DexPadlockGuide() {
         the padlock will only be filled completely if you burn 100%.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🚀 How to Burn LP Tokens for the Padlock (Step-by-Step)
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:rocket" className="text-2xl" />
+        How to Burn LP Tokens for the Padlock (Step-by-Step)
       </h2>
 
-      <h3 className="text-xl font-semibold mb-3">1. Open SolTokenBurner</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-one-fill" className="text-xl" />
+        Open SolTokenBurner
+      </h3>
       <p className="mb-4">
         Go to{" "}
         <a
@@ -62,35 +68,49 @@ export default function DexPadlockGuide() {
         and connect your Phantom wallet.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">2. Click REFRESH</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-two-fill" className="text-xl" />
+        Click REFRESH
+      </h3>
       <p className="mb-4">Your SPL/LP tokens will load automatically.</p>
 
-      <h3 className="text-xl font-semibold mb-3">3. Select the LP Token</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-three-fill" className="text-xl" />
+        Select the LP Token
+      </h3>
       <p className="mb-4">
         LP tokens appear with random letters like{" "}
         <strong>aBcytDz...hshYfa</strong> or names like <strong>RAY-LP</strong>,{" "}
         <strong>ORCA-LP</strong>, <strong>POOL-LP</strong>, etc.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">4. Choose Burn Amount</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-four-fill" className="text-xl" />
+        Choose Burn Amount
+      </h3>
+
       <ul className="list-disc ml-6 mb-4 space-y-1">
         <li>
-          <strong>Burn All</strong> (recommended) — burns the LP completely
+          <strong>MAX</strong> (recommended) - burns the LP completely
         </li>
         <li>
-          <strong>Custom Amount</strong> — only if partial burn is needed. The
-          unburned LP can be removed later.{" "}
+          <strong>Custom Amount</strong> - only if partial burn is needed. The
+          unburned LP can be removed (withdraw liquidity) or burned later.
         </li>
       </ul>
 
-      <h3 className="text-xl font-semibold mb-3">5. Approve the Burn</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-five-fill" className="text-xl" />
+        Approve the Burn
+      </h3>
       <p className="mb-6">
         Phantom will ask for approval. After confirmation, the LP tokens are
         permanently removed.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔍 When Does the Padlock Show?
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:magnifying-glass-tilted-right" className="text-2xl" />
+        When Does the Padlock Show?
       </h2>
 
       <p className="mb-6">
@@ -98,7 +118,10 @@ export default function DexPadlockGuide() {
         <strong>instantly</strong> or within <strong>5–10 minutes</strong>.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">❓ FAQs</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:question-mark" className="text-2xl" />
+        FAQs
+      </h2>
 
       <h3 className="text-xl font-semibold mb-3">
         Does Dexscreener require manual submission?
@@ -106,14 +129,14 @@ export default function DexPadlockGuide() {
       <p className="mb-6">No. It detects LP burn on-chain automatically.</p>
 
       <h3 className="text-xl font-semibold mb-3">Is LP burning permanent?</h3>
-      <p className="mb-6">Yes — burned LP cannot be recovered.</p>
+      <p className="mb-6">Yes - burned LP cannot be recovered.</p>
 
       <h3 className="text-xl font-semibold mb-3">
         Will the padlock disappear?
       </h3>
       <p className="mb-5">No. Burned liquidity stays locked forever.</p>
 
-      <p className="text-gray-400 mb-10 text-sm">Updated: November 2025</p>
+      <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>
 
       <BlogLinks />
     </div>

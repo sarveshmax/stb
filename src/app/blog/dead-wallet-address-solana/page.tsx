@@ -1,6 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title:
@@ -18,6 +18,7 @@ export const metadata = {
     images: ["/og-image.png"],
   },
 };
+
 export default function DeadWalletBurnGuide() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 text-gray-100">
@@ -26,7 +27,7 @@ export default function DeadWalletBurnGuide() {
       </h1>
 
       <p className="mb-4">
-        On Ethereum and similar chains, burning tokens is easy — you simply send
+        On Ethereum and similar chains, burning tokens is easy - you simply send
         them to a <strong>dead wallet address</strong> (0x000…dead). Once sent,
         the tokens are permanently gone from circulation.
       </p>
@@ -37,9 +38,12 @@ export default function DeadWalletBurnGuide() {
       </p>
 
       <div className="bg-gray-800 border border-gray-700 p-4 rounded-xl mb-6">
-        <p className="text-lg font-semibold">
-          ⚠️ Solana does NOT use dead wallet addresses.
-        </p>
+        <div className="flex items-center gap-2 mb-1">
+          <Icon icon="noto:warning" className="text-xl" />
+          <p className="text-lg font-semibold">
+            Solana does NOT use dead wallet addresses.
+          </p>
+        </div>
         <p>
           You cannot burn tokens by sending them to an address. Solana requires
           an actual <strong>burn instruction</strong>.
@@ -49,13 +53,14 @@ export default function DeadWalletBurnGuide() {
       <p className="mb-6">
         So in this guide, we’ll explain why Solana works this way, and show you
         exactly how to burn SPL or LP tokens{" "}
-        <strong>safely, correctly, and fully on-chain</strong> — even if you
+        <strong>safely, correctly, and fully on-chain</strong> - even if you
         don’t know how to code.
       </p>
 
       {/* ------------------------------------- */}
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔥 Why Solana Doesn’t Use Dead Wallets
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:fire" className="text-2xl" />
+        Why Solana Doesn’t Use Dead Wallets
       </h2>
 
       <p className="mb-4">
@@ -67,7 +72,7 @@ export default function DeadWalletBurnGuide() {
       <p className="mb-6">
         If you send SPL tokens to a random wallet, even if nobody controls it,
         the tokens are <strong>not officially burned</strong>. They still exist
-        in circulation — which means:
+        in circulation - which means:
       </p>
 
       <ul className="list-disc ml-6 mb-6 space-y-1">
@@ -82,13 +87,14 @@ export default function DeadWalletBurnGuide() {
       </p>
 
       {/* ------------------------------------- */}
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🚀 Correct Way to Burn Tokens: Use SolTokenBurner
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:rocket" className="text-2xl" />
+        Correct Way to Burn Tokens: Use SolTokenBurner
       </h2>
 
       <p className="mb-4">
-        The easiest and safest way to burn SPL or LP tokens on Solana — without
-        writing any code — is by using the <strong>SolTokenBurner dApp</strong>.
+        The easiest and safest way to burn SPL or LP tokens on Solana - without
+        writing any code - is by using the <strong>SolTokenBurner dApp</strong>.
       </p>
 
       <p className="mb-6">
@@ -97,12 +103,14 @@ export default function DeadWalletBurnGuide() {
       </p>
 
       {/* ------------------------------------- */}
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🧭 Step-by-Step Guide to Burn SPL & LP Tokens
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:compass" className="text-2xl" />
+        Step-by-Step Guide to Burn SPL & LP Tokens
       </h2>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">
-        1. Open SolTokenBurner & Connect Phantom
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-one-fill" className="text-xl" />
+        Open SolTokenBurner & Connect Phantom
       </h3>
 
       <p className="mb-4">
@@ -121,12 +129,13 @@ export default function DeadWalletBurnGuide() {
         wallet).
       </p>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">
-        2. Select the Token You Want to Burn
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-two-fill" className="text-xl" />
+        Select the Token You Want to Burn
       </h3>
 
       <p className="mb-4">
-        Click 'Refresh' and choose the token you want to burn This can be:
+        Click “Refresh” and choose the token you want to burn. This can be:
       </p>
 
       <ul className="list-disc ml-6 mb-4 space-y-1">
@@ -134,19 +143,23 @@ export default function DeadWalletBurnGuide() {
         <li>Liquidity Pool Tokens from Raydium / Orca / Meteora</li>
       </ul>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">3. Burn It</h3>
-
-      <p className="mb-4">
-        Choose 'Burn All' to burn the full supply in your wallet, or 'Input
-        Amount to Burn' to enter an amount and burn that amount specifically
-      </p>
-
-      <h3 className="text-xl font-semibold mt-6 mb-3">
-        4. Verify the Burn on Solscan
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-three-fill" className="text-xl" />
+        Burn It
       </h3>
 
       <p className="mb-4">
-        Enter you wallet address on Solscan and check the latest tranaction.
+        Choose "MAX" and Burn to burn the full supply in your wallet, or enter
+        an amount and burn that amount specifically.
+      </p>
+
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-four-fill" className="text-xl" />
+        Verify the Burn on Solscan
+      </h3>
+
+      <p className="mb-4">
+        Enter your wallet address on Solscan and check the latest transaction.
         Your burn will show up with a clear mark:
       </p>
 
@@ -159,19 +172,28 @@ export default function DeadWalletBurnGuide() {
         <li>Signature transaction ID</li>
       </ul>
 
-      <p>This is the *only valid* method for burning tokens on Solana.</p>
+      <p>
+        This is the <strong>only valid</strong> method for burning tokens on
+        Solana.
+      </p>
 
       {/* ------------------------------------- */}
-      <h2 className="text-2xl font-semibold mt-10 mb-4">🎥 Video Tutorial</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="logos:youtube-icon" className="text-2xl" />
+        Video Tutorial
+      </h2>
       <p className="mb-6">
         A full video walkthrough is also available in the menu.
       </p>
 
       {/* ------------------------------------- */}
-      <h2 className="text-2xl font-semibold mt-10 mb-4">✅ Conclusion</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:pushpin" className="text-2xl" />
+        Conclusion
+      </h2>
 
       <p className="mb-5">
-        Burning tokens on Solana is simpler than it seems — you just need to
+        Burning tokens on Solana is simpler than it seems - you just need to
         follow the correct method. Since Solana does not use dead wallet
         addresses, using a real burn instruction through a trusted dApp such as
         SolTokenBurner is the only true way to remove tokens permanently from
@@ -183,7 +205,7 @@ export default function DeadWalletBurnGuide() {
         on Solscan.
       </p>
 
-      <p className="text-gray-400 mb-10 text-sm">Updated: November 2025</p>
+      <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>
 
       <BlogLinks />
     </div>

@@ -1,6 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title: "How to Burn Tokens in Phantom Wallet | Complete 2025 Guide",
@@ -32,7 +32,10 @@ export default function PhantomBurnGuide() {
         it step-by-step.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">🔥 Why Burn Tokens?</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:fire" className="text-2xl" />
+        Why Burn Tokens?
+      </h2>
 
       <ul className="list-disc ml-6 mb-6 space-y-2">
         <li>Remove unwanted or spam tokens</li>
@@ -41,11 +44,15 @@ export default function PhantomBurnGuide() {
         <li>Clean your wallet from dust or scam airdrops</li>
       </ul>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🚀 How to Burn Tokens Using Phantom (Step-by-Step)
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:rocket" className="text-2xl" />
+        How to Burn Tokens Using Phantom (Step-by-Step)
       </h2>
 
-      <h3 className="text-xl font-semibold mb-3">1. Open SolTokenBurner</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-one-fill" className="text-xl" />
+        Open SolTokenBurner
+      </h3>
       <p className="mb-4">
         Visit{" "}
         <a
@@ -59,30 +66,45 @@ export default function PhantomBurnGuide() {
         and connect your Phantom wallet on the top right.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">2. Click REFRESH</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-two-fill" className="text-xl" />
+        Click REFRESH
+      </h3>
       <p className="mb-4">
         This loads all SPL tokens + LP tokens in your wallet.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">3. Select Token to Burn</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-three-fill" className="text-xl" />
+        Select Token to Burn
+      </h3>
       <p className="mb-4">Choose any SPL, LP, or spam token.</p>
 
-      <h3 className="text-xl font-semibold mb-3">4. Choose Burn Amount</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-four-fill" className="text-xl" />
+        Choose Burn Amount
+      </h3>
       <ul className="list-disc ml-6 mb-4 space-y-1">
         <li>
-          <strong>Burn All</strong> — remove full balance
+          <strong>Input Amount to Burn</strong> - burn partially
         </li>
         <li>
-          <strong>Input Amount to Burn</strong> — burn partially
+          <strong>MAX</strong> - auto-fill wallet's balance
         </li>
       </ul>
 
-      <h3 className="text-xl font-semibold mb-3">5. Approve in Phantom</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-five-fill" className="text-xl" />
+        Approve in Phantom
+      </h3>
       <p className="mb-6">
         Once approved, the tokens are permanently destroyed.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">❗️ NOTE</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:warning" className="text-2xl" />
+        NOTE
+      </h2>
 
       <h3 className="text-xl font-semibold mb-3">Token Burning is Permanent</h3>
       <p className="mb-6">
@@ -90,7 +112,7 @@ export default function PhantomBurnGuide() {
         reversed.
       </p>
 
-      <p className="text-gray-400 mb-10 text-sm">Updated: November 2025</p>
+      <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>
 
       <BlogLinks />
     </div>

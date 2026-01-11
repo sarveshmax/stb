@@ -1,6 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title: "How to Burn LP Tokens on Solana | Complete 2025 Guide",
@@ -27,14 +27,15 @@ export default function BurnLPTokensGuide() {
 
       <p className="mb-6">
         LP tokens on Solana represent your share in a liquidity pool. Sometimes
-        projects or owners need to burn LP tokens permanently — either to lock
+        projects or owners need to burn LP tokens permanently - either to lock
         liquidity, prevent rug risks, or reduce supply. This guide explains how
         to burn any LP tokens including Raydium, Orca, Meteora, Crema and all
         SPL-based LP tokens.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔥 Why Burn LP Tokens?
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:fire" className="text-2xl" />
+        Why Burn LP Tokens?
       </h2>
 
       <ul className="list-disc ml-6 mb-6 space-y-2">
@@ -45,16 +46,20 @@ export default function BurnLPTokensGuide() {
         <li>Get PadLock on DexScreener</li>
       </ul>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🚀 How to Burn LP Tokens (Step-by-Step)
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:rocket" className="text-2xl" />
+        How to Burn LP Tokens (Step-by-Step)
       </h2>
 
       <p className="mb-4">
         LP tokens are just SPL tokens, so they can be burned the same way
-        regular SPL tokens are burned — using SolTokenBurner.
+        regular SPL tokens are burned - using SolTokenBurner.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">1. Open SolTokenBurner</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-one-fill" className="text-xl" />
+        Open SolTokenBurner
+      </h3>
       <p className="mb-4">
         Go to{" "}
         <a
@@ -68,44 +73,61 @@ export default function BurnLPTokensGuide() {
         and connect your Phantom wallet.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">2. Click REFRESH</h3>
-      <p className="mb-4">The app will load your SPL/LP tokens and balances.</p>
-
-      <h3 className="text-xl font-semibold mb-3">3. Select the LP Token</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-two-fill" className="text-xl" />
+        Click REFRESH
+      </h3>
       <p className="mb-4">
-        LP tokens usually appear as 'Unknown' or names like RAYDIUM LP, ORCA-LP,
+        The app will load your SPL and LP tokens with balances.
+      </p>
+
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-three-fill" className="text-xl" />
+        Select the LP Token
+      </h3>
+      <p className="mb-4">
+        LP tokens usually appear as “Unknown” or names like RAYDIUM LP, ORCA-LP,
         POOL-LP, etc.
       </p>
 
-      <h3 className="text-xl font-semibold mb-3">4. Choose an Option</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-four-fill" className="text-xl" />
+        Choose an Option
+      </h3>
       <ul className="list-disc ml-6 mb-4 space-y-1">
         <li>
-          <strong>Max → Burn</strong> — removes the entire LP amount
+          <strong>Max → Burn</strong> - removes the entire LP amount
         </li>
         <li>
-          <strong>Input Amount → Burn</strong> — burns only a specific amount -
-          later you can burn the remaining or pull the liquidity
+          <strong>Input Amount → Burn</strong> - burns only a specific amount;
+          you can burn the remaining later or withdraw liquidity
         </li>
       </ul>
 
-      <h3 className="text-xl font-semibold mb-3">5. Approve in Wallet</h3>
+      <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+        <Icon icon="ph:number-circle-five-fill" className="text-xl" />
+        Approve in Wallet
+      </h3>
       <p className="mb-6">
         Once approved, the LP tokens are permanently removed from your wallet
-        and supply. The PadLock will appear on DexScreener now.
+        and from circulation. The PadLock will appear on DexScreener.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔍 How to Verify on Solscan
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:magnifying-glass-tilted-right" className="text-2xl" />
+        How to Verify on Solscan
       </h2>
 
       <p className="mb-6">
         Open Solscan → paste your wallet address → check the latest transaction
-        labeled
-        <strong> Burn </strong>. You can share this link as proof of locked
-        liquidity.
+        labeled <strong>Burn</strong>. You can share this link as proof of
+        locked liquidity.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">📌 Final Word</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:pushpin" className="text-2xl" />
+        Final Word
+      </h2>
 
       <p className="mb-5">
         Burning LP tokens is one of the strongest trust signals for communities.
@@ -113,7 +135,7 @@ export default function BurnLPTokensGuide() {
         works for all Solana LP tokens.
       </p>
 
-      <p className="text-gray-400 mb-10 text-sm">Updated: November 2025</p>
+      <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>
 
       <BlogLinks />
     </div>

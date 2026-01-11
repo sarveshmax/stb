@@ -1,6 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title: "Solana Burn Address Explained | 2025 Guide",
@@ -33,8 +33,9 @@ export default function SolanaBurnAddressGuide() {
         verify your burn on-chain.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔥 Does Solana Have a Burn Address?
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:fire" className="text-2xl" />
+        Does Solana Have a Burn Address?
       </h2>
 
       <p className="mb-6">
@@ -46,31 +47,30 @@ export default function SolanaBurnAddressGuide() {
 
       <p className="mb-6">
         If you send tokens to a random wallet, those tokens are still
-        technically
-        <strong> spendable</strong> if someone owns the private key. That means
-        sending tokens to a random address is <strong>not a real burn</strong>.
+        technically <strong>spendable</strong> if someone owns the private key.
+        That means sending tokens to a random address is{" "}
+        <strong>not a real burn</strong>.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🧨 How Burning Works on Solana
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="fluent-emoji-flat:red-question-mark" className="text-2xl" />
+        How Burning Works on Solana
       </h2>
 
       <p className="mb-6">
-        To burn SPL tokens properly, the token amount must be
-        <strong>
-          {" "}
-          removed from supply using the token’s mint authority
-        </strong>{" "}
-        or a burn instruction.
+        To burn SPL tokens properly, the token amount must be{" "}
+        <strong>removed from supply using the token’s mint authority</strong> or
+        a burn instruction.
       </p>
 
       <p className="mb-6">
-        The recommended method is using a burn function — not sending tokens to
+        The recommended method is using a burn function - not sending tokens to
         an address.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🚀 The Easiest Way to Burn Tokens: SolTokenBurner
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:rocket" className="text-2xl" />
+        The Easiest Way to Burn Tokens: SolTokenBurner
       </h2>
 
       <p className="mb-4">
@@ -93,8 +93,9 @@ export default function SolanaBurnAddressGuide() {
         <li>Connect your wallet on the top right</li>
         <li>Click REFRESH to load your tokens</li>
         <li>Select any token you want to burn</li>
-        <li>Choose Burn All or Input Amount to Burn to burn a custom amount</li>
-        <li>Approve the transaction</li>
+        <li>Choose MAX or input a custom amount to burn</li>
+        <li>Click on the Burn button</li>
+        <li>Approve the transaction on Phantom</li>
       </ol>
 
       <p className="mb-6">
@@ -102,8 +103,9 @@ export default function SolanaBurnAddressGuide() {
         mint level.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        ❌ Why You Should NOT Send Tokens to a Random Address
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:cross-mark" className="text-2xl" />
+        Why You Should NOT Send Tokens to a Random Address
       </h2>
 
       <ul className="list-disc ml-6 mb-6 space-y-2">
@@ -118,29 +120,32 @@ export default function SolanaBurnAddressGuide() {
         on-chain.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔍 How to Verify a Burn on Solscan
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:magnifying-glass-tilted-right" className="text-2xl" />
+        How to Verify a Burn on Solscan
       </h2>
 
       <p className="mb-6">
         After burning, open Solscan → paste your wallet address → and look for a
-        <strong> Burn</strong> event in the transaction history or the latest
-        transaction if you just performed it.
+        <strong> Burn</strong> event in the transaction history.
       </p>
 
       <p className="mb-6">
         You can share the burn transaction link with your community as proof.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">📌 Final Word</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:pushpin" className="text-2xl" />
+        Final Word
+      </h2>
 
       <p className="mb-5">
         Solana does not use a universal burn address. To destroy tokens
-        permanently — and to show proof on Solscan — always use a proper burn
+        permanently - and to show proof on Solscan - always use a proper burn
         tool like <strong>SolTokenBurner</strong>.
       </p>
 
-      <p className="text-gray-400 mb-10 text-sm">Updated: November 2025</p>
+      <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>
 
       <BlogLinks />
     </div>

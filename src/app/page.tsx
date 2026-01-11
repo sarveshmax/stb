@@ -1,33 +1,33 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
-import Footer from "@/components/Footer";
-import FAQ from "@/components/FAQ";
-import ToastContainer from "@/components/ToastContainer";
 import BottomBar from "@/components/BottomBar";
+import FAQ from "@/components/FAQ";
+import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
+import SideBar from "@/components/SideBar";
+import ToastContainer from "@/components/ToastContainer";
+import TopBar from "@/components/TopBar";
+import React, { useEffect, useState } from "react";
 
 import {
-  Connection,
+  LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
-  LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
 
 import {
-  TOKEN_PROGRAM_ID,
-  getAssociatedTokenAddress,
-  createBurnCheckedInstruction,
-  unpackAccount,
   TOKEN_2022_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
+  createBurnCheckedInstruction,
+  getAssociatedTokenAddress,
   getMint,
+  unpackAccount,
 } from "@solana/spl-token";
 
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
+import PhantomPartnership from "@/components/phantomPartnership";
 import {
   burnFee,
   burnFeeToken2022,
@@ -35,16 +35,11 @@ import {
   explorerURL,
   showBottomBar,
 } from "@/constants";
-import PhantomPartnership from "@/components/phantomPartnership";
+import { STABLECOINS_CA } from "@/constants/valuableTokens";
+import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
 import { formatRawAmount } from "@/utils/formatRawAmount";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
-import {
-  formatNumberWithCommas,
-  formatToUSD,
-  toRawAmount,
-} from "@/utils/NumberHelpers";
-import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
-import { STABLECOINS_CA } from "@/constants/valuableTokens";
+import { formatNumberWithCommas, toRawAmount } from "@/utils/NumberHelpers";
 import { ExternalLink, Loader2, RefreshCcw } from "lucide-react";
 
 /* ------------------------------------
@@ -267,9 +262,6 @@ export default function Page() {
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: burnFeeWallet,
-          // toPubkey: new PublicKey(
-          //   "F9SiLkobRc2WArLohabXHY65A6XgyP6TTVsNtxU2fXnS",
-          // ),
           lamports: Math.floor(feeToBurn * LAMPORTS_PER_SOL),
         }),
       );

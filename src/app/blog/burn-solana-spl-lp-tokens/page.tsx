@@ -1,6 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title: "How to Burn SPL & LP Tokens on Solana | Phantom Burn Guide 2025",
@@ -36,13 +36,14 @@ export default function BurnSolanaGuide() {
       <p className="mb-4">
         This guide provides a complete, step-by-step explanation of how to burn
         tokens using Phantom Wallet (or any wallet) and the Solana Token Burner
-        — a trusted OG dApp used since the early Solana days. The process is
+        - a trusted OG dApp used since the early Solana days. The process is
         fast, decentralized, requires zero coding knowledge, and executes fully
         on-chain through your wallet.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔥 What Is Token Burning?
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:fire" className="text-2xl" />
+        What Is Token Burning?
       </h2>
 
       <p className="mb-4">
@@ -63,8 +64,9 @@ export default function BurnSolanaGuide() {
         amount before approving the transaction.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        ⚙️ What You Need Before Burning
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:gear" className="text-2xl" />
+        What You Need Before Burning
       </h2>
 
       <ul className="list-disc ml-6 mb-4 space-y-1">
@@ -78,12 +80,13 @@ export default function BurnSolanaGuide() {
         executes each burn directly on the blockchain.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🚀 Step-by-Step: How to Burn Tokens Using Phantom
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:rocket" className="text-2xl" />
+        Step-by-Step: How to Burn Tokens Using Phantom
       </h2>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">
-        1. Open SolTokenBurner
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        • Open SolTokenBurner
       </h3>
       <p className="mb-4">
         Go to{" "}
@@ -101,30 +104,32 @@ export default function BurnSolanaGuide() {
         connect your wallet.
       </p>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">2. Load Your Tokens</h3>
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        • Load Your Tokens
+      </h3>
       <p className="mb-4">
         Click the <strong>REFRESH</strong> button. The app will scan your wallet
         and display all SPL and LP tokens associated with your address. If you
         hold many tokens, it may take a few seconds for all balances to appear.
       </p>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">
-        3. Choose How You Want to Burn
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        • Choose How You Want to Burn
       </h3>
 
       <p className="mb-4">You have two options:</p>
 
       <ul className="list-disc ml-6 mb-4 space-y-2">
         <li>
-          <strong>Max → Burn</strong> — removes the entire LP amount
+          <strong>Max → Burn</strong> - removes the entire LP amount
         </li>
         <li>
-          <strong>Input Amount → Burn</strong> — burns only a specific amount
+          <strong>Input Amount → Burn</strong> - burns only a specific amount
         </li>
       </ul>
 
-      <h3 className="text-xl font-semibold mt-6 mb-3">
-        4. Approve the Transaction in Phantom
+      <h3 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+        • Approve the Transaction in Phantom
       </h3>
 
       <p className="mb-4">
@@ -133,8 +138,9 @@ export default function BurnSolanaGuide() {
         permanently on-chain.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        🔍 How to Verify the Burn on Solscan
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:magnifying-glass-tilted-right" className="text-2xl" />
+        How to Verify the Burn on Solscan
       </h2>
 
       <p className="mb-4">
@@ -154,33 +160,37 @@ export default function BurnSolanaGuide() {
         used by developers and communities proving supply reduction.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">
-        💡 Why Use Solana Token Burner?
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:light-bulb" className="text-2xl" />
+        Why Use Solana Token Burner?
       </h2>
 
       <ul className="list-disc ml-6 mb-6 space-y-2">
         <li>One of the earliest and most trusted token burn dApps on Solana</li>
         <li>100% no-code token burning</li>
         <li>Supports both SPL and LP tokens</li>
-        <li>Burn any specific amount — not forced to burn the full balance</li>
+        <li>Burn any specific amount - not forced to burn the full balance</li>
         <li>
           Fully decentralized; all burns occur directly through your wallet
         </li>
         <li>Instant on-chain confirmation and verifiable records</li>
       </ul>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4">✅ Conclusion</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
+        <Icon icon="noto:pushpin" className="text-2xl" />
+        Conclusion
+      </h2>
 
       <p className="mb-5">
         Burning tokens on Solana is now easier and safer than ever. With the Sol
-        Token Burner, anyone — even with zero development experience — can
+        Token Burner, anyone - even with zero development experience - can
         remove tokens from circulation, clean their wallet, or perform
         project-related burns with full transparency. All actions take place
         on-chain and are fully verifiable, making it the most reliable and
         community-trusted way to burn SPL or LP tokens.
       </p>
 
-      <p className="text-gray-400 mb-10 text-sm">Updated: November 2025</p>
+      <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>
 
       <BlogLinks />
     </div>
