@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 export const metadata = {
   title: "Solana Token Burner Blog | SolTokenBurner",
@@ -28,17 +28,13 @@ export default function BlogIndex() {
   return (
     <div className="max-w-4xl mx-auto px-5 sm:px-8 md:px-10 py-12 text-gray-200">
       <h1 className="text-4xl font-bold mb-6 text-gray-100 flex items-center gap-3">
-        <Icon
-          icon="fluent-emoji-flat:blue-book"
-          className="w-12 h-12 sm:w-10 sm:h-10"
-        />
+        <Icon icon="fluent-emoji-flat:blue-book" className="w-12 h-12 sm:w-10 sm:h-10" />
         Solana Token Burner Blog
       </h1>
 
       <p className="mb-10 text-gray-300 leading-relaxed">
-        Guides, tutorials, and documentation for burning SPL tokens, LP tokens,
-        locking liquidity, and understanding Solana’s token burn mechanics - all
-        powered by SolTokenBurner.
+        Guides, tutorials, and documentation for burning SPL tokens, LP tokens, locking liquidity,
+        and understanding Solana’s token burn mechanics - all powered by SolTokenBurner.
       </p>
 
       <div className="space-y-6">
@@ -113,15 +109,7 @@ export default function BlogIndex() {
   );
 }
 
-function BlogLink({
-  title,
-  url,
-  icon,
-}: {
-  title: string;
-  url: string;
-  icon: string;
-}) {
+function BlogLink({ title, url, icon }: { title: string; url: string; icon: string }) {
   const isExternal = url.startsWith("http");
 
   const cardClasses = `

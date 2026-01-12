@@ -21,20 +21,17 @@ export const metadata = {
 export default function HowSolTokenBurnerWorks() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 text-gray-100">
-      <h1 className="text-3xl font-bold mb-6">
-        How SolTokenBurner Works (Technical Breakdown)
-      </h1>
+      <h1 className="text-3xl font-bold mb-6">How SolTokenBurner Works (Technical Breakdown)</h1>
 
       <p className="mb-6">
-        SolTokenBurner is the safest and simplest way to burn SPL tokens and LP
-        tokens on Solana. Instead of using a custom smart contract, it relies
-        entirely on Solana’s <strong>official burn instruction</strong> provided
-        by <code>@solana/spl-token</code>.
+        SolTokenBurner is the safest and simplest way to burn SPL tokens and LP tokens on Solana.
+        Instead of using a custom smart contract, it relies entirely on Solana’s{" "}
+        <strong>official burn instruction</strong> provided by <code>@solana/spl-token</code>.
       </p>
 
       <p className="mb-6">
-        This guide explains exactly how burning works on Solana, how
-        SolTokenBurner executes the burn, and why it is fully trustless.
+        This guide explains exactly how burning works on Solana, how SolTokenBurner executes the
+        burn, and why it is fully trustless.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -43,8 +40,7 @@ export default function HowSolTokenBurnerWorks() {
       </h2>
 
       <p className="mb-6">
-        Burning a token means{" "}
-        <strong>permanently reducing its total supply</strong>. On Solana,
+        Burning a token means <strong>permanently reducing its total supply</strong>. On Solana,
         burning is done by sending a transaction that:
       </p>
 
@@ -55,9 +51,8 @@ export default function HowSolTokenBurnerWorks() {
       </ul>
 
       <p className="mb-6">
-        Unlike Ethereum burn mechanisms, Solana does NOT send tokens to a dead
-        wallet. Instead, it uses a <strong>native burn instruction</strong> that
-        mathematically reduces supply.
+        Unlike Ethereum burn mechanisms, Solana does NOT send tokens to a dead wallet. Instead, it
+        uses a <strong>native burn instruction</strong> that mathematically reduces supply.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -66,8 +61,7 @@ export default function HowSolTokenBurnerWorks() {
       </h2>
 
       <p className="mb-6">
-        SolTokenBurner builds a burn transaction client-side using the official
-        SPL Token library:
+        SolTokenBurner builds a burn transaction client-side using the official SPL Token library:
       </p>
 
       <pre className="bg-black p-4 rounded-xl text-xs sm:text-sm overflow-x-auto mb-6 max-w-full">
@@ -77,9 +71,8 @@ export default function HowSolTokenBurnerWorks() {
       </pre>
 
       <p className="mb-6">
-        This means the app does not run custom programs (unlike other tools) -
-        it uses Solana's standard token program (the same one used by Phantom,
-        Raydium, Orca, and all wallets).
+        This means the app does not run custom programs (unlike other tools) - it uses Solana's
+        standard token program (the same one used by Phantom, Raydium, Orca, and all wallets).
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
@@ -87,17 +80,15 @@ export default function HowSolTokenBurnerWorks() {
         Step 1: Load the User’s Token Accounts
       </h3>
       <p className="mb-6">
-        When you click <strong>REFRESH</strong>, the app scans your wallet for
-        all SPL & LP token accounts using public RPC calls.
+        When you click <strong>REFRESH</strong>, the app scans your wallet for all SPL & LP token
+        accounts using public RPC calls.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
         <Icon icon="fluent-color:checkmark-circle-48" className="text-xl" />
         Step 2: Prepare a Burn Instruction
       </h3>
-      <p className="mb-6">
-        When you click “Burn”, the app constructs a burn instruction:
-      </p>
+      <p className="mb-6">When you click “Burn”, the app constructs a burn instruction:</p>
 
       <pre className="bg-black p-4 rounded-xl text-xs sm:text-sm overflow-x-auto mb-6 max-w-full">
         <code className="whitespace-pre-wrap break-words">
@@ -113,8 +104,7 @@ export default function HowSolTokenBurnerWorks() {
       </pre>
 
       <p className="mb-6">
-        This creates a transaction but does not execute anything until you
-        confirm it.
+        This creates a transaction but does not execute anything until you confirm it.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
@@ -122,17 +112,14 @@ export default function HowSolTokenBurnerWorks() {
         Step 3: You Approve in Phantom
       </h3>
       <p className="mb-6">
-        Phantom pops up and asks for approval. You sign the burn transaction
-        locally on your device.
+        Phantom pops up and asks for approval. You sign the burn transaction locally on your device.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
         <Icon icon="fluent-color:checkmark-circle-48" className="text-xl" />
         Step 4: Solana’s Token Program Handles the Burn
       </h3>
-      <p className="mb-6">
-        When the transaction is sent, the official token program:
-      </p>
+      <p className="mb-6">When the transaction is sent, the official token program:</p>
 
       <ul className="list-disc ml-6 mb-6 space-y-2">
         <li>Burns the tokens from your account</li>
@@ -153,8 +140,7 @@ export default function HowSolTokenBurnerWorks() {
       </ul>
 
       <p className="mb-6">
-        SolTokenBurner is only a front-end to perform the burn instruction you
-        approve.
+        SolTokenBurner is only a front-end to perform the burn instruction you approve.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -163,9 +149,8 @@ export default function HowSolTokenBurnerWorks() {
       </h2>
 
       <p className="mb-6">
-        After burning, open Solscan → paste your wallet address → look for a
-        transaction labeled <strong>"Burn"</strong>. This confirms the supply
-        has been reduced permanently.
+        After burning, open Solscan → paste your wallet address → look for a transaction labeled{" "}
+        <strong>"Burn"</strong>. This confirms the supply has been reduced permanently.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -174,9 +159,9 @@ export default function HowSolTokenBurnerWorks() {
       </h2>
 
       <p className="mb-5">
-        SolTokenBurner works by giving you a clean UI using Solana’s official
-        burn instruction. Nothing custom, nothing risky - just the same safe
-        burning mechanism used by wallets and DEXes across Solana.
+        SolTokenBurner works by giving you a clean UI using Solana’s official burn instruction.
+        Nothing custom, nothing risky - just the same safe burning mechanism used by wallets and
+        DEXes across Solana.
       </p>
 
       <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>

@@ -1,16 +1,9 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
+
+import { BookText, Flame, Hammer, Lock, Sprout, Wallet2Icon } from "lucide-react";
 import { usePathname } from "next/navigation";
-import {
-  Flame,
-  Wallet2Icon,
-  Hammer,
-  BookText,
-  Lock,
-  Sprout,
-} from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -42,8 +35,7 @@ export default function BottomBar({ open }: Props) {
       "
     >
       {tabs.map((tab) => {
-        const active =
-          pathname === tab.href || pathname.startsWith(tab.href + "/");
+        const active = pathname === tab.href || pathname.startsWith(tab.href + "/");
         const Icon = tab.icon;
 
         return (

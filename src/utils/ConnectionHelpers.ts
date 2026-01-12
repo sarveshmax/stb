@@ -31,11 +31,7 @@ export async function waitForConfirmation(
   }
 }
 
-export function withTimeout<T>(
-  promise: Promise<T>,
-  ms: number,
-  fallbackValue: T,
-): Promise<T> {
+export function withTimeout<T>(promise: Promise<T>, ms: number, fallbackValue: T): Promise<T> {
   return new Promise((resolve) => {
     const t = setTimeout(() => resolve(fallbackValue), ms);
 

@@ -32,8 +32,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Mint SPL Tokens on Solana | SolTokenBurner Mint Tool",
-    description:
-      "Mint more SPL tokens securely using SolTokenBurner's on-chain minting interface.",
+    description: "Mint more SPL tokens securely using SolTokenBurner's on-chain minting interface.",
     images: ["https://soltokenburner.com/og-image.png"],
   },
 };

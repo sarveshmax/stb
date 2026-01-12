@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import Script from "next/script";
+import React from "react";
 
 interface FAQItemType {
   q: string;
@@ -100,11 +100,7 @@ function FaqItem({ q, a, idx }: { q: string; a: string; idx: number }) {
           strokeWidth="2"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
 

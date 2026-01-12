@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 type Toast = { id: number; type: "success" | "error" | "info"; text: string };
@@ -48,9 +47,7 @@ export default function ToastContainer({
               </span>
 
               {/* text */}
-              <div className="leading-tight break-words whitespace-normal w-full">
-                {t.text}
-              </div>
+              <div className="leading-tight break-words whitespace-normal w-full">{t.text}</div>
             </div>
           </motion.div>
         ))}

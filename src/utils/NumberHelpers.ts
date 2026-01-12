@@ -13,10 +13,7 @@ export function toRawAmount(amountStr: string, decimals: number): bigint {
   return BigInt(normalized);
 }
 
-export function decimalStringToBigInt(
-  balanceStr: string,
-  decimals: number,
-): bigint {
+export function decimalStringToBigInt(balanceStr: string, decimals: number): bigint {
   if (!balanceStr.includes(".")) {
     return BigInt(balanceStr) * BigInt(10 ** decimals);
   }
@@ -27,21 +24,15 @@ export function decimalStringToBigInt(
   const cleanFraction = fraction.replace(/0+$/, "");
 
   if (cleanFraction.length > decimals) {
-    // too many digits — truncate
+    // too many digits - truncate
     const trimmed = cleanFraction.slice(0, decimals);
-    return (
-      BigInt(whole || "0") * BigInt(10 ** decimals) +
-      BigInt(trimmed.padEnd(decimals, "0"))
-    );
+    return BigInt(whole || "0") * BigInt(10 ** decimals) + BigInt(trimmed.padEnd(decimals, "0"));
   }
 
   // pad right side with zeros to reach decimals
   const paddedFraction = cleanFraction.padEnd(decimals, "0");
 
-  return (
-    BigInt(whole || "0") * BigInt(10 ** decimals) +
-    BigInt(paddedFraction || "0")
-  );
+  return BigInt(whole || "0") * BigInt(10 ** decimals) + BigInt(paddedFraction || "0");
 }
 
 export function formatNumberWithCommas(balanceString: string) {

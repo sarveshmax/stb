@@ -1,6 +1,5 @@
 export const metadata = {
-  title:
-    "Create Solana Token | Create Meme Coin | SolTokenBurner Token Creator",
+  title: "Create Solana Token | Create Meme Coin | SolTokenBurner Token Creator",
   description:
     "Create your own meme token on Solana instantly. Set name, symbol, supply, and deploy your token directly to Solana from Phantom using SolTokenBurner.",
   keywords: [

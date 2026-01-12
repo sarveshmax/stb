@@ -2,38 +2,29 @@
 
 import React, { useEffect, useState } from "react";
 
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
+import BottomBar from "@/components/BottomBar";
+import FAQCreator from "@/components/FAQCreator";
 import Footer from "@/components/Footer";
-import FAQ from "@/components/FAQ";
+import MintLinkWithCopy from "@/components/MintLinkWithCopy";
+import SideBar from "@/components/SideBar";
 import ToastContainer from "@/components/ToastContainer";
-import PhantomPartnership from "@/components/phantomPartnership";
+import TopBar from "@/components/TopBar";
+
+import { explorerURL, showBottomBar, tokenCreatorFeeWallet, tokenMintFee } from "@/constants";
+import { withTimeout } from "@/utils/ConnectionHelpers";
+import { getAnyTokenMetadata } from "@/utils/getMetadata";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+
+import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
 import {
-  TOKEN_PROGRAM_ID,
-  getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   createMintToInstruction,
+  getAssociatedTokenAddress,
   MintLayout,
+  TOKEN_2022_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import {
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
-import {
-  explorerURL,
-  showBottomBar,
-  tokenCreatorFeeWallet,
-  tokenMintFee,
-} from "@/constants";
-import FAQCreator from "@/components/FAQCreator";
-import { getAnyTokenMetadata } from "@/utils/getMetadata";
-import BottomBar from "@/components/BottomBar";
-import MintLinkWithCopy from "@/components/MintLinkWithCopy";
 
 type Toast = { id: number; type: "success" | "error" | "info"; text: string };
 
@@ -59,6 +50,8 @@ interface TokenInfo {
   logo: string | null;
   supply: string;
   decimals: number;
+  authority?: boolean;
+  programId: string;
 }
 
 export default function MintPage() {
@@ -82,63 +75,62 @@ export default function MintPage() {
 
   async function handleManualAdd() {
     if (!manualMint) return push("error", "Enter a mint address");
-    if (
-      tokens.some(
-        (t) => t.mint.toLowerCase() === manualMint.trim().toLowerCase(),
-      )
-    )
+
+    if (tokens.some((t) => t.mint.toLowerCase() === manualMint.trim().toLowerCase()))
       return push("error", "Token Already Added");
 
     try {
       push("info", "Adding Token...");
-      const mintPK = new PublicKey(manualMint);
+
+      const mintPK = new PublicKey(manualMint.trim());
       const mintAcc = await connection.getAccountInfo(mintPK);
 
       if (!mintAcc) return push("error", "Invalid mint address");
 
+      // Ensure this is a token mint
+      const isSPL =
+        mintAcc.owner.equals(TOKEN_PROGRAM_ID) || mintAcc.owner.equals(TOKEN_2022_PROGRAM_ID);
+
+      if (!isSPL) return push("error", "Address is Not a Token Mint");
+
       const mintData = MintLayout.decode(mintAcc.data);
       const decimals = mintData.decimals;
-      const supply = Number(mintData.supply) / 10 ** decimals;
 
-      // Check mint authority but DO NOT block
-      if (mintData.mintAuthorityOption === 0) {
-        push("info", "You MAY Not Have Authority to Mint This Token");
-        setStatus(`You MAY not have authority to mint the added token.`);
-      } else {
-        setStatus("");
+      // SAFER supply handling
+      const supply = BigInt(mintData.supply.toString());
+      const uiSupply = Number(supply) / 10 ** decimals;
+
+      // ----- Authority check (non-blocking) -----
+      let hasAuthority = false;
+
+      if (mintData.mintAuthorityOption === 1 && publicKey) {
         const mintAuth = new PublicKey(mintData.mintAuthority);
-        if (
-          !mintAuth.equals(
-            publicKey ?? new PublicKey("11111111111111111111111111111111"),
-          )
-        ) {
-          push(
-            "info",
-            "You MAY Not Have Authority to Mint This Token. Adding Token Anyway.",
-          );
-        }
+        hasAuthority = mintAuth.equals(publicKey);
       }
 
-      const metadata = await getAnyTokenMetadata(
-        connection,
-        mintPK.toBase58(),
-        mintAcc.owner,
+      const metadata = await withTimeout(
+        getAnyTokenMetadata(connection, mintPK.toBase58(), mintAcc.owner),
+        5 * 1000, //5 Second Timeout
+        { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
       );
 
       setTokens((p) => [
         ...p,
         {
           mint: mintPK.toBase58(),
-          name: metadata.name,
-          symbol: metadata.symbol,
-          logo: metadata.image,
-          supply: supply.toLocaleString(),
+          name: metadata.name ?? "Unknown Token",
+          symbol: metadata.symbol ?? "UNKNOWN",
+          logo: metadata.image ?? null,
+          supply: uiSupply.toLocaleString(),
           decimals,
+          authority: hasAuthority,
+          programId: mintAcc.owner.toBase58(),
         },
       ]);
 
       push("success", "Token Added");
       setManualMint("");
+      setStatus("");
     } catch (err) {
       push("error", "Invalid Token");
       console.error(err);
@@ -154,12 +146,9 @@ export default function MintPage() {
     setTokens([]);
 
     try {
-      const accounts = await connection.getParsedTokenAccountsByOwner(
-        publicKey,
-        {
-          programId: TOKEN_PROGRAM_ID,
-        },
-      );
+      const accounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
+        programId: TOKEN_PROGRAM_ID,
+      });
 
       setProgressPercent(30);
       setProgressText("Filtering Tokens with Mint Authority");
@@ -184,11 +173,9 @@ export default function MintPage() {
         const decimals = mintData.decimals;
         const supply = Number(mintData.supply) / 10 ** decimals;
 
-        const metadata = await getAnyTokenMetadata(
-          connection,
-          mintPK.toBase58(),
-          TOKEN_PROGRAM_ID,
-        );
+        const metadata = await getAnyTokenMetadata(connection, mintPK.toBase58(), TOKEN_PROGRAM_ID);
+
+        const programId = TOKEN_PROGRAM_ID.toBase58();
 
         mintList.push({
           mint: mintAddr,
@@ -197,6 +184,7 @@ export default function MintPage() {
           logo: metadata.image,
           supply: supply.toLocaleString(),
           decimals,
+          programId,
         });
       }
 
@@ -230,22 +218,18 @@ export default function MintPage() {
       const mintRaw = BigInt(Number(amount) * 10 ** t.decimals);
 
       const ata = await getAssociatedTokenAddress(mintPK, publicKey);
+      const programId = new PublicKey(t.programId);
 
       const ixList: any[] = [];
 
       const ataAcc = await connection.getAccountInfo(ata);
       if (!ataAcc) {
         ixList.push(
-          createAssociatedTokenAccountInstruction(
-            publicKey,
-            ata,
-            publicKey,
-            mintPK,
-          ),
+          createAssociatedTokenAccountInstruction(publicKey, ata, publicKey, mintPK, programId),
         );
       }
 
-      ixList.push(createMintToInstruction(mintPK, ata, publicKey, mintRaw));
+      ixList.push(createMintToInstruction(mintPK, ata, publicKey, mintRaw, [], programId));
 
       // Fee transfer
       ixList.push(
@@ -298,9 +282,7 @@ export default function MintPage() {
             <div className="bg-[#1c1c1e] rounded-xl p-4 mb-6 border border-gray-800 shadow-[0_0_15px_rgba(0,0,0,0.4)]">
               <div className="flex justify-between items-center gap-3">
                 <div className="mb-1">
-                  <div className="text-lg font-semibold tracking-wide text-white">
-                    Token Minter
-                  </div>
+                  <div className="text-lg font-semibold tracking-wide text-white">Token Minter</div>
                   <div className="text-xs text-gray-400">
                     Mint Additional Tokens For Mints You Currently Control
                   </div>
@@ -309,9 +291,7 @@ export default function MintPage() {
                 <button
                   onClick={detectMintAuthorityTokens}
                   className={`px-4 py-2 rounded-md font-mono text-sm ${
-                    detecting
-                      ? "bg-[#3a2f56] text-gray-300"
-                      : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
+                    detecting ? "bg-[#3a2f56] text-gray-300" : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
                   }`}
                 >
                   {detecting ? "Fetching..." : "Auto-Detect"}
@@ -368,7 +348,7 @@ export default function MintPage() {
               </div>
             ) : tokens.length === 0 ? (
               <div className="text-center opacity-60 text-gray-300 font-inter">
-                Click Auto-Detect to load tokens with mint authority.
+                Click Auto-Detect to load tokens with Mint Authority.
               </div>
             ) : (
               <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
@@ -381,24 +361,18 @@ export default function MintPage() {
                       key={t.mint}
                       className="bg-[#1c1c1e] rounded-xl p-4 border border-gray-800 hover:bg-[#232325] transition-all hover:scale-[1.02] shadow-[0_0_10px_rgba(0,0,0,0.35)]"
                     >
-                      <div className="flex gap-4 mb-4">
-                        {t.logo ? (
-                          <img
-                            src={t.logo}
-                            className="w-12 h-12 rounded-full object-cover border border-gray-700"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700">
-                            <span className="opacity-70 text-sm">
-                              {t.symbol[0]}
-                            </span>
-                          </div>
-                        )}
+                      <div className="flex gap-4 items-center mb-4">
+                        <img
+                          src={t.logo || "/unknowntoken.png"}
+                          className="w-12 h-12 rounded-xl object-cover border border-gray-700"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null; // prevent infinite loop
+                            e.currentTarget.src = "/unknowntoken.png";
+                          }}
+                        />
 
                         <div>
-                          <div className="text-lg font-semibold">
-                            {t.symbol}
-                          </div>
+                          <div className="text-lg font-semibold">{t.symbol}</div>
                           <div className="text-xs text-gray-400">{t.name}</div>
 
                           <MintLinkWithCopy mint={t.mint} />
@@ -413,6 +387,14 @@ export default function MintPage() {
                           </div>
                         </div>
                       </div>
+                      {t.authority === false && (
+                        <div className="mt-2 flex items-start gap-2 rounded-md bg-yellow-900/20 border border-yellow-700/40 px-2 py-1 mb-2">
+                          <span className="text-yellow-400 text-xs font-semibold">⚠️</span>
+                          <span className="text-[11px] text-yellow-300 leading-snug">
+                            You may not have mint authority for this token. Minting may fail.
+                          </span>
+                        </div>
+                      )}
 
                       <input
                         value={mintAmount[t.mint] || ""}
@@ -431,9 +413,7 @@ export default function MintPage() {
                         onClick={() => mintToken(t)}
                         disabled={disabled}
                         className={`w-full py-2 rounded text-white font-semibold ${
-                          disabled
-                            ? "bg-[#3a2f56]"
-                            : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
+                          disabled ? "bg-[#3a2f56]" : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
                         }`}
                       >
                         {status === "minting" ? "Minting..." : "Mint"}

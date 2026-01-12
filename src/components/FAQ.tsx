@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import Script from "next/script";
+import React from "react";
 
 interface FAQItemType {
   q: string;
@@ -27,11 +27,11 @@ const FAQ_ITEMS: FAQItemType[] = [
   },
   {
     q: "When closing token accounts, where does the SOL come from?",
-    a: "When you use the “💵 Cleaner” to close token accounts, you reclaim 0.002 SOL for each account. On Solana, you pay a small rent-exempt fee (storage fee) initially create a token account. By closing the account, this deposited rent is returned to your wallet.",
+    a: "When you use the “💵 Cleaner” to close token accounts, you reclaim 0.002 SOL for each account. On Solana, you paid a small rent-exempt fee (storage fee) initially to create a token account. By closing the account, this deposited rent is returned to your wallet.",
   },
   {
     q: "Why do some tokens not appear in the Cleaner?",
-    a: "To protect users, high-value stablecoins are hidden to prevent accidental burns. Tokens that use Transfer Hooks or are Non-Transferable are also excluded, since they can fail or intentionally block burn and close actions.",
+    a: "To protect users, high-value stablecoins and LP tokens are hidden to prevent accidental burns. Some tokens that use Transfer Hooks or are Non-Transferable are also excluded, since they can fail or intentionally block burn and close actions. Use the Token Burner to burn these tokens.",
   },
   {
     q: "Why do some tokens show as 'Unknown' or 'UNK'?",
@@ -47,7 +47,7 @@ const FAQ_ITEMS: FAQItemType[] = [
   },
   {
     q: "Does SolTokenBurner have a new look?",
-    a: "Yes. SolTokenBurner now features a refreshed look. If you prefer the old look, choose '💣 Old SolTokenBurner' in the menu.",
+    a: "Yes. SolTokenBurner now has a refreshed design with new features. The old interface can still be accessed via '💣 Old SolTokenBurner' in the menu, but it is limited to testnet.",
   },
 ];
 
@@ -116,11 +116,7 @@ function FaqItem({ q, a, idx }: { q: string; a: string; idx: number }) {
           strokeWidth="2"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
 

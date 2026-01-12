@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { explorerURL } from "@/constants";
-import { formatNumberWithCommas } from "@/utils/NumberHelpers";
 import MintLinkWithCopy from "./MintLinkWithCopy";
+
+import { formatNumberWithCommas } from "@/utils/NumberHelpers";
+import { motion } from "framer-motion";
 
 type TokenSectionProps = {
   title: string;
@@ -49,14 +49,10 @@ export default function TokenSection({
   }
 
   const selectAll = () =>
-    setSelected((prev) => [
-      ...new Set([...prev, ...tokenList.map((t) => t.mint)]),
-    ]);
+    setSelected((prev) => [...new Set([...prev, ...tokenList.map((t) => t.mint)])]);
 
   const clearAll = () =>
-    setSelected((prev) =>
-      prev.filter((mint) => !tokenList.some((t) => t.mint === mint)),
-    );
+    setSelected((prev) => prev.filter((mint) => !tokenList.some((t) => t.mint === mint)));
 
   return (
     <>
@@ -66,17 +62,11 @@ export default function TokenSection({
 
         <div className="flex items-center gap-3">
           {selected.length > 0 && (
-            <button
-              onClick={clearAll}
-              className="text-s text-[#8b5cf6] hover:underline"
-            >
+            <button onClick={clearAll} className="text-s text-[#8b5cf6] hover:underline">
               Clear
             </button>
           )}
-          <button
-            onClick={selectAll}
-            className="text-s text-[#8b5cf6] hover:underline"
-          >
+          <button onClick={selectAll} className="text-s text-[#8b5cf6] hover:underline">
             Select All
           </button>
         </div>
@@ -131,16 +121,12 @@ export default function TokenSection({
 
                 {/* Name & Symbol */}
                 <div className="flex-1">
-                  <div className="text-sm font-semibold text-gray-200">
-                    {t.name}
-                  </div>
+                  <div className="text-sm font-semibold text-gray-200">{t.name}</div>
                   <div className="text-xs text-gray-400">{t.symbol}</div>
 
                   {/* Balance */}
                   {!isNFT && !isVacant && (
-                    <div className="text-sm text-gray-300">
-                      {formatNumberWithCommas(t.balance)}
-                    </div>
+                    <div className="text-sm text-gray-300">{formatNumberWithCommas(t.balance)}</div>
                   )}
 
                   {/* Mobile address */}

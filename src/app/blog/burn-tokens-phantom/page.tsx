@@ -21,15 +21,12 @@ export const metadata = {
 export default function PhantomBurnGuide() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 text-gray-100">
-      <h1 className="text-3xl font-bold mb-6">
-        How to Burn Tokens in Phantom Wallet
-      </h1>
+      <h1 className="text-3xl font-bold mb-6">How to Burn Tokens in Phantom Wallet</h1>
 
       <p className="mb-6">
-        Phantom used to include a built-in “Burn Token” button, but it was
-        removed. Today, the easiest way to burn SPL or LP tokens safely is
-        through <strong>SolTokenBurner</strong>. This guide shows you how to do
-        it step-by-step.
+        Phantom used to include a built-in “Burn Token” button, but it was removed. Today, the
+        easiest way to burn SPL or LP tokens safely is through <strong>SolTokenBurner</strong>. This
+        guide shows you how to do it step-by-step.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -70,9 +67,7 @@ export default function PhantomBurnGuide() {
         <Icon icon="ph:number-circle-two-fill" className="text-xl" />
         Click REFRESH
       </h3>
-      <p className="mb-4">
-        This loads all SPL tokens + LP tokens in your wallet.
-      </p>
+      <p className="mb-4">This loads all SPL tokens + LP tokens in your wallet.</p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
         <Icon icon="ph:number-circle-three-fill" className="text-xl" />
@@ -97,9 +92,7 @@ export default function PhantomBurnGuide() {
         <Icon icon="ph:number-circle-five-fill" className="text-xl" />
         Approve in Phantom
       </h3>
-      <p className="mb-6">
-        Once approved, the tokens are permanently destroyed.
-      </p>
+      <p className="mb-6">Once approved, the tokens are permanently destroyed.</p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
         <Icon icon="noto:warning" className="text-2xl" />
@@ -108,8 +101,7 @@ export default function PhantomBurnGuide() {
 
       <h3 className="text-xl font-semibold mb-3">Token Burning is Permanent</h3>
       <p className="mb-6">
-        Double check the token and amount before burning as it cannot be
-        reversed.
+        Double check the token and amount before burning as it cannot be reversed.
       </p>
 
       <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>

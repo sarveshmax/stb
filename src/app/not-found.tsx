@@ -1,20 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
-import Footer from "@/components/Footer";
-import BottomBar from "@/components/BottomBar";
-
 import { showBottomBar } from "@/constants";
+import { useState } from "react";
+
+import BottomBar from "@/components/BottomBar";
+import Footer from "@/components/Footer";
+import SideBar from "@/components/SideBar";
+import TopBar from "@/components/TopBar";
+import Link from "next/link";
 
 export default function NotFound() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
+    <div className="min-h-screen pb-[var(--mobile-bottom-bar-height)]">
       {/* ===== Top UI ===== */}
       <TopBar open={open} setOpen={setOpen} />
       {showBottomBar && <BottomBar open={open} />}

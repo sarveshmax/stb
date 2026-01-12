@@ -1,5 +1,6 @@
 import BlogLinks from "@/components/BlogLinks";
 import Footer from "@/components/Footer";
+import MintLinkWithCopy from "@/components/MintLinkWithCopy";
 import { Icon } from "@iconify/react";
 import { CheckCircle2, XCircle } from "lucide-react";
 
@@ -8,8 +9,7 @@ export const metadata = {
   description:
     "A detailed comparison between SolTokenBurner and Sol Incinerator. Learn the safest and most flexible way to burn SPL and LP tokens on Solana in 2025.",
   alternates: {
-    canonical:
-      "https://www.soltokenburner.com/blog/sol-incinerator-alternative",
+    canonical: "https://www.soltokenburner.com/blog/sol-incinerator-alternative",
   },
   openGraph: {
     title: "Sol Incinerator Alternative | Burn SPL & LP Tokens Safely (2025)",
@@ -24,23 +24,20 @@ export default function SolIncineratorAlternative() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 text-gray-100">
       <h1 className="text-3xl font-bold mb-6">
-        Sol Incinerator Alternative - The Safer & More Flexible Way to Burn SPL
-        & LP Tokens
+        Sol Incinerator Alternative - The Safer & More Flexible Way to Burn SPL & LP Tokens
       </h1>
 
       <p className="mb-6">
-        Sol Incinerator is a well-known tool in the Solana ecosystem, but its
-        limitations - especially forcing full-balance burns and automatically
-        closing token accounts - make it unsuitable for many users. Projects,
-        developers, LP managers, and everyday holders often need a more
-        flexible, controlled, and wallet-safe solution. There had also been
-        reports of Sol Incinerator being unsafe.
+        Sol Incinerator is a well-known tool in the Solana ecosystem, but its limitations -
+        especially forcing full-balance burns and automatically closing token accounts - make it
+        unsuitable for many users. Projects, developers, LP managers, and everyday holders often
+        need a more flexible, controlled, and wallet-safe solution. There had also been reports of
+        Sol Incinerator being unsafe.
       </p>
 
       <p className="mb-6">
-        This page explains why <strong>SolTokenBurner</strong> has become the
-        trusted alternative to Sol Incinerator, and how both tools differ in
-        features, safety, and user flexibility.
+        This page explains why <strong>SolTokenBurner</strong> has become the trusted alternative to
+        Sol Incinerator, and how both tools differ in features, safety, and user flexibility.
       </p>
 
       {/* SECTION */}
@@ -50,16 +47,26 @@ export default function SolIncineratorAlternative() {
       </h2>
 
       <p className="mb-4">
-        Sol Incinerator was originally introduced as a basic interface for
-        burning SPL tokens. Its main function is to burn the entire balance of a
-        specific token and close the associated token account, returning the
-        rent to the user. Multiple functions are executed which is unsafe.
+        Sol Incinerator was originally introduced as an app on Solana for burning SPL tokens. Its
+        primary function is to burn the entire token balance and close the associated token
+        accounts, returning the rent to the user while charging a service fee. However, this process
+        executes multiple operations within a single program, which can be considered unsafe.
       </p>
 
       <p className="mb-6">
-        This works fine for simple burns, but it lacks customization and is not
-        ideal for more advanced token management actions - especially LP token
-        burns or partial supply burns.
+        Note that the burn function is not called on-chain directly (like on SolTokenBurner), but
+        using their own custom program deployed on Solana. The program used by Sol Incinerator is{" "}
+        <span className="inline-flex align-middle">
+          <MintLinkWithCopy mint="F6fmDVCQfvnEq2KR8hhfZSEczfM9JK9fWbCsYJNbTGn7" type="account" />
+        </span>{" "}
+        and is not verified, meaning the on-chain code could contain arbitrary or potentially
+        malicious logic. When checking the <strong>Verification</strong> tab for the program used by
+        Sol Incinerator on Solscan, it displays <em>“On-chain program not verified”</em>, indicating
+        that the source code has not been audited or publicly verified.
+      </p>
+      <p className="mb-4">
+        It also lacks customization and is not ideal for more advanced token management actions -
+        especially LP token burns or partial supply burns.
       </p>
 
       {/* SECTION */}
@@ -69,10 +76,10 @@ export default function SolIncineratorAlternative() {
       </h2>
 
       <p className="mb-4">
-        SolTokenBurner was created to solve the limitations of Sol Incinerator
-        and has been used across the ecosystem for years. The dApp allows wallet
-        owners to burn SPL or LP tokens instantly with full control over the
-        exact amount burned. Only one function burn() is executed.
+        SolTokenBurner was created and it solves the limitations of Sol Incinerator and has been
+        used across the ecosystem for years. SolTokenBurner has a much cleaner and user-friendly
+        interface. The dApp allows wallet owners to burn SPL or LP tokens instantly with full
+        control over the exact amount burned. Only one function <strong>burn()</strong> is executed.
       </p>
 
       {/* TABLE */}
@@ -80,15 +87,9 @@ export default function SolIncineratorAlternative() {
         <table className="w-full text-sm text-gray-300">
           <thead className="bg-[#141417]">
             <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-400">
-                Feature
-              </th>
-              <th className="px-6 py-4 text-left font-semibold text-white">
-                SolTokenBurner
-              </th>
-              <th className="px-6 py-4 text-left font-semibold text-white">
-                Sol-Incinerator
-              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-400">Feature</th>
+              <th className="px-6 py-4 text-left font-semibold text-white">SolTokenBurner</th>
+              <th className="px-6 py-4 text-left font-semibold text-white">Sol-Incinerator</th>
             </tr>
           </thead>
 
@@ -221,7 +222,7 @@ export default function SolIncineratorAlternative() {
         <li>
           You are burning <strong>LP tokens</strong>
         </li>
-        <li>You want to burn and claim SOL</li>
+        <li>You want to burn, close token account and reclaim SOL rent</li>
         <li>You want full control over your token account</li>
         <li>You want a clean, simple interface with zero code</li>
         <li>You want to verify burns transparently on Solscan</li>
@@ -235,11 +236,10 @@ export default function SolIncineratorAlternative() {
       </h2>
 
       <p className="mb-6">
-        Yes. All burns are executed directly through your connected wallet -
-        Phantom, Backpack, Solflare, or others. No private keys, no server
-        handling, and no third-party custody. Each burn is sent as a signed
-        instruction from your wallet to the Solana blockchain, making it fully
-        decentralized.
+        Yes. All burns are executed directly through your connected wallet - Phantom, Backpack,
+        Solflare, or others. No private keys, no server handling, and no third-party custody. Each
+        burn is sent as a signed instruction from your wallet to the Solana blockchain, making it
+        fully decentralized.
       </p>
 
       {/* FINAL */}
@@ -249,12 +249,10 @@ export default function SolIncineratorAlternative() {
       </h2>
 
       <p className="mb-5">
-        Sol Incinerator remains a simple tool for basic full-balance burns with
-        questionable legitimacy, but most users today require finer control -
-        especially developers, LP managers, and community leaders performing
-        public proof-of-burn transactions. SolTokenBurner provides that
-        flexibility while maintaining complete on-chain transparency and
-        wallet-level safety.
+        Sol Incinerator remains a simple tool for basic full-balance burns with questionable
+        legitimacy, but most users today require finer control - especially developers, LP managers,
+        and community leaders performing public proof-of-burn transactions. SolTokenBurner provides
+        that flexibility while maintaining complete on-chain transparency and wallet-level safety.
       </p>
 
       <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>

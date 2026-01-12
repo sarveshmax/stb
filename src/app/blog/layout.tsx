@@ -1,17 +1,14 @@
 "use client";
 
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
-import Footer from "@/components/Footer";
-import { useState } from "react";
 import BottomBar from "@/components/BottomBar";
-import { showBottomBar } from "@/constants";
+import Footer from "@/components/Footer";
+import SideBar from "@/components/SideBar";
+import TopBar from "@/components/TopBar";
 
-export default function BlogLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { showBottomBar } from "@/constants";
+import { useState } from "react";
+
+export default function BlogLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (

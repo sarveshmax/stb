@@ -26,11 +26,10 @@ export default function BurnLPTokensGuide() {
       </h1>
 
       <p className="mb-6">
-        LP tokens on Solana represent your share in a liquidity pool. Sometimes
-        projects or owners need to burn LP tokens permanently - either to lock
-        liquidity, prevent rug risks, or reduce supply. This guide explains how
-        to burn any LP tokens including Raydium, Orca, Meteora, Crema and all
-        SPL-based LP tokens.
+        LP tokens on Solana represent your share in a liquidity pool. Sometimes projects or owners
+        need to burn LP tokens permanently - either to lock liquidity, prevent rug risks, or reduce
+        supply. This guide explains how to burn any LP tokens including Raydium, Orca, Meteora,
+        Crema and all SPL-based LP tokens.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -52,8 +51,8 @@ export default function BurnLPTokensGuide() {
       </h2>
 
       <p className="mb-4">
-        LP tokens are just SPL tokens, so they can be burned the same way
-        regular SPL tokens are burned - using SolTokenBurner.
+        LP tokens are just SPL tokens, so they can be burned the same way regular SPL tokens are
+        burned - using SolTokenBurner.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
@@ -77,17 +76,14 @@ export default function BurnLPTokensGuide() {
         <Icon icon="ph:number-circle-two-fill" className="text-xl" />
         Click REFRESH
       </h3>
-      <p className="mb-4">
-        The app will load your SPL and LP tokens with balances.
-      </p>
+      <p className="mb-4">The app will load your SPL and LP tokens with balances.</p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
         <Icon icon="ph:number-circle-three-fill" className="text-xl" />
         Select the LP Token
       </h3>
       <p className="mb-4">
-        LP tokens usually appear as “Unknown” or names like RAYDIUM LP, ORCA-LP,
-        POOL-LP, etc.
+        LP tokens usually appear as “Unknown” or names like RAYDIUM LP, ORCA-LP, POOL-LP, etc.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
@@ -99,8 +95,8 @@ export default function BurnLPTokensGuide() {
           <strong>Max → Burn</strong> - removes the entire LP amount
         </li>
         <li>
-          <strong>Input Amount → Burn</strong> - burns only a specific amount;
-          you can burn the remaining later or withdraw liquidity
+          <strong>Input Amount → Burn</strong> - burns only a specific amount; you can burn the
+          remaining later or withdraw liquidity
         </li>
       </ul>
 
@@ -109,8 +105,8 @@ export default function BurnLPTokensGuide() {
         Approve in Wallet
       </h3>
       <p className="mb-6">
-        Once approved, the LP tokens are permanently removed from your wallet
-        and from circulation. The PadLock will appear on DexScreener.
+        Once approved, the LP tokens are permanently removed from your wallet and from circulation.
+        The PadLock will appear on DexScreener.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -119,9 +115,8 @@ export default function BurnLPTokensGuide() {
       </h2>
 
       <p className="mb-6">
-        Open Solscan → paste your wallet address → check the latest transaction
-        labeled <strong>Burn</strong>. You can share this link as proof of
-        locked liquidity.
+        Open Solscan → paste your wallet address → check the latest transaction labeled{" "}
+        <strong>Burn</strong>. You can share this link as proof of locked liquidity.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -130,9 +125,8 @@ export default function BurnLPTokensGuide() {
       </h2>
 
       <p className="mb-5">
-        Burning LP tokens is one of the strongest trust signals for communities.
-        SolTokenBurner gives you full control, lets you burn any amount, and
-        works for all Solana LP tokens.
+        Burning LP tokens is one of the strongest trust signals for communities. SolTokenBurner
+        gives you full control, lets you burn any amount, and works for all Solana LP tokens.
       </p>
 
       <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>

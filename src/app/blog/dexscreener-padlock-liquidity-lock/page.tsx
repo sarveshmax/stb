@@ -7,8 +7,7 @@ export const metadata = {
   description:
     "Learn how to get the padlock icon on Dexscreener by burning your LP tokens on Solana. Works for Raydium, Orca, Meteora and all SPL LP tokens.",
   alternates: {
-    canonical:
-      "https://www.soltokenburner.com/blog/dexscreener-padlock-liquidity-lock",
+    canonical: "https://www.soltokenburner.com/blog/dexscreener-padlock-liquidity-lock",
   },
   openGraph: {
     title: "How to Get the Padlock on Dexscreener | LP Lock Badge Guide 2025",
@@ -27,10 +26,10 @@ export default function DexPadlockGuide() {
       </h1>
 
       <p className="mb-6">
-        The padlock icon on Dexscreener appears when your liquidity is locked or
-        burned. On Solana, the simplest and most trusted way to get this padlock
-        is by <strong>burning the LP tokens</strong> that the DEX (Raydium,
-        Orca, Meteora, etc.) gives you when you create a liquidity pool.
+        The padlock icon on Dexscreener appears when your liquidity is locked or burned. On Solana,
+        the simplest and most trusted way to get this padlock is by{" "}
+        <strong>burning the LP tokens</strong> that the DEX (Raydium, Orca, Meteora, etc.) gives you
+        when you create a liquidity pool.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -39,11 +38,10 @@ export default function DexPadlockGuide() {
       </h2>
 
       <p className="mb-6">
-        Dexscreener automatically detects when the supply of an LP token becomes
-        zero. Burning LP tokens locks liquidity permanently, meaning nobody
-        (including devs) can withdraw it. This gives a strong trust signal to
-        traders. You can also partially burn the LP, but the green circle around
-        the padlock will only be filled completely if you burn 100%.
+        Dexscreener automatically detects when the supply of an LP token becomes zero. Burning LP
+        tokens locks liquidity permanently, meaning nobody (including devs) can withdraw it. This
+        gives a strong trust signal to traders. You can also partially burn the LP, but the green
+        circle around the padlock will only be filled completely if you burn 100%.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -79,9 +77,8 @@ export default function DexPadlockGuide() {
         Select the LP Token
       </h3>
       <p className="mb-4">
-        LP tokens appear with random letters like{" "}
-        <strong>aBcytDz...hshYfa</strong> or names like <strong>RAY-LP</strong>,{" "}
-        <strong>ORCA-LP</strong>, <strong>POOL-LP</strong>, etc.
+        LP tokens appear with random letters like <strong>aBcytDz...hshYfa</strong> or names like{" "}
+        <strong>RAY-LP</strong>, <strong>ORCA-LP</strong>, <strong>POOL-LP</strong>, etc.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
@@ -94,8 +91,8 @@ export default function DexPadlockGuide() {
           <strong>MAX</strong> (recommended) - burns the LP completely
         </li>
         <li>
-          <strong>Custom Amount</strong> - only if partial burn is needed. The
-          unburned LP can be removed (withdraw liquidity) or burned later.
+          <strong>Custom Amount</strong> - only if partial burn is needed. The unburned LP can be
+          removed (withdraw liquidity) or burned later.
         </li>
       </ul>
 
@@ -104,8 +101,7 @@ export default function DexPadlockGuide() {
         Approve the Burn
       </h3>
       <p className="mb-6">
-        Phantom will ask for approval. After confirmation, the LP tokens are
-        permanently removed.
+        Phantom will ask for approval. After confirmation, the LP tokens are permanently removed.
       </p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-4 flex items-center gap-2">
@@ -123,17 +119,13 @@ export default function DexPadlockGuide() {
         FAQs
       </h2>
 
-      <h3 className="text-xl font-semibold mb-3">
-        Does Dexscreener require manual submission?
-      </h3>
+      <h3 className="text-xl font-semibold mb-3">Does Dexscreener require manual submission?</h3>
       <p className="mb-6">No. It detects LP burn on-chain automatically.</p>
 
       <h3 className="text-xl font-semibold mb-3">Is LP burning permanent?</h3>
       <p className="mb-6">Yes - burned LP cannot be recovered.</p>
 
-      <h3 className="text-xl font-semibold mb-3">
-        Will the padlock disappear?
-      </h3>
+      <h3 className="text-xl font-semibold mb-3">Will the padlock disappear?</h3>
       <p className="mb-5">No. Burned liquidity stays locked forever.</p>
 
       <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>

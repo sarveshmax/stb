@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import { FaBars } from "react-icons/fa";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { FaBars } from "react-icons/fa";
 
 interface Props {
   account?: string;
@@ -32,10 +31,7 @@ export default function TopBar({ account, open, setOpen }: Props) {
         </button>
 
         {/* Logo + Title */}
-        <a
-          href="https://www.soltokenburner.com"
-          className="flex items-center gap-3 ml-5"
-        >
+        <a href="https://www.soltokenburner.com" className="flex items-center gap-3 ml-5">
           <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
           <span className="hidden md:inline text-2xl font-extrabold tracking-wider text-white">
             SolTokenBurner

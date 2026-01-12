@@ -14,8 +14,9 @@ export const burnFeeWallet = new PublicKey(
 export const tokenCreationFee = 0.1;
 export const tokenMintFee = 0.05;
 export const tokenRevokeFee = 0.01;
+export const fillEmptyAccountsForFees = true;
 export const tokenCreatorFeeWallet = new PublicKey(
-  "2PZwKViUH2HBZRG5uK7j3zCU8mAjiJ4khMUmH2t68hZM", //BP-2
+  "2PZwKViUH2HBZRG5uK7j3zCU8mAjiJ4khMUmH2t68hZM", //BP-3
 );
 
 //API + RPC
@@ -26,5 +27,5 @@ export const theRpcURL = `https://solana-mainnet.g.alchemy.com/v2/${alchemyAPIKe
 // "https://mainnet.helius-rpc.com/?api-key=c4b39a0f-0237-4381-a8d1-5ebfac9d6818";
 // "https://go.getblock.io/d39dd752cb6e40f8a80170adac174880"; //paid 29 usd, getblock 1 month only from feb 19
 
-//UI
+//UI - MOBILE
 export const showBottomBar = true;

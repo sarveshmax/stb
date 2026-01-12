@@ -27,16 +27,10 @@ export const metadata: Metadata = {
     "burn solana tokens, burn lp solana, solana token burner, burn spl tokens, burn tokens solana",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Solana providers run ONLY on client */}
         <SolanaWalletProvider>{children}</SolanaWalletProvider>
       </body>

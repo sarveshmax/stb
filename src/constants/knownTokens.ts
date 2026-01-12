@@ -128,6 +128,11 @@ export const KNOWN_TOKENS: Record<string, KnownTokenMetadata> = {
     symbol: "CWIF",
     image: "/tokenimages/cwif.webp",
   },
+  orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE: {
+    name: "Orca",
+    symbol: "ORCA",
+    image: "/tokenimages/orca.png",
+  },
 
   //TOKENS WHICH REGULARLY GET BURNED
   PAYmo6moDF3Ro3X6bU2jwe2UdBnBhv8YjLgL1j4DxGu: {
@@ -174,5 +179,10 @@ export const KNOWN_TOKENS: Record<string, KnownTokenMetadata> = {
     name: "Hachiko",
     symbol: "$HACHI",
     image: "/tokenimages/hachi.jpeg",
+  },
+  VVWAy5U2KFd1p8AdchjUxqaJbZPBeP5vUQRZtAy8hyc: {
+    name: "Flip gg | #1 Lootbox Game",
+    symbol: "Flipgg",
+    image: "/tokenimages/flipgg.png",
   },
 };

@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import { MoveUpRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 type MenuItem =
   | {
@@ -164,23 +164,14 @@ export default function SideBar({ open, setOpen }: Props) {
           ${open ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        <div className="p-4 font-bold text-xl border-b border-gray-800">
-          Menu
-        </div>
+        <div className="p-4 font-bold text-xl border-b border-gray-800">Menu</div>
         <div className="p-4">
-          <SidebarMenu
-            pathname={pathname}
-            menuItems={menuItems}
-            onClick={() => setOpen(false)}
-          />
+          <SidebarMenu pathname={pathname} menuItems={menuItems} onClick={() => setOpen(false)} />
         </div>
       </div>
 
       {open && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
-          onClick={() => setOpen(false)}
-        />
+        <div className="md:hidden fixed inset-0 bg-black/50 z-40" onClick={() => setOpen(false)} />
       )}
     </>
   );
@@ -206,9 +197,7 @@ function SidebarMenu({
 
         const active = !item.external && pathname === item.path;
 
-        const sizeClasses = item.small
-          ? "text-sm px-3 py-2"
-          : "text-base px-4 py-3";
+        const sizeClasses = item.small ? "text-sm px-3 py-2" : "text-base px-4 py-3";
 
         const classes = `
           rounded-md cursor-pointer transition

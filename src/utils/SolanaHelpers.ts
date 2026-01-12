@@ -1,4 +1,4 @@
-import { PublicKey, Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
 export async function hasEnoughSol(
   connection: Connection,
@@ -14,10 +14,7 @@ export async function hasEnoughSol(
 /**
  * Get wallet balance in SOL
  */
-export async function getSolBalance(
-  connection: Connection,
-  pubkey: PublicKey,
-): Promise<number> {
+export async function getSolBalance(connection: Connection, pubkey: PublicKey): Promise<number> {
   const lamports = await connection.getBalance(pubkey, "confirmed");
   return lamports / LAMPORTS_PER_SOL;
 }

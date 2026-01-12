@@ -1,20 +1,27 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+
 import BottomBar from "@/components/BottomBar";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
+import PhantomPartnership from "@/components/phantomPartnership";
 import SideBar from "@/components/SideBar";
 import ToastContainer from "@/components/ToastContainer";
 import TopBar from "@/components/TopBar";
-import React, { useEffect, useState } from "react";
 
-import {
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
+import { STABLECOINS_CA } from "@/constants/valuableTokens";
+import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
+import { formatRawAmount } from "@/utils/formatRawAmount";
+import { getAnyTokenMetadata } from "@/utils/getMetadata";
+import { formatNumberWithCommas, toRawAmount } from "@/utils/NumberHelpers";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { ExternalLink, Flame, Loader2, RefreshCcw } from "lucide-react";
+
+import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+
+import { burnFee, burnFeeToken2022, burnFeeWallet, explorerURL, showBottomBar } from "@/constants";
 
 import {
   TOKEN_2022_PROGRAM_ID,
@@ -25,25 +32,8 @@ import {
   unpackAccount,
 } from "@solana/spl-token";
 
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-
-import PhantomPartnership from "@/components/phantomPartnership";
-import {
-  burnFee,
-  burnFeeToken2022,
-  burnFeeWallet,
-  explorerURL,
-  showBottomBar,
-} from "@/constants";
-import { STABLECOINS_CA } from "@/constants/valuableTokens";
-import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
-import { formatRawAmount } from "@/utils/formatRawAmount";
-import { getAnyTokenMetadata } from "@/utils/getMetadata";
-import { formatNumberWithCommas, toRawAmount } from "@/utils/NumberHelpers";
-import { ExternalLink, Loader2, RefreshCcw } from "lucide-react";
-
 /* ------------------------------------
-   Toast hook (same as your original)
+   Toast Hook
 --------------------------------------*/
 type Toast = { id: number; type: "success" | "error" | "info"; text: string };
 function useToasts(ttl = 5000) {
@@ -67,26 +57,22 @@ function useToasts(ttl = 5000) {
 export default function Page() {
   const { publicKey, sendTransaction, connected } = useWallet();
   const { connection } = useConnection();
-
   const { toasts, push } = useToasts(4000);
-
   const [open, setOpen] = useState(false); // sidebar
   const [tokens, setTokens] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [detecting, setDetecting] = useState(false);
-  const [burnAmount, setBurnAmount] = useState<{ [mint: string]: string }>({});
-  const [txStatus, setTxStatus] = useState<{
-    [mint: string]: "idle" | "burning" | "done" | "error";
-  }>({});
-  const [status, setStatus] = useState("");
   const [vacantAccountText, setVacantAccountText] = useState("");
   const [progressPercent, setProgressPercent] = useState(0);
   const [progressText, setProgressText] = useState("");
+  const [burnAmount, setBurnAmount] = useState<{ [mint: string]: string }>({});
+  const [txHashByMint, setTxHashByMint] = useState<{ [mint: string]: string }>({});
+  const [txStatus, setTxStatus] = useState<{
+    [mint: string]: "idle" | "burning" | "done" | "error";
+  }>({});
 
   /* ------------------------------------
      Auto Detect Tokens (Solana)
   --------------------------------------*/
-
   async function autoDetectTokens() {
     if (!publicKey) return push("error", "Wallet Not Connected");
 
@@ -143,25 +129,23 @@ export default function Page() {
           seen.add(mint);
 
           let decimals = 0;
+          let mintAuthority: PublicKey | null = null;
+          let freezeAuthority: PublicKey | null = null;
           try {
-            const mintAcc = await getMint(
-              connection,
-              mintPk,
-              "confirmed",
-              programId,
-            );
+            const mintAcc = await getMint(connection, mintPk, "confirmed", programId);
             decimals = mintAcc.decimals;
+            mintAuthority = mintAcc.mintAuthority;
+            freezeAuthority = mintAcc.freezeAuthority;
           } catch {}
 
           const realBalanceString = formatRawAmount(amount, decimals);
+          const isNFT = decimals === 0 && amount === 1n;
 
           const metadata = await withTimeout(
-            getAnyTokenMetadata(connection, mint, programId),
+            getAnyTokenMetadata(connection, mint, programId, mintAuthority, freezeAuthority, isNFT),
             5 * 1000, //5 Second Timeout
             { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
           );
-
-          const isNFT = decimals === 0 && amount === 1n;
 
           detected.push({
             mint,
@@ -174,23 +158,25 @@ export default function Page() {
             logo: metadata.image ?? "/unknowntoken.png",
             isNFT,
           });
-
-          // if (detected.length > 10) setTokens(detected);
         } catch {}
       }
 
       if (vacantAccountsCount >= 5) {
         const solToClaim = (vacantAccountsCount * 0.002).toFixed(3);
-
         setVacantAccountText(`
-    💡 <strong>Tip:</strong> You currently hold <strong>${vacantAccountsCount}</strong> vacant accounts (zero-balance tokens).<br />
-    Use <a href="/cleaner">💵 Cleaner</a> to close these accounts and reclaim 
-    <strong>${solToClaim} SOL</strong> in rent fees.
-  `);
+          💡 <strong>Tip:</strong> You currently hold <strong>${vacantAccountsCount}</strong> vacant accounts (zero-balance tokens).<br />
+          Use <a href="/cleaner">💵 Cleaner</a> to close these accounts and reclaim 
+          <strong>${solToClaim} SOL</strong> in rent fees.
+        `);
       } else setVacantAccountText("");
 
       setTokens(detected);
       push("success", `Detected ${detected.length} Tokens`);
+
+      //CLEAR TEXTBOXES
+      setBurnAmount({});
+      setTxHashByMint({});
+      setTxStatus({});
 
       setProgressPercent(100);
       setProgressText("Done");
@@ -212,6 +198,7 @@ export default function Page() {
 
   async function burnToken(t: any) {
     if (!publicKey) return push("error", "Wallet Not Connected");
+
     const amountStr = burnAmount[t.mint];
     if (!amountStr) return push("error", "Enter Amount to Burn");
 
@@ -229,7 +216,9 @@ export default function Page() {
         );
 
       const mint = new PublicKey(t.mint);
-      const ata = await getAssociatedTokenAddress(
+      const ata = await getAssociatedTokenAddress(mint, publicKey, false, t.programId);
+
+      const senderTokenAddress = await getAssociatedTokenAddress(
         mint,
         publicKey,
         false,
@@ -237,14 +226,10 @@ export default function Page() {
       );
 
       var rawAmount = toRawAmount(amountStr, t.decimals);
+      const feeToBurn = t.programId.equals(TOKEN_2022_PROGRAM_ID) ? burnFeeToken2022 : burnFee;
 
       const tx = new Transaction();
 
-      const feeToBurn = t.programId.equals(TOKEN_2022_PROGRAM_ID)
-        ? burnFeeToken2022
-        : burnFee;
-
-      ///////////// 🔵 BURN /////////////
       tx.add(
         createBurnCheckedInstruction(
           ata, // token account
@@ -267,23 +252,39 @@ export default function Page() {
       );
 
       // Always get fresh blockhash before sending
-      const { blockhash, lastValidBlockHeight } =
-        await connection.getLatestBlockhash("confirmed");
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
 
       tx.recentBlockhash = blockhash;
       tx.feePayer = publicKey;
 
       // Sign + send
       const signature = await sendTransaction(tx, connection);
-
       await waitForConfirmation(connection, signature, "confirmed");
+      setBurnAmount({});
 
       push("success", "Burn Complete");
       setTxStatus((s) => ({ ...s, [t.mint]: "done" }));
 
-      setStatus(
-        `Burn Confirmed: <a href="${explorerURL}/tx/${signature}" target="_blank" class="no-underline hover:underline text-inherit">${signature}</a>`,
-      );
+      setTxHashByMint((p) => ({
+        ...p,
+        [t.mint]: signature,
+      }));
+
+      //Update Balance in UI of Burned Token
+      if (rawAmount <= t.rawAmount) {
+        setTokens((prev) =>
+          prev.map((token) => {
+            if (token.mint !== t.mint) return token;
+
+            const newRawAmount = token.rawAmount - rawAmount;
+            return {
+              ...token,
+              rawAmount: newRawAmount,
+              realBalance: formatRawAmount(newRawAmount, token.decimals),
+            };
+          }),
+        );
+      }
     } catch (err) {
       console.error(err);
       push("error", "Burn Failed");
@@ -306,12 +307,7 @@ export default function Page() {
      UI START
   --------------------------------------*/
   return (
-    <div
-      className="
-    min-h-screen
-    pb-[var(--mobile-bottom-bar-height)]
-  "
-    >
+    <div className="min-h-screen pb-[var(--mobile-bottom-bar-height)]">
       <TopBar account={publicKey?.toBase58()} open={open} setOpen={setOpen} />
       {showBottomBar && <BottomBar open={open} />}
       <SideBar open={open} setOpen={setOpen} />
@@ -358,9 +354,7 @@ export default function Page() {
                       px-4 py-2 rounded-md font-mono text-sm
                       transition
                       ${
-                        detecting
-                          ? "bg-[#3a2f56] text-gray-300"
-                          : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
+                        detecting ? "bg-[#3a2f56] text-gray-300" : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
                       }
                     `}
                   >
@@ -430,7 +424,7 @@ export default function Page() {
                 <div className="text-center opacity-60 text-gray-300 font-inter">
                   {!publicKey
                     ? "Please Connect Your Wallet - Phantom Recommended."
-                    : "Use Refresh Above. If no tokens are detected, plese use the Cleaner."}
+                    : "Use Refresh Above. If no tokens are detected, please use the Cleaner."}
                 </div>
               ) : (
                 <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
@@ -466,32 +460,20 @@ export default function Page() {
                         )}
 
                         <div className="flex gap-4 items-center mb-4">
-                          {t.logo ? (
-                            <img
-                              src={t.logo || "/unknowntoken.png"}
-                              className={`w-12 h-12  object-cover border border-gray-700 shadow-sm
+                          <img
+                            src={t.logo || "/unknowntoken.png"}
+                            className={`w-12 h-12  object-cover border border-gray-700 shadow-sm
                                 ${t.isNFT ? "rounded-md" : "rounded-full"}
                                 `}
-                              onError={(e) => {
-                                e.currentTarget.onerror = null; // prevent infinite loop
-                                e.currentTarget.src = "/unknowntoken.png";
-                              }}
-                            />
-                          ) : (
-                            <div className="w-12 h-12 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
-                              <span className="text-sm opacity-70">
-                                {t.symbol[0]}
-                              </span>
-                            </div>
-                          )}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null; // prevent infinite loop
+                              e.currentTarget.src = "/unknowntoken.png";
+                            }}
+                          />
 
                           <div>
-                            <div className="text-lg text-gray-200 font-semibold">
-                              {t.symbol}
-                            </div>
-                            <div className="text-xs text-gray-400">
-                              {t.name}
-                            </div>
+                            <div className="text-lg text-gray-200 font-semibold">{t.symbol}</div>
+                            <div className="text-xs text-gray-400">{t.name}</div>
 
                             <MintLinkWithCopy mint={t.mint} />
 
@@ -500,6 +482,22 @@ export default function Page() {
                             </div>
                           </div>
                         </div>
+
+                        {txHashByMint[t.mint] && (
+                          <div className="mb-2 flex items-center gap-2 rounded-md bg-[#161618] px-3 py-1.5 text-[11px]">
+                            <Flame size={12} className="text-red-500 shrink-0 opacity-80" />
+
+                            <span className="text-gray-400 font-medium whitespace-nowrap">
+                              Burn Tx:
+                            </span>
+
+                            <MintLinkWithCopy
+                              mint={txHashByMint[t.mint]}
+                              type="tx"
+                              linkClassName="text-gray-200 hover:text-white truncate font-mono"
+                            />
+                          </div>
+                        )}
 
                         <input
                           value={burnAmount[t.mint] || ""}
@@ -535,11 +533,7 @@ export default function Page() {
                           onClick={() => burnToken(t)}
                           className={`
                           w-full py-2 rounded text-white font-semibold
-                          ${
-                            status === "burning"
-                              ? "bg-[#3a2f56]"
-                              : "bg-[#8b5cf6] hover:bg-red-400"
-                          }
+                          ${status === "burning" ? "bg-[#3a2f56]" : "bg-[#8b5cf6] hover:bg-red-400"}
                         `}
                           disabled={disabled}
                         >
@@ -552,10 +546,10 @@ export default function Page() {
               )}
             </div>
 
-            <div
+            {/* <div
               className="mt-6 text-sm text-gray-400 font-mono"
               dangerouslySetInnerHTML={{ __html: status }}
-            />
+            /> */}
           </div>
 
           <div className="flex justify-center pt-5">

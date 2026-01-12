@@ -1,34 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
-import Footer from "@/components/Footer";
+
+import BottomBar from "@/components/BottomBar";
 import FAQ from "@/components/FAQ";
+import Footer from "@/components/Footer";
+import PhantomPartnership from "@/components/phantomPartnership";
+import SideBar from "@/components/SideBar";
 import ToastContainer from "@/components/ToastContainer";
-
-import {
-  Connection,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  LAMPORTS_PER_SOL,
-} from "@solana/web3.js";
-
-import {
-  TOKEN_PROGRAM_ID,
-  unpackAccount,
-  TOKEN_2022_PROGRAM_ID,
-  getMint,
-} from "@solana/spl-token";
-
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import TopBar from "@/components/TopBar";
 
 import { explorerURL, showBottomBar } from "@/constants";
-import PhantomPartnership from "@/components/phantomPartnership";
 import { formatRawAmount } from "@/utils/formatRawAmount";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
-import BottomBar from "@/components/BottomBar";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+
+import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, getMint, unpackAccount } from "@solana/spl-token";
 
 /* ------------------------------------
    Toast hook (same as your original)
@@ -128,22 +115,13 @@ export default function FrozenPage() {
 
           let decimals = 0;
           try {
-            const mintAcc = await getMint(
-              connection,
-              mintPk,
-              "confirmed",
-              programId,
-            );
+            const mintAcc = await getMint(connection, mintPk, "confirmed", programId);
             decimals = mintAcc.decimals;
           } catch {}
 
           const realBalanceString = formatRawAmount(amount, decimals);
 
-          const metadata = await getAnyTokenMetadata(
-            connection,
-            mint,
-            programId,
-          );
+          const metadata = await getAnyTokenMetadata(connection, mint, programId);
 
           if (decimals == 0 && amount == 1n) {
             metadata.name = "[NFT] " + metadata.name;
@@ -235,11 +213,7 @@ export default function FrozenPage() {
                     onClick={autoDetectTokens}
                     className={`
                     px-4 py-2 rounded-md font-mono text-sm
-                    ${
-                      detecting
-                        ? "bg-[#3a2f56] text-gray-300"
-                        : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
-                    }
+                    ${detecting ? "bg-[#3a2f56] text-gray-300" : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"}
                   `}
                   >
                     {detecting ? "Fetching..." : "Refresh"}
@@ -298,7 +272,7 @@ export default function FrozenPage() {
                 <div className="text-center opacity-60 text-gray-300 font-inter">
                   {!publicKey
                     ? "Please Connect Your Wallet - Phantom Recommended."
-                    : "Use Refresh Above. If no tokens are detected, you don't hold any frozen tokens."}
+                    : "Use Refresh Above. If no tokens are detected, you don't hold any Frozen Tokens."}
                 </div>
               ) : (
                 <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
@@ -323,19 +297,13 @@ export default function FrozenPage() {
                             />
                           ) : (
                             <div className="w-12 h-12 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
-                              <span className="text-sm opacity-70">
-                                {t.symbol[0]}
-                              </span>
+                              <span className="text-sm opacity-70">{t.symbol[0]}</span>
                             </div>
                           )}
 
                           <div>
-                            <div className="text-lg text-gray-200 font-semibold">
-                              {t.symbol}
-                            </div>
-                            <div className="text-xs text-gray-400">
-                              {t.name}
-                            </div>
+                            <div className="text-lg text-gray-200 font-semibold">{t.symbol}</div>
+                            <div className="text-xs text-gray-400">{t.name}</div>
 
                             <a
                               href={`${explorerURL}/token/${t.mint}`}

@@ -12,8 +12,8 @@ export default function BlogGuidePage() {
             Token Creation & Liquidity Guide
           </h1>
           <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
-            A complete walkthrough to help you create your SPL token, add
-            liquidity, and launch your project successfully.
+            A complete walkthrough to help you create your SPL token, add liquidity, and launch your
+            project successfully.
           </p>
         </header>
 
@@ -40,18 +40,12 @@ export default function BlogGuidePage() {
             <li>Upload your token image (recommended square format).</li>
             <li>Set total supply and decimals based on your tokenomics.</li>
             <li>
-              Ensure{" "}
-              <span className="text-[#c084fc] font-semibold">
-                Mint Authority
-              </span>{" "}
-              is revoked.
+              Ensure <span className="text-[#c084fc] font-semibold">Mint Authority</span> is
+              revoked.
             </li>
             <li>
-              Ensure{" "}
-              <span className="text-[#c084fc] font-semibold">
-                Freeze Authority
-              </span>{" "}
-              is revoked.
+              Ensure <span className="text-[#c084fc] font-semibold">Freeze Authority</span> is
+              revoked.
             </li>
             <li>
               Click <b>Create Token</b> to deploy your token on Solana.
@@ -61,8 +55,8 @@ export default function BlogGuidePage() {
           <div className="p-4 bg-[#1c1c22] border border-[#2a2a2f] rounded-xl text-gray-300 text-base leading-relaxed flex items-start gap-2">
             <Icon icon="noto:light-bulb" className="text-xl mt-[2px]" />
             <span>
-              <span className="text-[#c084fc] font-semibold">Tip:</span> The
-              standard tokenomics used are 1 billion tokens and 6 decimals.
+              <span className="text-[#c084fc] font-semibold">Tip:</span> The standard tokenomics
+              used are 1 billion tokens and 6 decimals.
             </span>
           </div>
         </section>
@@ -92,11 +86,7 @@ export default function BlogGuidePage() {
             </li>
             <li>
               Enter the number of tokens to pair -
-              <span className="text-[#c084fc] font-semibold">
-                {" "}
-                recommended: 10% of supply
-              </span>
-              .
+              <span className="text-[#c084fc] font-semibold"> recommended: 10% of supply</span>.
             </li>
             <li>Choose how much SOL you want to put into the pool.</li>
             <li>
@@ -119,16 +109,15 @@ export default function BlogGuidePage() {
             <div className="flex items-start gap-2">
               <Icon icon="noto:light-bulb" className="text-xl mt-[2px]" />
               <span>
-                <span className="text-[#c084fc] font-semibold">Tip:</span> You
-                can burn LP tokens even before going live if you select a future
-                time.
+                <span className="text-[#c084fc] font-semibold">Tip:</span> You can burn LP tokens
+                even before going live if you select a future time.
               </span>
             </div>
             <div className="flex items-start gap-2">
               <Icon icon="noto:pushpin" className="text-xl mt-[2px]" />
               <span>
-                <span className="text-[#c084fc] font-semibold">Note:</span>{" "}
-                Freeze Authority must be revoked to create a liquidity pool.
+                <span className="text-[#c084fc] font-semibold">Note:</span> Freeze Authority must be
+                revoked to create a liquidity pool.
               </span>
             </div>
           </div>
@@ -150,8 +139,8 @@ export default function BlogGuidePage() {
           </a>
 
           <p className="text-lg text-gray-300 leading-relaxed">
-            Once you provide liquidity, you receive LP tokens. Burning these
-            permanently locks liquidity and builds trust with buyers.
+            Once you provide liquidity, you receive LP tokens. Burning these permanently locks
+            liquidity and builds trust with buyers.
           </p>
 
           <p className="text-lg text-gray-300 leading-relaxed">
@@ -168,26 +157,21 @@ export default function BlogGuidePage() {
 
           <div className="p-4 bg-[#1c1c22] border border-[#2a2a2f] rounded-xl text-base text-gray-300 leading-relaxed flex items-start gap-2">
             <Icon icon="noto:locked" className="text-xl mt-[2px]" />
-            Dexscreener will automatically show the liquidity-lock padlock
-            within 10 minutes after LP is burned.
+            Dexscreener will automatically show the liquidity-lock padlock within 10 minutes after
+            LP is burned.
           </div>
         </section>
 
         {/* SECTION 4 */}
         <section className="bg-[#141416] p-8 rounded-2xl border border-gray-800 shadow-lg shadow-black/30 space-y-6">
           <h2 className="text-3xl font-bold tracking-wide flex items-center gap-2">
-            <Icon
-              icon="fluent-color:checkmark-circle-48"
-              className="text-3xl"
-            />
+            <Icon icon="fluent-color:checkmark-circle-48" className="text-3xl" />
             Final Steps After Launch
           </h2>
 
           <ul className="list-disc pl-6 space-y-4 text-lg text-gray-300 leading-relaxed">
             <li>Hold necessary tokens for your project operations.</li>
-            <li>
-              Send allocations to team members, airdrops, and other wallets.
-            </li>
+            <li>Send allocations to team members, airdrops, and other wallets.</li>
             <li>Burn the remaining supply.</li>
           </ul>
         </section>

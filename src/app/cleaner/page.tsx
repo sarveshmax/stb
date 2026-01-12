@@ -1,36 +1,38 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
-import {
-  PublicKey,
-  Transaction,
-  SystemProgram,
-  LAMPORTS_PER_SOL,
-} from "@solana/web3.js";
-
-import {
-  TOKEN_PROGRAM_ID,
-  TOKEN_2022_PROGRAM_ID,
-  unpackAccount,
-  getMint,
-  createBurnCheckedInstruction,
-  createCloseAccountInstruction,
-  getExtensionTypes,
-  ExtensionType,
-  createHarvestWithheldTokensToMintInstruction,
-  getExtensionData,
-  TransferFeeAmountLayout,
-} from "@solana/spl-token";
-
-import TopBar from "@/components/TopBar";
+import BottomBar from "@/components/BottomBar";
+import Faq from "@/components/FAQ";
 import SideBar from "@/components/SideBar";
 import ToastContainer from "@/components/ToastContainer";
-import Faq from "@/components/FAQ";
-import PhantomPartnership from "@/components/phantomPartnership";
-import BottomBar from "@/components/BottomBar";
 import TokenSection from "@/components/TokenSection";
+import TopBar from "@/components/TopBar";
+import PhantomPartnership from "@/components/phantomPartnership";
+
+import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
+import { toRawAmount } from "@/utils/NumberHelpers";
+import { formatRawAmount } from "@/utils/formatRawAmount";
+import { getAnyTokenMetadata } from "@/utils/getMetadata";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { AnimatePresence } from "framer-motion";
+import { ExternalLink, Loader2, RefreshCcw, SearchX } from "lucide-react";
+
+import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+
+import {
+  createBurnCheckedInstruction,
+  createCloseAccountInstruction,
+  createHarvestWithheldTokensToMintInstruction,
+  ExtensionType,
+  getExtensionData,
+  getExtensionTypes,
+  getMint,
+  TOKEN_2022_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
+  TransferFeeAmountLayout,
+  unpackAccount,
+} from "@solana/spl-token";
 
 import {
   burnFeeWallet,
@@ -39,13 +41,12 @@ import {
   explorerURL,
   showBottomBar,
 } from "@/constants";
-import { getAnyTokenMetadata } from "@/utils/getMetadata";
-import { toRawAmount } from "@/utils/NumberHelpers";
-import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
-import { formatRawAmount } from "@/utils/formatRawAmount";
-import { AnimatePresence } from "framer-motion";
-import { STABLECOINS_CA } from "@/constants/valuableTokens";
-import { ExternalLink, Loader2, RefreshCcw, SearchX } from "lucide-react";
+
+import {
+  IGNORE_IN_CLEANER,
+  STABLECOINS_CA,
+  TOKENS_TO_SHOW_WHEN_CLEANING,
+} from "@/constants/valuableTokens";
 
 /* ------------------------------
    Toast Hook
@@ -83,9 +84,7 @@ export default function CleanerPage() {
   const [progressPercent, setProgressPercent] = useState(0);
   const [progressText, setProgressText] = useState("");
 
-  const [activeTab, setActiveTab] = useState<"vacant" | "balance" | "nfts">(
-    "vacant",
-  );
+  const [activeTab, setActiveTab] = useState<"vacant" | "balance" | "nfts">("vacant");
 
   const [nftTokens, setNftTokens] = useState<any[]>([]);
   const [vacantTokens, setVacantTokens] = useState<any[]>([]);
@@ -93,21 +92,18 @@ export default function CleanerPage() {
 
   // Tokens visible in the current tab
   const currentList =
-    activeTab === "vacant"
-      ? vacantTokens
-      : activeTab === "balance"
-        ? tokenWithBalance
-        : nftTokens;
+    activeTab === "vacant" ? vacantTokens : activeTab === "balance" ? tokenWithBalance : nftTokens;
 
   /* ------------------------------
      Auto Detect Tokens
   -------------------------------*/
-  async function detectTokens() {
+  async function detectTokens(refreshingAfterBurn = false) {
     if (!publicKey) return push("error", "Wallet Not Connected");
     setLoadingTokens(true);
+    clearAllLoadedTokens();
+
     setProgressPercent(10);
-    setProgressText("Fetching token accounts...");
-    clearAll();
+    if (!refreshingAfterBurn) setProgressText("Fetching token accounts...");
 
     try {
       const [legacy, tok22] = await Promise.all([
@@ -136,53 +132,42 @@ export default function CleanerPage() {
         index++;
 
         // update progress for each token
-        setProgressPercent(30 + Math.floor((index / total) * 60));
-        setProgressText(`Fetching Tokens (${index}/${total})...`);
+        const progress = total > 0 ? 30 + Math.floor((index / total) * 60) : 90;
+        setProgressPercent(progress);
+        setProgressText(`Fetching Tokens (${index}/${total})... `);
 
         try {
           const acc = unpackAccount(pubkey, account, programId);
-          const mintInfo = await getMint(
-            connection,
-            acc.mint,
-            "confirmed",
-            programId,
-          );
+          const mintInfo = await getMint(connection, acc.mint, "confirmed", programId);
 
           let hasAccountWithheld = false;
 
           if (programId === TOKEN_2022_PROGRAM_ID) {
-            const tfAmountData = getExtensionData(
-              ExtensionType.TransferFeeAmount,
-              acc.tlvData,
-            );
+            const tfAmountData = getExtensionData(ExtensionType.TransferFeeAmount, acc.tlvData);
 
             if (tfAmountData) {
               const decoded = TransferFeeAmountLayout.decode(tfAmountData);
               hasAccountWithheld = decoded.withheldAmount > 0n;
             }
           }
-          const [mintPk, amount, decimals] = [
-            acc.mint,
-            acc.amount,
-            mintInfo.decimals ?? 0,
-          ];
+          const [mintPk, amount, decimals] = [acc.mint, acc.amount, mintInfo.decimals ?? 0];
           const realBal = formatRawAmount(amount, decimals);
 
-          // SKIPPING FROZEN ACCS | TRANSFER-FEE TOKENS | STABLECOIN BAL > $10
-          const BLOCK_CLOSE_EXTENSIONS = new Set<ExtensionType>([
-            // ExtensionType.TransferFeeConfig,
-            ExtensionType.TransferHook,
-            ExtensionType.NonTransferable,
-          ]);
-          const extensions = getExtensionTypes(mintInfo.tlvData);
+          // SKIPPING FROZEN ACCS | TRANSFER-HOOK TOKENS | STABLECOIN BAL > $10
           if (acc.isFrozen) continue;
-          if (extensions.some((e) => BLOCK_CLOSE_EXTENSIONS.has(e))) continue;
+          if (!TOKENS_TO_SHOW_WHEN_CLEANING.includes(mintPk.toBase58())) {
+            const BLOCK_CLOSE_EXTENSIONS = new Set<ExtensionType>([
+              ExtensionType.TransferHook,
+              ExtensionType.NonTransferable,
+            ]);
+            const extensions = getExtensionTypes(mintInfo.tlvData);
+            if (extensions.some((e) => BLOCK_CLOSE_EXTENSIONS.has(e))) continue;
+          }
           if (
             STABLECOINS_CA.includes(mintPk.toBase58()) &&
             acc.amount > toRawAmount("10", decimals)
-          ) {
+          )
             continue;
-          }
 
           // SKIP LOADING VACANT ACCOUNT DETAILS
           if (total > 0 && amount === 0n) {
@@ -203,13 +188,20 @@ export default function CleanerPage() {
 
           //Auto-timeout getMetadata after 5s
           const metadata = await withTimeout(
-            getAnyTokenMetadata(connection, mintPk.toBase58(), programId),
+            getAnyTokenMetadata(
+              connection,
+              mintPk.toBase58(),
+              programId,
+              mintInfo.mintAuthority,
+              mintInfo.freezeAuthority,
+              decimals === 0 && amount === 1n, //isNFT?
+            ),
             5 * 1000, //5 Second Timeout
             { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
           );
 
           //SKIP LOADING LP TOKEN WITH BALANCE
-          if (metadata.symbol == "RAYDIUM LP") continue;
+          if (IGNORE_IN_CLEANER.includes(metadata.symbol)) continue;
 
           list.push({
             mint: mintPk.toBase58(),
@@ -228,12 +220,8 @@ export default function CleanerPage() {
         }
       }
 
-      const nftList = list.filter(
-        (t) => t.amount == 1n && Number(t.decimals) == 0,
-      );
-      const normalTokens = list.filter(
-        (t) => !(t.amount == 1n && Number(t.decimals) == 0),
-      );
+      const nftList = list.filter((t) => t.amount == 1n && Number(t.decimals) == 0);
+      const normalTokens = list.filter((t) => !(t.amount == 1n && Number(t.decimals) == 0));
 
       const withBal = normalTokens.filter((t) => Number(t.balance) > 0);
       const vacant = normalTokens.filter((t) => Number(t.balance) === 0);
@@ -244,6 +232,8 @@ export default function CleanerPage() {
       setTokens([...vacant, ...withBal, ...nftList]);
 
       push("success", "Tokens Loaded");
+
+      // sendNotification("STB", `Cleaner used for ${raw.length} tokens`, -1);
 
       if (vacant.length === 0 && withBal.length > 0) {
         setActiveTab("balance");
@@ -270,16 +260,10 @@ export default function CleanerPage() {
   }, [publicKey]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--cleaner-bottom-bar-height",
-      "56px",
-    );
+    document.documentElement.style.setProperty("--cleaner-bottom-bar-height", "56px");
 
     return () => {
-      document.documentElement.style.setProperty(
-        "--cleaner-bottom-bar-height",
-        "0px",
-      );
+      document.documentElement.style.setProperty("--cleaner-bottom-bar-height", "0px");
     };
   }, []);
 
@@ -287,9 +271,7 @@ export default function CleanerPage() {
      Multi-select handlers
   -------------------------------*/
   function toggleSelect(mint: string) {
-    setSelected((prev) =>
-      prev.includes(mint) ? prev.filter((x) => x !== mint) : [...prev, mint],
-    );
+    setSelected((prev) => (prev.includes(mint) ? prev.filter((x) => x !== mint) : [...prev, mint]));
   }
 
   function selectAll() {
@@ -300,22 +282,20 @@ export default function CleanerPage() {
     setSelected([]);
   }
 
+  function clearAllLoadedTokens() {
+    setSelected([]);
+    setTokens([]);
+    setVacantTokens([]);
+    setTokenWithBalance([]);
+    setNftTokens([]);
+  }
+
   /* ------------------------------
      Burn Multiple Tokens
   -------------------------------*/
   async function burnSelected() {
     if (!publicKey) return push("error", "Wallet Not Connected");
     if (selected.length === 0) return push("error", "No Tokens Selected");
-    // if (
-    //   //ALLOW BURNING OF LP ONLY IF BALANCE IS ZERO
-    //   selected.some((mint) => {
-    //     const token = tokens.find((t) => t.mint === mint);
-    //     return (
-    //       token && token.symbol === "RAYDIUM LP" && BigInt(token.amount) > 0n
-    //     );
-    //   })
-    // )
-    //   return push("error", "Use '🔥 Token Burner' to Burn LP. De-select LP Token and Retry.");
 
     setTxStatus("burning");
 
@@ -344,13 +324,7 @@ export default function CleanerPage() {
 
           //1- HARVEST WITHHELD FEES FOR TRANSFERFEE TOKENS
           if (t.haswithheld) {
-            tx.add(
-              createHarvestWithheldTokensToMintInstruction(
-                mint,
-                [ata],
-                t.programId,
-              ),
-            );
+            tx.add(createHarvestWithheldTokensToMintInstruction(mint, [ata], t.programId));
           }
 
           //  2- BURN TOKENS WITH BALANCE>0
@@ -369,25 +343,14 @@ export default function CleanerPage() {
           }
 
           //3- CLOSE TOKEN ACCOUNT AND REDEEM
-          tx.add(
-            createCloseAccountInstruction(
-              ata,
-              publicKey,
-              publicKey,
-              [],
-              t.programId,
-            ),
-          );
+          tx.add(createCloseAccountInstruction(ata, publicKey, publicKey, [], t.programId));
         }
 
         // Calculate total fee for THIS batch only
         const batchFeeSol = batch.reduce((sum, mint) => {
           const t = tokens.find((a) => a.mint === mint);
           return (
-            sum +
-            (t?.programId === TOKEN_2022_PROGRAM_ID
-              ? cleanerBurnFee2022
-              : cleanerBurnFee)
+            sum + (t?.programId === TOKEN_2022_PROGRAM_ID ? cleanerBurnFee2022 : cleanerBurnFee)
           );
         }, 0);
 
@@ -410,10 +373,9 @@ export default function CleanerPage() {
         push("success", `Batch ${i + 1} of ${batches.length} Completed`);
       }
 
-      push("success", "All Tokens Successfully Burned");
+      push("success", "All Tokens Successfully Burned. Refreshing Token List.");
       setSelected([]);
-      push("info", "Refreshing Token List");
-      detectTokens();
+      detectTokens(true);
     } catch (err) {
       console.error(err);
       push("error", "Burn Failed");
@@ -439,11 +401,7 @@ export default function CleanerPage() {
       <div className="min-h-screen flex flex-col bg-[#0f0f10] text-white md:ml-64 pt-0 font-inter pb-16">
         <ToastContainer
           toasts={toasts}
-          offsetBottom={
-            typeof window !== "undefined" && window.innerWidth < 640
-              ? "9rem"
-              : "6rem"
-          }
+          offsetBottom={typeof window !== "undefined" && window.innerWidth < 640 ? "9rem" : "6rem"}
         />
 
         <div className="flex-grow p-4 sm:p-6">
@@ -478,7 +436,7 @@ export default function CleanerPage() {
 
                 <div className="flex gap-3">
                   <button
-                    onClick={detectTokens}
+                    onClick={() => detectTokens()}
                     className={`
                       group flex items-center gap-2
                       px-4 py-2 rounded-md font-mono text-sm
@@ -541,9 +499,13 @@ export default function CleanerPage() {
               <button
                 onClick={() => setActiveTab("balance")}
                 className={`
-      px-4 py-2 rounded-lg text-sm font-semibold flex items-center
-      ${activeTab === "balance" ? "bg-[#8b5cf6] text-white" : "bg-[#2a2a2c] text-gray-300"}
-    `}
+                  px-4 py-2 rounded-lg text-sm font-semibold flex items-center
+                  ${
+                    activeTab === "balance"
+                      ? "bg-[#8b5cf6] text-white"
+                      : "bg-[#2a2a2c] text-gray-300"
+                  }
+                `}
               >
                 Tokens With Balance
                 {!loadingTokens && tokenWithBalance.length > 0 && (
@@ -557,9 +519,9 @@ export default function CleanerPage() {
               <button
                 onClick={() => setActiveTab("nfts")}
                 className={`
-      px-4 py-2 rounded-lg text-sm font-semibold flex items-center
-      ${activeTab === "nfts" ? "bg-[#8b5cf6] text-white" : "bg-[#2a2a2c] text-gray-300"}
-    `}
+                  px-4 py-2 rounded-lg text-sm font-semibold flex items-center
+                  ${activeTab === "nfts" ? "bg-[#8b5cf6] text-white" : "bg-[#2a2a2c] text-gray-300"}
+                `}
               >
                 NFTs
                 {!loadingTokens && nftTokens.length > 0 && (
@@ -604,9 +566,7 @@ export default function CleanerPage() {
                     </>
                   ) : (
                     <>
-                      <span>
-                        Please Connect Your Wallet - Phantom Recommended.
-                      </span>
+                      <span>Please Connect Your Wallet - Phantom Recommended.</span>
                     </>
                   )}
                 </div>
@@ -663,42 +623,40 @@ export default function CleanerPage() {
           <Faq />
         </div>
 
-        {/* Sticky Bottom Bar — FIXED mobile-friendly */}
+        {/* Sticky Bottom Bar - FIXED mobile-friendly */}
         {tokens.length >= 0 && (
           <div
             className="
-    fixed
-    bottom-[calc(var(--mobile-bottom-bar-height)+12px)]
-    left-3 right-3
-    md:left-[calc(16rem+12px)] md:right-3
+              fixed
+              bottom-[calc(var(--mobile-bottom-bar-height)+12px)]
+              left-3 right-3
+              md:left-[calc(16rem+12px)] md:right-3
 
-    /* MOBILE (default) — darker, denser */
-    bg-[#121214]/85
-    border border-white/5
-    shadow-[inset_0_1px_0_rgba(255,255,255,0.03),_0_14px_28px_rgba(0,0,0,0.7),_0_4px_10px_rgba(0,0,0,0.5)]
-    ring-1 ring-black/40
+              /* MOBILE (default) - darker, denser */
+              bg-[#121214]/85
+              border border-white/5
+              shadow-[inset_0_1px_0_rgba(255,255,255,0.03),_0_14px_28px_rgba(0,0,0,0.7),_0_4px_10px_rgba(0,0,0,0.5)]
+              ring-1 ring-white/17
 
-    /* DESKTOP — lighter glass */
-    md:bg-[#18181b]/70
-    md:border-white/10
-    md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_12px_25px_rgba(0,0,0,0.6),_0_2px_8px_rgba(0,0,0,0.4)]
-    md:ring-white/5
+              /* DESKTOP - lighter glass */
+              md:bg-[#18181b]/70
+              md:border-white/10
+              md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_12px_25px_rgba(0,0,0,0.6),_0_2px_8px_rgba(0,0,0,0.4)]
+              md:ring-white/5
 
-    backdrop-blur-2xl backdrop-saturate-150
-    rounded-2xl
+              backdrop-blur-2xl backdrop-saturate-150
+              rounded-2xl
 
-    p-3 sm:p-4
-    flex flex-col sm:flex-row
-    sm:justify-between sm:items-center
-    gap-3
+              p-3 sm:p-4
+              flex flex-col sm:flex-row
+              sm:justify-between sm:items-center
+              gap-3
 
-    z-[40]
-  "
+              z-[40]
+            "
           >
             <div className="flex items-center gap-4 bg-[#1a1a1c] px-4 py-2 rounded-xl border border-white/10">
-              <span className="text-lg font-semibold text-white">
-                {selected.length} Selected
-              </span>
+              <span className="text-lg font-semibold text-white">{selected.length} Selected</span>
 
               <span className="text-sm font-medium text-green-400 bg-green-400/10 px-2 py-1 rounded-lg">
                 +{(selected.length * 0.002).toFixed(3)} SOL

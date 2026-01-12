@@ -2,39 +2,27 @@
 
 import React, { useEffect, useState } from "react";
 
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
-import Footer from "@/components/Footer";
-import FAQ from "@/components/FAQ";
-import ToastContainer from "@/components/ToastContainer";
-import PhantomPartnership from "@/components/phantomPartnership";
-
-import {
-  TOKEN_PROGRAM_ID,
-  getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction,
-  MintLayout,
-  createSetAuthorityInstruction,
-  AuthorityType,
-} from "@solana/spl-token";
-
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import {
-  PublicKey,
-  Transaction,
-  SystemProgram,
-  LAMPORTS_PER_SOL,
-} from "@solana/web3.js";
-import {
-  explorerURL,
-  showBottomBar,
-  tokenCreatorFeeWallet,
-  tokenRevokeFee,
-} from "@/constants";
-import FAQCreator from "@/components/FAQCreator";
-import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import BottomBar from "@/components/BottomBar";
+import FAQCreator from "@/components/FAQCreator";
+import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
+import SideBar from "@/components/SideBar";
+import ToastContainer from "@/components/ToastContainer";
+import TopBar from "@/components/TopBar";
+
+import { showBottomBar, tokenCreatorFeeWallet, tokenRevokeFee } from "@/constants";
+import { withTimeout } from "@/utils/ConnectionHelpers";
+import { getAnyTokenMetadata } from "@/utils/getMetadata";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+
+import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+
+import {
+  AuthorityType,
+  MintLayout,
+  TOKEN_PROGRAM_ID,
+  createSetAuthorityInstruction,
+} from "@solana/spl-token";
 
 type Toast = { id: number; type: "success" | "error" | "info"; text: string };
 
@@ -87,10 +75,9 @@ export default function RevokePage() {
     setTokens([]);
 
     try {
-      const accounts = await connection.getParsedTokenAccountsByOwner(
-        publicKey,
-        { programId: TOKEN_PROGRAM_ID },
-      );
+      const accounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
+        programId: TOKEN_PROGRAM_ID,
+      });
 
       setProgressPercent(30);
       setProgressText("Checking Authority on Token Mints…");
@@ -118,11 +105,7 @@ export default function RevokePage() {
         const decimals = mintData.decimals;
         const supply = Number(mintData.supply) / 10 ** decimals;
 
-        const metadata = await getAnyTokenMetadata(
-          connection,
-          mintPK.toBase58(),
-          mintAcc.owner,
-        );
+        const metadata = await getAnyTokenMetadata(connection, mintPK.toBase58(), mintAcc.owner);
 
         mintList.push({
           mint: mintAddr,
@@ -155,11 +138,7 @@ export default function RevokePage() {
 
   async function handleManualAdd() {
     if (!manualMint) return push("error", "Enter a SPL Token Mint Address");
-    if (
-      tokens.some(
-        (t) => t.mint.toLowerCase() === manualMint.trim().toLowerCase(),
-      )
-    )
+    if (tokens.some((t) => t.mint.toLowerCase() === manualMint.trim().toLowerCase()))
       return push("error", "Token Already Added");
 
     try {
@@ -184,10 +163,10 @@ export default function RevokePage() {
           publicKey ?? new PublicKey("11111111111111111111111111111111"),
         );
 
-      const metadata = await getAnyTokenMetadata(
-        connection,
-        mintPK.toBase58(),
-        mintAcc.owner,
+      const metadata = await withTimeout(
+        getAnyTokenMetadata(connection, mintPK.toBase58(), mintAcc.owner),
+        5 * 1000, //5 Second Timeout
+        { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
       );
 
       setTokens((prev) => [
@@ -317,17 +296,13 @@ export default function RevokePage() {
                   <div className="text-lg font-semibold tracking-wide text-white">
                     Revoke Mint & Freeze Authority
                   </div>
-                  <div className="text-xs text-gray-400">
-                    Manage Token Authorities
-                  </div>
+                  <div className="text-xs text-gray-400">Manage Token Authorities</div>
                 </div>
 
                 <button
                   onClick={detectAuthorityTokens}
                   className={`px-4 py-2 rounded-md font-mono text-sm ${
-                    detecting
-                      ? "bg-[#3a2f56] text-gray-300"
-                      : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
+                    detecting ? "bg-[#3a2f56] text-gray-300" : "bg-[#8b5cf6] hover:bg-[#7c4ee8]"
                   }`}
                 >
                   {detecting ? "Fetching..." : "Auto-Detect"}
@@ -368,7 +343,7 @@ export default function RevokePage() {
             {/* Tokens Grid */}
             {tokens.length === 0 ? (
               <div className="text-center opacity-60 text-gray-300">
-                Click Auto-Detect to load tokens with authority.
+                Click Auto-Detect to load tokens with Mint or Freeze Authority.
               </div>
             ) : (
               <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))] pb-6">
@@ -377,19 +352,15 @@ export default function RevokePage() {
                     key={t.mint}
                     className="bg-[#1c1c1e] rounded-xl p-4 border border-gray-800 hover:bg-[#232325] hover:scale-[1.02] transition-all shadow-[0_0_10px_rgba(0,0,0,0.35)]"
                   >
-                    <div className="flex gap-4 mb-4">
-                      {t.logo ? (
-                        <img
-                          src={t.logo}
-                          className="w-12 h-12 rounded-full object-cover border border-gray-700"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700">
-                          <span className="opacity-70 text-sm">
-                            {t.symbol[0]}
-                          </span>
-                        </div>
-                      )}
+                    <div className="flex gap-4 items-center mb-4">
+                      <img
+                        src={t.logo || "/unknowntoken.png"}
+                        className="w-12 h-12 rounded-xl object-cover border border-gray-700"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null; // prevent infinite loop
+                          e.currentTarget.src = "/unknowntoken.png";
+                        }}
+                      />
 
                       <div>
                         <div className="text-lg font-semibold">{t.symbol}</div>

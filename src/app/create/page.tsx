@@ -2,56 +2,47 @@
 
 import React, { useState } from "react";
 
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
-import Footer from "@/components/Footer";
-import FAQCreator from "@/components/FAQCreator";
 import BottomBar from "@/components/BottomBar";
+import FAQCreator from "@/components/FAQCreator";
+import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
+import SideBar from "@/components/SideBar";
 import ToastContainer from "@/components/ToastContainer";
+import TopBar from "@/components/TopBar";
 import PhantomPartnership from "@/components/phantomPartnership";
 import axios from "axios";
 
-import {
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  Keypair,
-  LAMPORTS_PER_SOL,
-} from "@solana/web3.js";
+import { hasEnoughSol } from "@/utils/SolanaHelpers";
+import { Icon } from "@iconify/react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Image, Loader2 } from "lucide-react";
 
-import {
-  MINT_SIZE,
-  getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction,
-  createInitializeMintInstruction,
-  createMintToInstruction,
-  TOKEN_PROGRAM_ID,
-  AuthorityType,
-  createSetAuthorityInstruction,
-} from "@solana/spl-token";
-
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { showBottomBar, tokenCreationFee, tokenCreatorFeeWallet } from "@/constants";
 
 import {
   PROGRAM_ID as TOKEN_METADATA_PROGRAM_ID,
   createCreateMetadataAccountV3Instruction,
   createUpdateMetadataAccountV2Instruction,
 } from "@metaplex-foundation/mpl-token-metadata";
+
+import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+
 import {
-  showBottomBar,
-  tokenCreationFee,
-  tokenCreatorFeeWallet,
-} from "@/constants";
-import { Image, Loader2 } from "lucide-react";
-import { hasEnoughSol } from "@/utils/SolanaHelpers";
+  AuthorityType,
+  MINT_SIZE,
+  TOKEN_PROGRAM_ID,
+  createAssociatedTokenAccountInstruction,
+  createInitializeMintInstruction,
+  createMintToInstruction,
+  createSetAuthorityInstruction,
+  getAssociatedTokenAddress,
+} from "@solana/spl-token";
 
 /* ------------------------------------
    PINATA CONFIG
 --------------------------------------*/
 const PINATA_API_KEY = "dc865844a27232765400";
-const PINATA_SECRET_KEY =
-  "5ef4f4b83051e96a3e8d8f71799a5496e0c0ccd39a01f5fc861fd84b98dc5ad8";
+const PINATA_SECRET_KEY = "5ef4f4b83051e96a3e8d8f71799a5496e0c0ccd39a01f5fc861fd84b98dc5ad8";
 const PINATA_GATEWAY = "gray-keen-earwig-676.mypinata.cloud";
 const IPFS_IO_GATEWAY = "ipfs.io";
 
@@ -121,18 +112,14 @@ export default function CreateTokenPage() {
     const fd = new FormData();
     fd.append("file", file);
 
-    const res = await axios.post(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
-      fd,
-      {
-        maxBodyLength: Infinity,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          pinata_api_key: PINATA_API_KEY,
-          pinata_secret_api_key: PINATA_SECRET_KEY,
-        },
+    const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", fd, {
+      maxBodyLength: Infinity,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        pinata_api_key: PINATA_API_KEY,
+        pinata_secret_api_key: PINATA_SECRET_KEY,
       },
-    );
+    });
 
     // return `https://${PINATA_GATEWAY}/ipfs/${res.data.IpfsHash}`;
     return `https://${IPFS_IO_GATEWAY}/ipfs/${res.data.IpfsHash}`;
@@ -172,35 +159,35 @@ export default function CreateTokenPage() {
       if (!publicKey) return push("error", "Wallet Not Connected");
       if (!connected) return push("error", "Connect Wallet First");
 
-      if (!name || !symbol || !supply)
-        return push("error", "Name, Symbol, Supply Are Required Fields");
+      if (!supply) return push("error", "Please Enter the Supply");
+      if (!decimals) return push("error", "Please Enter the Decimal");
 
       //CHECK IF WALLET HAS ENOUGH BALANCE TO CREATE A TOKEN
       const solRequiredToCreateToken = 0.12;
-      const hasEnoughBalance = await hasEnoughSol(
-        connection,
-        publicKey,
-        solRequiredToCreateToken,
-      );
+      const hasEnoughBalance = await hasEnoughSol(connection, publicKey, solRequiredToCreateToken);
       if (!hasEnoughBalance) {
-        return push(
-          "error",
-          `You need at least ${solRequiredToCreateToken} SOL to Create a Token`,
-        );
+        return push("error", `You need at least ${solRequiredToCreateToken} SOL to Create a Token`);
       }
 
       const decimalsNum = Number(decimals);
       if (isNaN(decimalsNum) || decimalsNum < 0 || decimalsNum > 9)
         return push("error", "Decimals Must Be 0–9");
 
-      if (!imageFile) return push("error", "Please Select an Image");
+      if (!name && !symbol && !imageFile)
+        return push("error", "Cannot Create Token with No Name, Symbol and Image");
 
       setCreating(true);
 
+      if (!name) push("info", "Token will have No Name");
+      if (!symbol) push("info", "Token will have No Symbol");
+
       /* ---- Upload Image ---- */
-      push("info", "Uploading Image to IPFS...");
-      const imgUrl = await uploadToPinata(imageFile);
-      push("success", "Image Successfully Uploaded");
+      let imgUrl = "";
+      if (imageFile) {
+        push("info", "Uploading Image to IPFS...");
+        imgUrl = await uploadToPinata(imageFile);
+        push("success", "Image Successfully Uploaded");
+      } else push("info", "Token will have No Image");
 
       /* ---- Upload Metadata ---- */
       push("info", "Uploading Token Metadata to IPFS...");
@@ -215,8 +202,7 @@ export default function CreateTokenPage() {
       /* ---- Create Mint ---- */
       push("info", "Minting New Token On-Chain...");
       const mint = Keypair.generate();
-      const lamports =
-        await connection.getMinimumBalanceForRentExemption(MINT_SIZE);
+      const lamports = await connection.getMinimumBalanceForRentExemption(MINT_SIZE);
 
       const tokenProgram = TOKEN_PROGRAM_ID;
 
@@ -236,12 +222,7 @@ export default function CreateTokenPage() {
         tokenProgram,
       );
 
-      const ata = await getAssociatedTokenAddress(
-        mint.publicKey,
-        publicKey,
-        false,
-        tokenProgram,
-      );
+      const ata = await getAssociatedTokenAddress(mint.publicKey, publicKey, false, tokenProgram);
 
       const ixATA = createAssociatedTokenAccountInstruction(
         publicKey,
@@ -264,11 +245,7 @@ export default function CreateTokenPage() {
 
       /* ---- Metadata ---- */
       const [metadataPda] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from("metadata"),
-          TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-          mint.publicKey.toBuffer(),
-        ],
+        [Buffer.from("metadata"), TOKEN_METADATA_PROGRAM_ID.toBuffer(), mint.publicKey.toBuffer()],
         TOKEN_METADATA_PROGRAM_ID,
       );
 
@@ -298,13 +275,7 @@ export default function CreateTokenPage() {
       );
 
       /* ---- Optional: Revoke Authorities ---- */
-      const ixList: any[] = [
-        ixMintAcct,
-        ixInitMint,
-        ixATA,
-        ixMintTo,
-        ixMetadata,
-      ];
+      const ixList: any[] = [ixMintAcct, ixInitMint, ixATA, ixMintTo, ixMetadata];
 
       if (revokeMint) {
         ixList.push(
@@ -381,7 +352,7 @@ export default function CreateTokenPage() {
       push("success", "Token Created!");
     } catch (err) {
       console.error(err);
-      push("error", "Token creation failed");
+      push("error", "Token Creation Failed");
     } finally {
       setCreating(false);
     }
@@ -408,9 +379,13 @@ export default function CreateTokenPage() {
           <div className="max-w-5xl mx-auto">
             {/* header */}
             <div className="bg-[#1c1c1e] rounded-xl p-4 mb-6 border border-gray-800 shadow-[0_0_15px_rgba(0,0,0,0.4)]">
-              <div className="text-xl font-semibold">Solana Token Creator</div>
-              <div className="text-xs text-gray-400">
-                Create Solana SPL Tokens Easily and Quickly
+              <div className="flex items-center gap-3">
+                <Icon icon="token-branded:meme" className="w-10 h-10 " />
+
+                <div>
+                  <div className="text-xl font-semibold">Solana Token Creator</div>
+                  <div className="text-xs text-gray-400">Create Solana SPL Tokens in One-Click</div>
+                </div>
               </div>
             </div>
 
@@ -421,9 +396,7 @@ export default function CreateTokenPage() {
                 <div className="space-y-2">
                   {/* Token Name */}
                   <div>
-                    <label className="block text-xs mb-1 text-gray-300">
-                      Token Name
-                    </label>
+                    <label className="block text-xs mb-1 text-gray-300">Token Name</label>
                     <input
                       placeholder="dogwifhat"
                       className="w-full px-3 py-2 rounded bg-[#141416] border border-gray-700"
@@ -434,9 +407,7 @@ export default function CreateTokenPage() {
 
                   {/* Symbol */}
                   <div>
-                    <label className="block text-xs mb-1 text-gray-300">
-                      Symbol
-                    </label>
+                    <label className="block text-xs mb-1 text-gray-300">Symbol</label>
                     <input
                       placeholder="WIF"
                       className="w-full px-3 py-2 rounded bg-[#141416] border border-gray-700"
@@ -447,9 +418,7 @@ export default function CreateTokenPage() {
 
                   {/* Decimals */}
                   <div>
-                    <label className="block text-xs mb-1 text-gray-300">
-                      Decimals
-                    </label>
+                    <label className="block text-xs mb-1 text-gray-300">Decimals</label>
                     <input
                       placeholder="6"
                       className="w-full px-3 py-2 rounded bg-[#141416] border border-gray-700"
@@ -500,7 +469,7 @@ export default function CreateTokenPage() {
                   </div>
                 </div>
 
-                {/* RIGHT — TOKEN IMAGE */}
+                {/* RIGHT - TOKEN IMAGE */}
                 <div className="flex flex-col items-center justify-center space-y-4 w-full">
                   {/* Centered Label */}
 
@@ -530,11 +499,9 @@ export default function CreateTokenPage() {
                 </div>
               </div>
 
-              {/* DESCRIPTION — FULL WIDTH UNDER BOTH COLUMNS */}
+              {/* DESCRIPTION - FULL WIDTH UNDER BOTH COLUMNS */}
               <div>
-                <label className="block text-xs mb-1 text-gray-300">
-                  Description
-                </label>
+                <label className="block text-xs mb-1 text-gray-300">Description</label>
                 <input
                   placeholder="Dogwifhat vibes wif frens onchain."
                   className="w-full px-3 py-2 rounded bg-[#141416] border border-gray-700"
@@ -543,7 +510,7 @@ export default function CreateTokenPage() {
                 />
               </div>
 
-              {/* CHECKBOX ROW — SIDE BY SIDE */}
+              {/* CHECKBOX ROW - SIDE BY SIDE */}
               <div className="flex flex-col sm:flex-row gap-4 justify-between">
                 <label className="flex items-center gap-2 bg-[#141416] px-4 py-3 rounded-lg border border-gray-700 cursor-pointer hover:border-[#8b5cf6] flex-1">
                   <input
