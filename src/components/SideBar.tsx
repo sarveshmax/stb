@@ -133,6 +133,12 @@ export default function SideBar({ open, setOpen }: Props) {
       path: "/blog/sol-incinerator-alternative",
       small: true,
     },
+    {
+      name: "Whitepaper",
+      path: "/whitepaper",
+      small: true,
+      external: true,
+    },
 
     { type: "break" },
 
