@@ -1,5 +1,4 @@
 import BlogLinks from "@/components/BlogLinks";
-import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
 import { Icon } from "@iconify/react";
 import { CheckCircle2, XCircle } from "lucide-react";
@@ -31,8 +30,7 @@ export default function SolIncineratorAlternative() {
         Sol Incinerator is a well-known tool in the Solana ecosystem, but its limitations -
         especially forcing full-balance burns and automatically closing token accounts - make it
         unsuitable for many users. Projects, developers, LP managers, and everyday holders often
-        need a more flexible, controlled, and wallet-safe solution. There had also been reports of
-        Sol Incinerator being unsafe.
+        need a more flexible, controlled, and wallet-safe solution.
       </p>
 
       <p className="mb-6">
@@ -50,7 +48,7 @@ export default function SolIncineratorAlternative() {
         Sol Incinerator was originally introduced as an app on Solana for burning SPL tokens. Its
         primary function is to burn the entire token balance and close the associated token
         accounts, returning the rent to the user while charging a service fee. However, this process
-        executes multiple operations within a single program, which can be considered unsafe.
+        executes multiple operations within a single program.
       </p>
 
       <p className="mb-6">
@@ -59,10 +57,10 @@ export default function SolIncineratorAlternative() {
         <span className="inline-flex align-middle">
           <MintLinkWithCopy mint="F6fmDVCQfvnEq2KR8hhfZSEczfM9JK9fWbCsYJNbTGn7" type="account" />
         </span>{" "}
-        and is not verified, meaning the on-chain code could contain arbitrary or potentially
-        malicious logic. When checking the <strong>Verification</strong> tab for the program used by
-        Sol Incinerator on Solscan, it displays <em>“On-chain program not verified”</em>, indicating
-        that the source code has not been audited or publicly verified.
+        and is not verified, meaning the on-chain code could contain arbitrary logic. When checking
+        the <strong>Verification</strong> tab for the program used by Sol Incinerator on Solscan, it
+        displays <em>“On-chain program not verified”</em>, indicating that the source code has not
+        been audited or publicly verified.
       </p>
       <p className="mb-4">
         It also lacks customization and is not ideal for more advanced token management actions -
@@ -84,123 +82,129 @@ export default function SolIncineratorAlternative() {
 
       {/* TABLE */}
       <div className="overflow-hidden rounded-2xl border border-gray-800 bg-[#111113]">
-        <table className="w-full text-sm text-gray-300">
+        <table className="w-full text-[11px] sm:text-sm text-gray-300 break-words">
           <thead className="bg-[#141417]">
             <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-400">Feature</th>
-              <th className="px-6 py-4 text-left font-semibold text-white">SolTokenBurner</th>
-              <th className="px-6 py-4 text-left font-semibold text-white">Sol-Incinerator</th>
+              <th className="px-2 py-2 sm:px-6 sm:py-4 text-left font-medium text-gray-400">
+                Feature
+              </th>
+              <th className="px-2 py-2 sm:px-6 sm:py-4 text-left font-semibold text-white">
+                SolTokenBurner
+              </th>
+              <th className="px-2 py-2 sm:px-6 sm:py-4 text-left font-semibold text-white">
+                Sol-Incinerator
+              </th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-800">
             <tr>
-              <td className="px-6 py-4">Partial token burns</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">Partial Token Burns</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
                   <span>Yes</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
-                  <span>No (full burn only)</span>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
+                  <span>No (full only)</span>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="px-6 py-4">User interface</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
-                  <span>Simple & Easy to Use</span>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">User Interface</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
+                  <span>Simple & Easy</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
                   <span>Complex</span>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="px-6 py-4">LP token support</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">LP Token Support</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
                   <span>Supported</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
                   <span>Limited</span>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="px-6 py-4">Token account closure</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">Token Account Closure</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
                   <span>Optional</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
                   <span>Required</span>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="px-6 py-4">Safety</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
-                  <span>Uses SPL Token program</span>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">Safety</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
+                  <span>SPL Token Program</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
                   <span>Custom on-chain program</span>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="px-6 py-4">Execution method</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
-                  <span>solana/spl-token's burn() instruction</span>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">Execution</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
+                  <span>solana/spl-token library</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
-                  <span>Proprietary code</span>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
+                  <span>Proprietary</span>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="px-6 py-4">Additional tools</td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 mt-[2px] text-green-400 shrink-0" />
-                  <span>Token creation & management</span>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">Tools</td>
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <CheckCircle2 className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-green-400 shrink-0" />
+                  <span>Token Management</span>
                 </div>
               </td>
-              <td className="px-6 py-4">
-                <div className="flex items-start gap-2">
-                  <XCircle className="w-4 h-4 mt-[2px] text-red-400 shrink-0" />
+              <td className="px-2 py-2 sm:px-6 sm:py-4">
+                <div className="flex items-start gap-1">
+                  <XCircle className="w-3 h-3 mt-[2px] sm:w-4 sm:h-4 text-red-400 shrink-0" />
                   <span>None</span>
                 </div>
               </td>
@@ -237,9 +241,8 @@ export default function SolIncineratorAlternative() {
 
       <p className="mb-6">
         Yes. All burns are executed directly through your connected wallet - Phantom, Backpack,
-        Solflare, or others. No private keys, no server handling, and no third-party custody. Each
-        burn is sent as a signed instruction from your wallet to the Solana blockchain, making it
-        fully decentralized.
+        Solflare, or others. No server handling and no third-party custody. Each burn is sent as a
+        signed instruction from your wallet to the Solana blockchain, making it fully decentralized.
       </p>
 
       {/* FINAL */}
@@ -249,10 +252,10 @@ export default function SolIncineratorAlternative() {
       </h2>
 
       <p className="mb-5">
-        Sol Incinerator remains a simple tool for basic full-balance burns with questionable
-        legitimacy, but most users today require finer control - especially developers, LP managers,
-        and community leaders performing public proof-of-burn transactions. SolTokenBurner provides
-        that flexibility while maintaining complete on-chain transparency and wallet-level safety.
+        Sol Incinerator remains a simple tool for basic full-balance burns and account closure, but
+        most users today require finer control - especially developers, LP managers, and community
+        leaders performing public proof-of-burn transactions. SolTokenBurner provides that
+        flexibility while maintaining complete on-chain transparency and wallet-level safety.
       </p>
 
       <p className="text-gray-400 mb-10 text-sm">Updated: December 2025</p>

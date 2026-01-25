@@ -23,7 +23,7 @@ const FAQ_ITEMS: FAQItemType[] = [
   },
   {
     q: "Do I receive my SOL rent back when burning tokens?",
-    a: "Yes, use the '💵 Cleaner' to close token accounts and claim SOL rent back. Burns on the normal Token Burner do not close your token account.",
+    a: "Yes, use the '💵 Cleaner' to close token accounts and claim SOL rent back. Burns on the '🔥 Token Burner' do not close your token account.",
   },
   {
     q: "When closing token accounts, where does the SOL come from?",
@@ -55,7 +55,7 @@ export default function Faq() {
   return (
     <div
       className="
-        mt-12 bg-[#1c1c1e] rounded-xl p-6 
+        mt-8 bg-[#1c1c1e] rounded-xl p-6 
         border border-gray-800 
         shadow-[0_0_12px_rgba(0,0,0,0.4)]
         max-w-4xl mx-auto

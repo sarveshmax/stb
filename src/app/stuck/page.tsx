@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 
 import BottomBar from "@/components/BottomBar";
+import EmptyState from "@/components/EmptyState";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
@@ -15,6 +16,7 @@ import { withTimeout } from "@/utils/ConnectionHelpers";
 import { formatNumberWithCommas } from "@/utils/NumberHelpers";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { BadgePlus } from "lucide-react";
 
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
@@ -280,7 +282,9 @@ export default function StuckPage() {
 
             {/* Stuck Token Grid */}
             {tokens.length === 0 ? (
-              <div className="text-center text-gray opacity-50">Add a Token Manually.</div>
+              <div className="text-center text-gray opacity-60">
+                <EmptyState icon={BadgePlus} title="ADD A TOKEN MANUALLY ABOVE" />
+              </div>
             ) : (
               <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
                 {tokens.map((t) => (

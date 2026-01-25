@@ -6,25 +6,34 @@ interface PhantomPartnershipProps {
 
 export default function PhantomPartnership({ title }: PhantomPartnershipProps) {
   return (
-    <div className="w-115 flex items-center gap-4 rounded-2xl mt-2 mb-2 p-4 bg-gradient-to-r from-purple-600/20 to-green-500/20 border border-white/20 backdrop-blur-md">
-      {/* PHANTOM LOGO */}
-      <img src="/phantomlogo.png" alt="Phantom Logo" className="w-7 h-7" />
+    <div className="mt-6 flex flex-col items-center text-center select-none">
+      {/* Label */}
+      <span className="mb-4 text-[10px] uppercase tracking-widest text-white/40 leading-none ">
+        Listed on
+      </span>
 
-      {/* TEXT */}
-      <p className="text-left text-sm font-medium text-white leading-relaxed">
-        <span className="font-bold underline underline-offset-2">{title}</span>
-        <br />
-        SolTokenBurner is now listed in Phantom Apps.
-        <br />
+      {/* Logos */}
+      <div className="flex items-center justify-center gap-3">
+        {/* Phantom */}
         <a
           href="https://phantom.com/apps/soltokenburner"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline text-xs text-[#14F195] hover:text-white transition break-all"
+          className="opacity-60 hover:opacity-80 transition"
         >
-          https://phantom.com/apps/soltokenburner
+          <img src="/walleticons/phantomfull.png" alt="Phantom" className="h-4" />
         </a>
-      </p>
+
+        {/* Backpack */}
+        <a
+          href="https://learn.backpack.exchange/articles/solana-burn-address-explained#:~:text=SolTokenBurner.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="opacity-60 hover:opacity-80 transition"
+        >
+          <img src="/walleticons/backpackfull.png" alt="Backpack" className="h-4" />
+        </a>
+      </div>
     </div>
   );
 }

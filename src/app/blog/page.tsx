@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -104,6 +105,17 @@ export default function BlogIndex() {
         />
       </div>
 
+      <br />
+      <h3 className="text-xl font-semibold mb-1">Terms & Whitepaper</h3>
+
+      <BlogLink icon="flat-color-icons:privacy" title="Terms & Privacy Policy" url="/terms" />
+
+      <BlogLink
+        icon="fluent-emoji-flat:scroll"
+        title="Whitepaper"
+        url="https://soltokenburner.com/whitepaper"
+      />
+
       <div className="h-20" />
     </div>
   );
@@ -125,14 +137,17 @@ function BlogLink({ title, url, icon }: { title: string; url: string; icon: stri
   const content = (
     <div className={cardClasses}>
       <div className="flex items-center gap-4 w-full">
-        {/* Icon – no background */}
+        {/* Icon */}
         <Icon icon={icon} width={34} className="text-gray-300 shrink-0" />
 
         {/* Text */}
-        <div>
+        <div className="flex-1 min-w-0">
           <h2 className="text-xl font-semibold text-gray-100">{title}</h2>
-          <p className="text-sm text-gray-400 mt-1">{url}</p>
+          <p className="text-sm text-gray-400 mt-1 truncate">{url}</p>
         </div>
+
+        {/* External link indicator */}
+        {isExternal && <ArrowUpRight size={18} className="text-gray-400 shrink-0 ml-3" />}
       </div>
     </div>
   );

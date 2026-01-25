@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import BottomBar from "@/components/BottomBar";
+import EmptyState from "@/components/EmptyState";
 import FAQCreator from "@/components/FAQCreator";
 import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
@@ -14,6 +15,7 @@ import { showBottomBar, tokenCreatorFeeWallet, tokenRevokeFee } from "@/constant
 import { withTimeout } from "@/utils/ConnectionHelpers";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Lock, Wallet } from "lucide-react";
 
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
@@ -22,6 +24,7 @@ import {
   MintLayout,
   TOKEN_PROGRAM_ID,
   createSetAuthorityInstruction,
+  getMint,
 } from "@solana/spl-token";
 
 type Toast = { id: number; type: "success" | "error" | "info"; text: string };
@@ -67,7 +70,7 @@ export default function RevokePage() {
   const [manualMint, setManualMint] = useState("");
 
   async function detectAuthorityTokens() {
-    if (!publicKey) return push("error", "Connect wallet");
+    if (!publicKey) return push("error", "Connect Wallet");
 
     setDetecting(true);
     setProgressText("Scanning Wallet Address…");
@@ -105,7 +108,25 @@ export default function RevokePage() {
         const decimals = mintData.decimals;
         const supply = Number(mintData.supply) / 10 ** decimals;
 
-        const metadata = await getAnyTokenMetadata(connection, mintPK.toBase58(), mintAcc.owner);
+        let mintAuthority: PublicKey | null = null;
+        let freezeAuthority: PublicKey | null = null;
+        try {
+          const mintAccount = await getMint(connection, mintPK, "confirmed", mintAcc.owner);
+          mintAuthority = mintAccount.mintAuthority;
+          freezeAuthority = mintAccount.freezeAuthority;
+        } catch {}
+
+        const metadata = await withTimeout(
+          getAnyTokenMetadata(
+            connection,
+            mintPK.toBase58(),
+            mintAcc.owner,
+            mintAuthority,
+            freezeAuthority,
+          ),
+          5 * 1000, //5 Second Timeout
+          { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
+        );
 
         mintList.push({
           mint: mintAddr,
@@ -163,8 +184,22 @@ export default function RevokePage() {
           publicKey ?? new PublicKey("11111111111111111111111111111111"),
         );
 
+      let mintAuthority: PublicKey | null = null;
+      let freezeAuthority: PublicKey | null = null;
+      try {
+        const mintAccount = await getMint(connection, mintPK, "confirmed", mintAcc.owner);
+        mintAuthority = mintAccount.mintAuthority;
+        freezeAuthority = mintAccount.freezeAuthority;
+      } catch {}
+
       const metadata = await withTimeout(
-        getAnyTokenMetadata(connection, mintPK.toBase58(), mintAcc.owner),
+        getAnyTokenMetadata(
+          connection,
+          mintPK.toBase58(),
+          mintAcc.owner,
+          mintAuthority,
+          freezeAuthority,
+        ),
         5 * 1000, //5 Second Timeout
         { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
       );
@@ -341,9 +376,32 @@ export default function RevokePage() {
             </div>
 
             {/* Tokens Grid */}
-            {tokens.length === 0 ? (
+            {detecting ? (
+              <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-[#1c1c1e] rounded-xl p-4 border border-gray-800 animate-pulse shadow-[0_0_10px_rgba(0,0,0,0.35)]"
+                  >
+                    <div className="w-12 h-12 bg-gray-700 rounded-full mb-4" />
+                    <div className="h-4 w-20 bg-gray-700 rounded mb-2" />
+                    <div className="h-3 w-32 bg-gray-700 rounded mb-2" />
+                    <div className="h-2 w-24 bg-gray-700 rounded mb-4" />
+                    <div className="h-10 bg-gray-700 rounded" />
+                  </div>
+                ))}
+              </div>
+            ) : tokens.length === 0 ? (
               <div className="text-center opacity-60 text-gray-300">
-                Click Auto-Detect to load tokens with Mint or Freeze Authority.
+                {!publicKey ? (
+                  <EmptyState icon={Wallet} title="WALLET NOT CONNECTED" />
+                ) : (
+                  <EmptyState
+                    icon={Lock}
+                    title="CLICK AUTO-DETECT TO LOAD TOKENS IN WALLET WITH MINT OR FREEZE AUTHORITY"
+                    subtitle="OR ADD A TOKEN MANUALLY ABOVE"
+                  />
+                )}
               </div>
             ) : (
               <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))] pb-6">

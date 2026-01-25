@@ -4,7 +4,10 @@ import React from "react";
 import MintLinkWithCopy from "./MintLinkWithCopy";
 
 import { formatNumberWithCommas } from "@/utils/NumberHelpers";
+import { PublicKey } from "@solana/web3.js";
 import { motion } from "framer-motion";
+import { Wallet, X } from "lucide-react";
+import EmptyState from "./EmptyState";
 
 type TokenSectionProps = {
   title: string;
@@ -14,6 +17,7 @@ type TokenSectionProps = {
   toggleSelect: (mint: string) => void;
   isNFT?: boolean;
   isVacant?: boolean;
+  publicKey?: PublicKey | null;
 };
 
 export default function TokenSection({
@@ -24,28 +28,49 @@ export default function TokenSection({
   toggleSelect,
   isNFT = false,
   isVacant = false,
+  publicKey = null,
 }: TokenSectionProps) {
   // Handle empty list with animation
-  if (!tokenList || tokenList.length === 0) {
-    let msg = title.toLowerCase().includes("zero")
-      ? "No Zero-Balance Accounts"
-      : title.toLowerCase().includes("balance")
-        ? "No Tokens With Balance"
-        : title.toLowerCase().includes("nft")
-          ? "No NFTs"
-          : "No Items";
-
+  if (!publicKey) {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 12 }}
-        transition={{ duration: 0.18, ease: "easeOut" }}
-        className="text-center text-gray-400 opacity-70 py-6 text-sm"
+        className="
+        flex flex-col items-center justify-center
+        py-10
+        text-gray-400/70
+        opacity-60
+        tracking-widest
+      "
       >
-        {msg}
+        <EmptyState icon={Wallet} title="WALLET NOT CONNECTED" paddingVertical="py-20" />
       </motion.div>
     );
+  } else {
+    if (!tokenList || tokenList.length === 0) {
+      const msg = title.toLowerCase().includes("zero-balance")
+        ? "NO ZERO-BALANCE TOKEN ACCOUNTS"
+        : title.toLowerCase().includes("balance")
+          ? "NO TOKEN ACCOUNTS WITH BALANCE"
+          : title.toLowerCase().includes("nft")
+            ? "NO NFTs FOUND"
+            : "NO ITEMS";
+
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 0.6, y: 0 }}
+          className="
+        flex flex-col items-center justify-center
+        py-10
+        text-gray-400/70
+        opacity-60
+        tracking-widest
+      "
+        >
+          <EmptyState icon={X} title={msg} paddingVertical="py-10" />
+        </motion.div>
+      );
+    }
   }
 
   const selectAll = () =>

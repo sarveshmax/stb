@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import BottomBar from "@/components/BottomBar";
+import EmptyState from "@/components/EmptyState";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
@@ -16,12 +17,20 @@ import { waitForConfirmation, withTimeout } from "@/utils/ConnectionHelpers";
 import { formatRawAmount } from "@/utils/formatRawAmount";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import { formatNumberWithCommas, toRawAmount } from "@/utils/NumberHelpers";
+import { hasEnoughSol } from "@/utils/SolanaHelpers";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { ExternalLink, Flame, Loader2, RefreshCcw } from "lucide-react";
+import { ExternalLink, Flame, Loader2, RefreshCcw, SearchX, Wallet } from "lucide-react";
 
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-import { burnFee, burnFeeToken2022, burnFeeWallet, explorerURL, showBottomBar } from "@/constants";
+import {
+  burnFee,
+  burnFeeToken2022,
+  burnFeeWallet,
+  explorerURL,
+  showBottomBar,
+  showPhantomPartnership,
+} from "@/constants";
 
 import {
   TOKEN_2022_PROGRAM_ID,
@@ -69,6 +78,7 @@ export default function Page() {
   const [txStatus, setTxStatus] = useState<{
     [mint: string]: "idle" | "burning" | "done" | "error";
   }>({});
+  const [shareImageByMint, setShareImageByMint] = useState<{ [mint: string]: string }>({});
 
   /* ------------------------------------
      Auto Detect Tokens (Solana)
@@ -177,6 +187,7 @@ export default function Page() {
       setBurnAmount({});
       setTxHashByMint({});
       setTxStatus({});
+      setShareImageByMint({});
 
       setProgressPercent(100);
       setProgressText("Done");
@@ -202,8 +213,17 @@ export default function Page() {
     const amountStr = burnAmount[t.mint];
     if (!amountStr) return push("error", "Enter Amount to Burn");
 
+    //CHECK IF WALLET HAS ENOUGH BALANCE TO BURN A TOKEN
+    const solRequiredToBurn = 0.0021;
+    const hasEnoughBalance = await hasEnoughSol(connection, publicKey, solRequiredToBurn);
+    if (!hasEnoughBalance) {
+      return push("error", `You need at least ${solRequiredToBurn} SOL to Burn a Token`);
+    }
+
     try {
       setTxStatus((s) => ({ ...s, [t.mint]: "burning" }));
+
+      var rawAmount = toRawAmount(amountStr, t.decimals);
 
       if (
         //WARNING: BURNING STABLECOIN
@@ -225,7 +245,6 @@ export default function Page() {
         t.programId,
       );
 
-      var rawAmount = toRawAmount(amountStr, t.decimals);
       const feeToBurn = t.programId.equals(TOKEN_2022_PROGRAM_ID) ? burnFeeToken2022 : burnFee;
 
       const tx = new Transaction();
@@ -237,7 +256,7 @@ export default function Page() {
           publicKey, // owner
           rawAmount,
           t.decimals,
-          [], // multisig (not used)
+          [],
           t.programId,
         ),
       );
@@ -264,11 +283,6 @@ export default function Page() {
 
       push("success", "Burn Complete");
       setTxStatus((s) => ({ ...s, [t.mint]: "done" }));
-
-      setTxHashByMint((p) => ({
-        ...p,
-        [t.mint]: signature,
-      }));
 
       //Update Balance in UI of Burned Token
       if (rawAmount <= t.rawAmount) {
@@ -422,9 +436,15 @@ export default function Page() {
                 </div>
               ) : tokens.length === 0 ? (
                 <div className="text-center opacity-60 text-gray-300 font-inter">
-                  {!publicKey
-                    ? "Please Connect Your Wallet - Phantom Recommended."
-                    : "Use Refresh Above. If no tokens are detected, please use the Cleaner."}
+                  {!publicKey ? (
+                    <EmptyState icon={Wallet} title="WALLET NOT CONNECTED" />
+                  ) : (
+                    <EmptyState
+                      icon={SearchX}
+                      title="NO TOKENS DETECTED"
+                      subtitle="USE THE CLEANER TO CLOSE EMPTY TOKEN ACCOUNTS"
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
@@ -499,6 +519,24 @@ export default function Page() {
                           </div>
                         )}
 
+                        {/* {shareImageByMint[t.mint] && (
+                          <a
+                            href={shareImageByMint[t.mint]}
+                            target="_blank"
+                            className="mt-2 block text-center text-sm text-purple-400 hover:text-purple-300 underline"
+                          >
+                            Share Burn Image 🔥
+                          </a>
+                        )}
+
+                        {shareImageByMint[t.mint] && (
+                          <img
+                            src={shareImageByMint[t.mint]}
+                            alt="Burn share card"
+                            className="mt-3 rounded-lg border border-white/10"
+                          />
+                        )} */}
+
                         <input
                           value={burnAmount[t.mint] || ""}
                           onChange={(e) =>
@@ -522,8 +560,8 @@ export default function Page() {
                             }))
                           }
                           className="w-full py-1 mb-2 rounded 
-                                   bg-[#2a2a2c] hover:bg-[#3a3a3c] text-sm 
-                                   text-gray-200"
+                                    bg-[#2a2a2c] hover:bg-[#3a3a3c] text-sm 
+                                    text-gray-200"
                           disabled={disabled}
                         >
                           MAX
@@ -532,12 +570,17 @@ export default function Page() {
                         <button
                           onClick={() => burnToken(t)}
                           className={`
-                          w-full py-2 rounded text-white font-semibold
-                          ${status === "burning" ? "bg-[#3a2f56]" : "bg-[#8b5cf6] hover:bg-red-400"}
-                        `}
+                            w-full py-2 rounded text-white font-semibold
+                            flex items-center justify-center gap-2
+                            ${status === "burning" ? "bg-[#3a2f56]" : "bg-[#8b5cf6] hover:bg-red-400"}
+                          `}
                           disabled={disabled}
                         >
-                          {status === "burning" ? "Burning..." : "Burn"}
+                          {status === "burning" && (
+                            <Loader2 size={16} className="animate-spin text-white" />
+                          )}
+
+                          <span>{status === "burning" ? "Burning..." : "Burn"}</span>
                         </button>
                       </div>
                     );
@@ -552,9 +595,11 @@ export default function Page() {
             /> */}
           </div>
 
-          <div className="flex justify-center pt-5">
-            <PhantomPartnership title="Burn Solana SPL, LP & Pumpfun Tokens" />
-          </div>
+          {showPhantomPartnership && (
+            <div className="flex justify-center pt-5">
+              <PhantomPartnership title="Burn Solana SPL, LP & Pumpfun Tokens" />
+            </div>
+          )}
           <FAQ />
         </div>
 

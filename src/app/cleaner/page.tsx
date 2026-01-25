@@ -16,7 +16,7 @@ import { formatRawAmount } from "@/utils/formatRawAmount";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { AnimatePresence } from "framer-motion";
-import { ExternalLink, Loader2, RefreshCcw, SearchX } from "lucide-react";
+import { ExternalLink, Loader2, RefreshCcw } from "lucide-react";
 
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
@@ -40,6 +40,7 @@ import {
   cleanerBurnFee2022,
   explorerURL,
   showBottomBar,
+  showPhantomPartnership,
 } from "@/constants";
 
 import {
@@ -138,6 +139,25 @@ export default function CleanerPage() {
 
         try {
           const acc = unpackAccount(pubkey, account, programId);
+          if (acc.isFrozen) continue; // SKIPPING FROZEN ACCS
+
+          //VACANT ACCOUNTS
+          if (total > 0 && acc.amount == 0n && programId == TOKEN_PROGRAM_ID) {
+            list.push({
+              mint: acc.mint.toBase58(),
+              ata: pubkey,
+              programId,
+              amount: 0n,
+              decimals: 6,
+              balance: "0",
+              name: "Vacant Account",
+              symbol: "Burn to Claim 0.002 SOL",
+              logo: "/vacant2.png",
+              haswithheld: false,
+            });
+            continue;
+          }
+
           const mintInfo = await getMint(connection, acc.mint, "confirmed", programId);
 
           let hasAccountWithheld = false;
@@ -153,8 +173,7 @@ export default function CleanerPage() {
           const [mintPk, amount, decimals] = [acc.mint, acc.amount, mintInfo.decimals ?? 0];
           const realBal = formatRawAmount(amount, decimals);
 
-          // SKIPPING FROZEN ACCS | TRANSFER-HOOK TOKENS | STABLECOIN BAL > $10
-          if (acc.isFrozen) continue;
+          // SKIPPING TRANSFER-HOOK TOKENS | STABLECOIN BAL > $10
           if (!TOKENS_TO_SHOW_WHEN_CLEANING.includes(mintPk.toBase58())) {
             const BLOCK_CLOSE_EXTENSIONS = new Set<ExtensionType>([
               ExtensionType.TransferHook,
@@ -299,7 +318,7 @@ export default function CleanerPage() {
 
     setTxStatus("burning");
 
-    const BATCH_SIZE = 10;
+    const BATCH_SIZE = 8;
 
     // Split selected into chunks of BATCH_SIZE
     const batches: string[][] = [];
@@ -321,6 +340,10 @@ export default function CleanerPage() {
           const ata = new PublicKey(t.ata);
 
           const rawAmount = toRawAmount(t.balance, t.decimals);
+
+          // SEND 0.002 SOL AND SET REMAINING AS FEES (TODO: IF WANT TO / INCREASES RPC CALLS)
+          // const tokenAccountHoldings = await getSolBalance(connection, ata);
+          // const feeToCollect = Math.max(0.00001, tokenAccountHoldings - 0.002);
 
           //1- HARVEST WITHHELD FEES FOR TRANSFERFEE TOKENS
           if (t.haswithheld) {
@@ -557,7 +580,7 @@ export default function CleanerPage() {
               )}
 
               {/* 🔥 2. Show "no tokens" AFTER loading */}
-              {!loadingTokens && tokens.length === 0 && (
+              {/* {!loadingTokens && tokens.length === 0 && (
                 <div className="flex flex-col items-center gap-2 opacity-60 text-gray-300 font-inter">
                   {publicKey ? (
                     <>
@@ -570,10 +593,10 @@ export default function CleanerPage() {
                     </>
                   )}
                 </div>
-              )}
+              )} */}
 
               {/* 🔥 3. Show actual content when tokens exist */}
-              {!loadingTokens && tokens.length > 0 && (
+              {!loadingTokens && (
                 <div className="space-y-6">
                   <AnimatePresence mode="wait">
                     {/* ACTIVE TAB CONTENT */}
@@ -586,6 +609,7 @@ export default function CleanerPage() {
                         setSelected={setSelected}
                         toggleSelect={toggleSelect}
                         isVacant
+                        publicKey={publicKey}
                       />
                     )}
 
@@ -597,6 +621,7 @@ export default function CleanerPage() {
                         selected={selected}
                         setSelected={setSelected}
                         toggleSelect={toggleSelect}
+                        publicKey={publicKey}
                       />
                     )}
 
@@ -609,6 +634,7 @@ export default function CleanerPage() {
                         setSelected={setSelected}
                         toggleSelect={toggleSelect}
                         isNFT
+                        publicKey={publicKey}
                       />
                     )}
                   </AnimatePresence>
@@ -616,9 +642,47 @@ export default function CleanerPage() {
               )}
             </div>
           </div>
-          <div className="flex justify-center pt-10">
-            <PhantomPartnership title="Burn Tokens & Claim SOL" />
-          </div>
+
+          {showPhantomPartnership && (
+            <div className="flex justify-center pt-10">
+              <PhantomPartnership title="Burn Tokens & Claim SOL" />
+            </div>
+          )}
+
+          {/* HOW IT WORKS */}
+          {/* <div className="max-w-5xl mx-auto">
+            <div className="bg-[#1c1c1e] rounded-xl p-5 mt-6 mb-6 border border-gray-800 shadow">
+              <h3 className="text-lg font-semibold mb-3 text-gray-200">How It Works</h3>
+
+              <p className="text-sm text-gray-300 leading-relaxed">
+                On Solana, tokens are stored in separate token accounts linked to your wallet. When
+                you first receive a token, a small rent fee (about{" "}
+                <span className="text-gray-200 font-medium">0.002 SOL</span>) is paid to create this
+                account.
+              </p>
+
+              <p className="mt-3 text-sm text-gray-300 leading-relaxed">
+                Even after you sell a token and the balance becomes zero, the token account stays in
+                your wallet and continues to hold that rent.
+              </p>
+
+              <p className="mt-3 text-sm text-gray-300 leading-relaxed">
+                Cleaner helps you safely close these unused token accounts and reclaim the SOL back
+                into your wallet.
+              </p>
+
+              <p className="mt-3 text-sm text-gray-300 leading-relaxed">
+                If you select tokens that still have a balance or NFTs, the remaining tokens will be
+                permanently burned as part of closing the account. Only select tokens with no value
+                or tiny dust balances.
+              </p>
+
+              <div className="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400 leading-relaxed">
+                Note: This process is safe and reversible. If you receive the same token again in
+                the future, a new token account will be created automatically.
+              </div>
+            </div>
+          </div> */}
 
           <Faq />
         </div>
@@ -684,24 +748,31 @@ export default function CleanerPage() {
                 onClick={burnSelected}
                 disabled={txStatus === "burning" || selected.length === 0}
                 className={`
-    px-5 py-2 rounded font-semibold text-white text-s
-    transition
-    ${
-      txStatus === "burning"
-        ? "bg-[#3a2f56] cursor-not-allowed"
-        : selected.length === 0
-          ? "bg-[#2a2a2c] opacity-60 cursor-not-allowed"
-          : "bg-[#8b5cf6] hover:bg-red-400"
-    }
-  `}
+                  px-5 py-2 rounded font-semibold text-white text-s
+                  transition
+                  flex items-center justify-center gap-2
+                  ${
+                    txStatus === "burning"
+                      ? "bg-[#3a2f56] cursor-not-allowed"
+                      : selected.length === 0
+                        ? "bg-[#2a2a2c] opacity-60 cursor-not-allowed"
+                        : "bg-[#8b5cf6] hover:bg-red-400"
+                  }
+                `}
               >
-                {txStatus === "burning"
-                  ? "Burning..."
-                  : selected.length === 0
-                    ? "Burn Tokens"
-                    : selected.length === 1
-                      ? "Burn 1 Token"
-                      : `Burn ${selected.length} Tokens`}
+                {txStatus === "burning" && (
+                  <Loader2 size={16} className="animate-spin text-white" />
+                )}
+
+                <span>
+                  {txStatus === "burning"
+                    ? "Burning..."
+                    : selected.length === 0
+                      ? "Burn Tokens"
+                      : selected.length === 1
+                        ? "Burn 1 Token"
+                        : `Burn ${selected.length} Tokens`}
+                </span>
               </button>
             </div>
           </div>

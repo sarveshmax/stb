@@ -7,9 +7,17 @@ interface Props {
   account?: string;
   open: boolean;
   setOpen: (v: boolean) => void;
+  disableConnectWalletButton?: boolean;
+  disableMenuIconMobile?: boolean;
 }
 
-export default function TopBar({ account, open, setOpen }: Props) {
+export default function TopBar({
+  account,
+  open,
+  setOpen,
+  disableConnectWalletButton = false,
+  disableMenuIconMobile = false,
+}: Props) {
   return (
     <>
       {/* ===== TOP BAR ===== */}
@@ -23,12 +31,14 @@ export default function TopBar({ account, open, setOpen }: Props) {
         "
       >
         {/* Mobile hamburger */}
-        <button
-          className="md:hidden p-2 rounded hover:bg-[#232325] transition"
-          onClick={() => setOpen(!open)}
-        >
-          <FaBars size={22} className="text-gray-200" />
-        </button>
+        {!disableMenuIconMobile && (
+          <button
+            className="md:hidden p-2 rounded hover:bg-[#232325] transition"
+            onClick={() => setOpen(!open)}
+          >
+            <FaBars size={22} className="text-gray-200" />
+          </button>
+        )}
 
         {/* Logo + Title */}
         <a href="https://www.soltokenburner.com" className="flex items-center gap-3 ml-5">
@@ -39,9 +49,11 @@ export default function TopBar({ account, open, setOpen }: Props) {
         </a>
 
         {/* Wallet Button */}
-        <div className="flex items-center">
-          <WalletMultiButton className="!bg-[#8b5cf6] hover:!bg-[#7c4ee8] !text-white !font-semibold !rounded-lg !shadow-lg !shadow-[#8b5cf6]/20" />
-        </div>
+        {!disableConnectWalletButton && (
+          <div className="flex items-center">
+            <WalletMultiButton className="!bg-[#8b5cf6] hover:!bg-[#7c4ee8] !text-white !font-semibold !rounded-lg !shadow-lg !shadow-[#8b5cf6]/20" />
+          </div>
+        )}
       </div>
 
       {/* Spacer */}

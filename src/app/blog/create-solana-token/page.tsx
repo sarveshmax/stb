@@ -86,7 +86,7 @@ export default function BlogGuidePage() {
             </li>
             <li>
               Enter the number of tokens to pair -
-              <span className="text-[#c084fc] font-semibold"> recommended: 10% of supply</span>.
+              <span className="text-[#c084fc] font-semibold"> recommended: 90% of supply</span>.
             </li>
             <li>Choose how much SOL you want to put into the pool.</li>
             <li>

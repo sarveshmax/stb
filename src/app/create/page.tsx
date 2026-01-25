@@ -17,15 +17,19 @@ import { Icon } from "@iconify/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Image, Loader2 } from "lucide-react";
 
-import { showBottomBar, tokenCreationFee, tokenCreatorFeeWallet } from "@/constants";
+import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+
+import {
+  showBottomBar,
+  showPhantomPartnership,
+  tokenCreationFee,
+  tokenCreatorFeeWallet,
+} from "@/constants";
 
 import {
   PROGRAM_ID as TOKEN_METADATA_PROGRAM_ID,
   createCreateMetadataAccountV3Instruction,
-  createUpdateMetadataAccountV2Instruction,
 } from "@metaplex-foundation/mpl-token-metadata";
-
-import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
 import {
   AuthorityType,
@@ -268,7 +272,7 @@ export default function CreateTokenPage() {
               uses: null,
               collection: null,
             },
-            isMutable: true,
+            isMutable: false,
             collectionDetails: null,
           },
         },
@@ -303,26 +307,25 @@ export default function CreateTokenPage() {
         );
       }
 
-      //REVOKE UPDATE AUTHORITY
-      ixList.push(
-        createUpdateMetadataAccountV2Instruction(
-          {
-            metadata: metadataPda,
-            updateAuthority: publicKey,
-          },
-          {
-            updateMetadataAccountArgsV2: {
-              data: null, // don't change metadata
-              updateAuthority: null, // REMOVE update authority
-              primarySaleHappened: null,
-              isMutable: null,
-            },
-          },
-        ),
-      );
+      // //REVOKE UPDATE AUTHORITY
+      // ixList.push(
+      //   createUpdateMetadataAccountV2Instruction(
+      //     {
+      //       metadata: metadataPda,
+      //       updateAuthority: publicKey,
+      //     },
+      //     {
+      //       updateMetadataAccountArgsV2: {
+      //         data: null, // don't change metadata
+      //         updateAuthority: null, // REMOVE update authority
+      //         primarySaleHappened: null,
+      //         isMutable: false,
+      //       },
+      //     },
+      //   ),
+      // );
 
       // FEE TRANSFER
-      // if (Number(tokenCreationFee) != 0) {
       ixList.push(
         SystemProgram.transfer({
           fromPubkey: publicKey,
@@ -330,7 +333,6 @@ export default function CreateTokenPage() {
           lamports: Math.floor(tokenCreationFee * LAMPORTS_PER_SOL),
         }),
       );
-      // }
 
       /* ---- Send TX ---- */
       const tx = new Transaction().add(...ixList);
@@ -339,16 +341,6 @@ export default function CreateTokenPage() {
       });
 
       setMintAddress(mint.publicKey.toBase58());
-
-      // setStatusHtml(`
-      //   Mint: <a href="${explorerURL}/token/${mint.publicKey}"
-      //            target="_blank"
-      //            class="text-[#9d86ff]">${mint.publicKey}</a>
-      // `);
-      //   Tx: <a href="${explorerURL}/tx/${sig}"
-      //    target="_blank"
-      //    class="text-[#9d86ff]">${sig}</a>
-
       push("success", "Token Created!");
     } catch (err) {
       console.error(err);
@@ -384,7 +376,9 @@ export default function CreateTokenPage() {
 
                 <div>
                   <div className="text-xl font-semibold">Solana Token Creator</div>
-                  <div className="text-xs text-gray-400">Create Solana SPL Tokens in One-Click</div>
+                  <div className="text-xs text-gray-400">
+                    Create a Solana Meme Token in One-Click
+                  </div>
                 </div>
               </div>
             </div>
@@ -572,9 +566,11 @@ export default function CreateTokenPage() {
               )}
             </div>
 
-            <div className="flex justify-center pt-10">
-              <PhantomPartnership title="Create Solana SPL Tokens" />
-            </div>
+            {showPhantomPartnership && (
+              <div className="flex justify-center pt-10">
+                <PhantomPartnership title="Create Solana SPL Tokens" />
+              </div>
+            )}
 
             <FAQCreator />
           </div>

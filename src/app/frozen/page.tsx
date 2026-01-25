@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import BottomBar from "@/components/BottomBar";
+import EmptyState from "@/components/EmptyState";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import PhantomPartnership from "@/components/phantomPartnership";
@@ -10,10 +11,11 @@ import SideBar from "@/components/SideBar";
 import ToastContainer from "@/components/ToastContainer";
 import TopBar from "@/components/TopBar";
 
-import { explorerURL, showBottomBar } from "@/constants";
+import { explorerURL, showBottomBar, showPhantomPartnership } from "@/constants";
 import { formatRawAmount } from "@/utils/formatRawAmount";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Snowflake, Wallet } from "lucide-react";
 
 import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, getMint, unpackAccount } from "@solana/spl-token";
 
@@ -270,9 +272,15 @@ export default function FrozenPage() {
                 </div>
               ) : tokens.length === 0 ? (
                 <div className="text-center opacity-60 text-gray-300 font-inter">
-                  {!publicKey
-                    ? "Please Connect Your Wallet - Phantom Recommended."
-                    : "Use Refresh Above. If no tokens are detected, you don't hold any Frozen Tokens."}
+                  {!publicKey ? (
+                    <EmptyState icon={Wallet} title="WALLET NOT CONNECTED" />
+                  ) : (
+                    <EmptyState
+                      icon={Snowflake}
+                      title="USE REFRESH ABOVE"
+                      subtitle="IF NO TOKENS ARE DETECTED, YOU DO NOT HOLD ANY FROZEN TOKENS."
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
@@ -332,9 +340,12 @@ export default function FrozenPage() {
             />
           </div>
 
-          <div className="flex justify-center pt-5">
-            <PhantomPartnership title="Check Frozen Token Accounts" />
-          </div>
+          {showPhantomPartnership && (
+            <div className="flex justify-center pt-5">
+              <PhantomPartnership title="Check Frozen Token Accounts" />
+            </div>
+          )}
+
           <FAQ />
         </div>
 

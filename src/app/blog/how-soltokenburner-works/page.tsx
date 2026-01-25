@@ -1,5 +1,4 @@
 import BlogLinks from "@/components/BlogLinks";
-import Footer from "@/components/Footer";
 import { Icon } from "@iconify/react";
 
 export const metadata = {
@@ -112,7 +111,8 @@ export default function HowSolTokenBurnerWorks() {
         Step 3: You Approve in Phantom
       </h3>
       <p className="mb-6">
-        Phantom pops up and asks for approval. You sign the burn transaction locally on your device.
+        Phantom pops up and asks for approval. Phantom also shows the token balance changes. You
+        sign the burn transaction locally on your device.
       </p>
 
       <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">

@@ -22,7 +22,13 @@ export default function TermsPage() {
         min-h-screen
         pb-[var(--mobile-bottom-bar-height)]"
     >
-      <TopBar account={publicKey?.toBase58()} open={open} setOpen={setOpen} />
+      <TopBar
+        account={publicKey?.toBase58()}
+        open={open}
+        setOpen={setOpen}
+        disableMenuIconMobile
+        disableConnectWalletButton
+      />
       {showBottomBar && <BottomBar open={open} />}
       <SideBar open={open} setOpen={setOpen} />
 

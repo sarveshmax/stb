@@ -6,14 +6,6 @@ const USDG_CA = "2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH"; //global
 const USD1_CA = "USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB"; //world liberty
 export const STABLECOINS_CA = [USDC_CA, USDT_CA, PYUSD_CA, USDG_CA, USD1_CA];
 
-// ===== 🔥 TOKEN BURNER =====
-export const TOKENS_TO_IGNORE_WHEN_BURNING = [
-  "2g3tpvK5wou1T4PcUHPyenRfKHBm9W7fiYVDjW2okMtz", //TIPEO
-  "4ZiVmCdCNyrHvWwWBDA5FjrKMQPfMTnmQ7fcEW6B2nqC", //HYPRL
-  "FqdKuFwKgxTfhk9DAfuygPVKwYzUfKdBRW9ZJ5vkuthv", //810
-  "G7buPx4K3cjKW27zsraZEFtiMDDkjJCpSrLQC9EVdsLb", //LISA
-];
-
 // ===== 💵 TOKEN CLEANER =====
 export const TOKENS_TO_SHOW_WHEN_CLEANING = [
   USDG_CA, //GLOBAL USD

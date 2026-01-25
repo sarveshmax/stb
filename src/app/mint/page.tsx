@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import BottomBar from "@/components/BottomBar";
+import EmptyState from "@/components/EmptyState";
 import FAQCreator from "@/components/FAQCreator";
 import Footer from "@/components/Footer";
 import MintLinkWithCopy from "@/components/MintLinkWithCopy";
@@ -14,6 +15,7 @@ import { explorerURL, showBottomBar, tokenCreatorFeeWallet, tokenMintFee } from 
 import { withTimeout } from "@/utils/ConnectionHelpers";
 import { getAnyTokenMetadata } from "@/utils/getMetadata";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Sprout, Wallet } from "lucide-react";
 
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
@@ -21,6 +23,7 @@ import {
   createAssociatedTokenAccountInstruction,
   createMintToInstruction,
   getAssociatedTokenAddress,
+  getMint,
   MintLayout,
   TOKEN_2022_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
@@ -108,8 +111,22 @@ export default function MintPage() {
         hasAuthority = mintAuth.equals(publicKey);
       }
 
+      let mintAuthority: PublicKey | null = null;
+      let freezeAuthority: PublicKey | null = null;
+      try {
+        const mintAccount = await getMint(connection, mintPK, "confirmed", mintAcc.owner);
+        mintAuthority = mintAccount.mintAuthority;
+        freezeAuthority = mintAccount.freezeAuthority;
+      } catch {}
+
       const metadata = await withTimeout(
-        getAnyTokenMetadata(connection, mintPK.toBase58(), mintAcc.owner),
+        getAnyTokenMetadata(
+          connection,
+          mintPK.toBase58(),
+          mintAcc.owner,
+          mintAuthority,
+          freezeAuthority,
+        ),
         5 * 1000, //5 Second Timeout
         { name: "Unknown", symbol: "UNK", image: "/unknowntoken.png" },
       );
@@ -348,7 +365,15 @@ export default function MintPage() {
               </div>
             ) : tokens.length === 0 ? (
               <div className="text-center opacity-60 text-gray-300 font-inter">
-                Click Auto-Detect to load tokens with Mint Authority.
+                {!publicKey ? (
+                  <EmptyState icon={Wallet} title="WALLET NOT CONNECTED" />
+                ) : (
+                  <EmptyState
+                    icon={Sprout}
+                    title="CLICK AUTO-DETECT TO LOAD TOKENS IN WALLET WITH MINT AUTHORITY"
+                    subtitle="OR ADD A TOKEN MANUALLY ABOVE"
+                  />
+                )}
               </div>
             ) : (
               <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">

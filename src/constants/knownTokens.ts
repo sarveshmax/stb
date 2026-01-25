@@ -133,6 +133,11 @@ export const KNOWN_TOKENS: Record<string, KnownTokenMetadata> = {
     symbol: "ORCA",
     image: "/tokenimages/orca.png",
   },
+  "8wXtPeU6557ETkp9WHFY1n1EcU6NxDvbAggHGsMYiHsB": {
+    name: "GameStop",
+    symbol: "GME",
+    image: "/tokenimages/gamestop.png",
+  },
 
   //TOKENS WHICH REGULARLY GET BURNED
   PAYmo6moDF3Ro3X6bU2jwe2UdBnBhv8YjLgL1j4DxGu: {
