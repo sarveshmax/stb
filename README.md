@@ -1,6 +1,6 @@
 # SolTokenBurner
 
-Internal repository for the SolTokenBurner web app.
+Repository for the SolTokenBurner web app - Open Source from Jan 15, 2026.
 
 This project is a Next.js-based Solana utility that allows users to:
 
@@ -25,10 +25,9 @@ This project is a Next.js-based Solana utility that allows users to:
 
 ## Notes
 
-- Repo is private
+- Repo is now public
 - `package.json` name does not affect production or branding
 - Main domain & user-facing branding: **SolTokenBurner**
-- Phantom listing is independent of this repository name
 
 ## Development
 
