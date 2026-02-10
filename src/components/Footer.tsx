@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
 
 export default function Footer() {
-  const router = useRouter(); // 👈 this was missing
+  const router = useRouter();
 
   return (
     <footer
@@ -19,9 +19,11 @@ export default function Footer() {
         text-gray-400
       "
     >
-      <div className="max-w-4xl mx-auto px-4 flex items-center justify-center">
+      <div className="max-w-4xl mx-auto px-4 flex items-center justify-center gap-2">
         <span>
-          <span onClick={() => router.push("/price")} className="cursor-text select-none">
+          <span
+            className="cursor-text select-none"
+          >
             ©
           </span>{" "}
           {new Date().getFullYear()}{" "}
@@ -39,6 +41,23 @@ export default function Footer() {
             T&amp;C
           </Link>
         </span>
+
+        {/* GitHub */}
+        <Link
+          href="https://github.com/kitkatcrypto/stb"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-1 opacity-50 hover:opacity-75 transition"
+          aria-label="GitHub"
+        >
+          <Image
+            src="/github.svg"
+            alt="GitHub"
+            width={14}
+            height={14}
+            className="invert"
+          />
+        </Link>
       </div>
     </footer>
   );

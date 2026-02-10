@@ -139,6 +139,12 @@ export default function SideBar({ open, setOpen }: Props) {
       small: true,
       external: true,
     },
+    {
+      name: "GitHub",
+      path: "https://github.com/kitkatcrypto/stb",
+      small: true,
+      external: true,
+    },
 
     { type: "break" },
 

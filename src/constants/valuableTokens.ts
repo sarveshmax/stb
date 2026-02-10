@@ -7,6 +7,8 @@ const USD1_CA = "USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB"; //world liberty
 export const STABLECOINS_CA = [USDC_CA, USDT_CA, PYUSD_CA, USDG_CA, USD1_CA];
 
 // ===== 💵 TOKEN CLEANER =====
+//Tokens have TransferHooks so are hidden, but show
+//these anyway since burn and close works
 export const TOKENS_TO_SHOW_WHEN_CLEANING = [
   USDG_CA, //GLOBAL USD
   PYUSD_CA, //PAYPAL USD

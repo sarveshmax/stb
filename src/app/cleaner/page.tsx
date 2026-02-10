@@ -648,42 +648,7 @@ export default function CleanerPage() {
               <PhantomPartnership title="Burn Tokens & Claim SOL" />
             </div>
           )}
-
-          {/* HOW IT WORKS */}
-          {/* <div className="max-w-5xl mx-auto">
-            <div className="bg-[#1c1c1e] rounded-xl p-5 mt-6 mb-6 border border-gray-800 shadow">
-              <h3 className="text-lg font-semibold mb-3 text-gray-200">How It Works</h3>
-
-              <p className="text-sm text-gray-300 leading-relaxed">
-                On Solana, tokens are stored in separate token accounts linked to your wallet. When
-                you first receive a token, a small rent fee (about{" "}
-                <span className="text-gray-200 font-medium">0.002 SOL</span>) is paid to create this
-                account.
-              </p>
-
-              <p className="mt-3 text-sm text-gray-300 leading-relaxed">
-                Even after you sell a token and the balance becomes zero, the token account stays in
-                your wallet and continues to hold that rent.
-              </p>
-
-              <p className="mt-3 text-sm text-gray-300 leading-relaxed">
-                Cleaner helps you safely close these unused token accounts and reclaim the SOL back
-                into your wallet.
-              </p>
-
-              <p className="mt-3 text-sm text-gray-300 leading-relaxed">
-                If you select tokens that still have a balance or NFTs, the remaining tokens will be
-                permanently burned as part of closing the account. Only select tokens with no value
-                or tiny dust balances.
-              </p>
-
-              <div className="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400 leading-relaxed">
-                Note: This process is safe and reversible. If you receive the same token again in
-                the future, a new token account will be created automatically.
-              </div>
-            </div>
-          </div> */}
-
+          
           <Faq />
         </div>
 
