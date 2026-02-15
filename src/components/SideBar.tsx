@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { MoveUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type MenuItem =
   | {
@@ -67,6 +68,22 @@ function SidebarIcon({ src, alt }: { src: string; alt: string }) {
 
 export default function SideBar({ open, setOpen }: Props) {
   const pathname = usePathname();
+
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const header = document.getElementById("site-header");
+    if (!header) return;
+
+    const updateHeight = () => {
+      setHeaderHeight(header.offsetHeight);
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   const menuItems: MenuItem[] = [
     { name: "Token Burner", path: "/" },
@@ -163,7 +180,13 @@ export default function SideBar({ open, setOpen }: Props) {
   return (
     <>
       {/* ===== DESKTOP SIDEBAR ===== */}
-      <div className="hidden md:block fixed top-20 left-0 h-[calc(100vh-5rem)] w-64 bg-[#1c1c1e] border-r border-gray-800 p-4 overflow-y-auto z-40">
+      <div
+        className="hidden md:block fixed left-0 w-64 bg-[#1c1c1e] border-r border-gray-800 p-4 overflow-y-auto z-40"
+        style={{
+          top: headerHeight,
+          height: `calc(100vh - ${headerHeight}px)`,
+        }}
+      >
         <SidebarMenu pathname={pathname} menuItems={menuItems} />
       </div>
 
