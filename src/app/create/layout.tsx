@@ -13,17 +13,17 @@ export const metadata = {
     "soltokenburner token creator",
   ],
   alternates: {
-    canonical: "https://www.soltokenburner.com/create",
+    canonical: "https://www.soltokenburner.fun/create",
   },
   openGraph: {
     title: "Create SPL Tokens on Solana | SolTokenBurner Token Creator",
     description:
       "Generate a new SPL token on Solana with customizable supply and authorities. Fast, secure, and fully on-chain.",
-    url: "https://www.soltokenburner.com/create",
+    url: "https://www.soltokenburner.fun/create",
     siteName: "SolTokenBurner",
     images: [
       {
-        url: "https://soltokenburner.com/og-image.png",
+        url: "https://soltokenburner.fun/og-image.png",
         width: 1200,
         height: 630,
         alt: "SolTokenBurner - Solana Token Creator",
@@ -36,7 +36,7 @@ export const metadata = {
     title: "Create SPL Tokens on Solana | SolTokenBurner Token Creator",
     description:
       "Easily create Solana SPL tokens with custom supply and settings using SolTokenBurner.",
-    images: ["https://soltokenburner.com/og-image.png"],
+    images: ["https://soltokenburner.fun/og-image.png"],
   },
 };
 

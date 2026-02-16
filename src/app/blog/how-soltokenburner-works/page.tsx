@@ -6,13 +6,13 @@ export const metadata = {
   description:
     "Learn how SolTokenBurner burns SPL tokens using Solana’s official burn instruction from @solana/spl-token. Technical explanation of how token burning works on-chain.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog/how-soltokenburner-works",
+    canonical: "https://www.soltokenburner.fun/blog/how-soltokenburner-works",
   },
   openGraph: {
     title: "How SolTokenBurner Works | Solana Token Burning Explained",
     description:
       "Learn how SolTokenBurner burns SPL tokens using Solana’s official burn instruction from @solana/spl-token. Technical explanation of how token burning works on-chain.",
-    url: "https://www.soltokenburner.com/blog/how-soltokenburner-works",
+    url: "https://www.soltokenburner.fun/blog/how-soltokenburner-works",
     images: ["/og-image.png"],
   },
 };

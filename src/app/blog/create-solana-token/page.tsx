@@ -28,7 +28,7 @@ export default function BlogGuidePage() {
           </h2>
 
           <a
-            href="https://www.soltokenburner.com/create"
+            href="https://www.soltokenburner.fun/create"
             target="_blank"
             className="inline-flex items-center gap-2 px-6 py-3 text-base bg-gradient-to-r from-[#8b5cf6] to-[#7c4ee8] hover:opacity-90 rounded-xl font-semibold transition-all"
           >
@@ -69,7 +69,7 @@ export default function BlogGuidePage() {
           </h2>
 
           <a
-            href="https://www.soltokenburner.com/create"
+            href="https://www.soltokenburner.fun/create"
             target="_blank"
             className="inline-flex items-center gap-2 px-6 py-3 text-base bg-gradient-to-r from-[#8b5cf6] to-[#7c4ee8] hover:opacity-90 rounded-xl font-semibold transition-all"
           >
@@ -131,7 +131,7 @@ export default function BlogGuidePage() {
           </h2>
 
           <a
-            href="https://www.soltokenburner.com/create"
+            href="https://www.soltokenburner.fun/create"
             target="_blank"
             className="inline-flex items-center gap-2 px-6 py-3 text-base bg-gradient-to-r from-[#8b5cf6] to-[#7c4ee8] hover:opacity-90 rounded-xl font-semibold transition-all"
           >
@@ -146,7 +146,7 @@ export default function BlogGuidePage() {
           <p className="text-lg text-gray-300 leading-relaxed">
             Visit{" "}
             <a
-              href="https://www.soltokenburner.com"
+              href="https://www.soltokenburner.fun"
               target="_blank"
               className="text-[#c084fc] hover:text-[#b49bff]"
             >

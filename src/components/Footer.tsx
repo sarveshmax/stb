@@ -21,13 +21,8 @@ export default function Footer() {
     >
       <div className="max-w-4xl mx-auto px-4 flex items-center justify-center gap-2">
         <span>
-          <span
-            className="cursor-text select-none"
-          >
-            ©
-          </span>{" "}
-          {new Date().getFullYear()}{" "}
-          <span className="text-white font-medium">SolTokenBurner.com</span> · Made with{" "}
+          <span className="cursor-text select-none">©</span> {new Date().getFullYear()}{" "}
+          <span className="text-white font-medium">SolTokenBurner.fun</span> · Made with{" "}
           <span className="opacity-85">❤️</span> for Solana
           <span className="mx-1 opacity-40">·</span>
           <Link
@@ -50,13 +45,7 @@ export default function Footer() {
           className="ml-1 opacity-50 hover:opacity-75 transition"
           aria-label="GitHub"
         >
-          <Image
-            src="/github.svg"
-            alt="GitHub"
-            width={14}
-            height={14}
-            className="invert"
-          />
+          <Image src="/github.svg" alt="GitHub" width={14} height={14} className="invert" />
         </Link>
       </div>
     </footer>

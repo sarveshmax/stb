@@ -11,17 +11,17 @@ export const metadata = {
     "soltokenburner mint",
   ],
   alternates: {
-    canonical: "https://www.soltokenburner.com/mint",
+    canonical: "https://www.soltokenburner.fun/mint",
   },
   openGraph: {
     title: "Mint SPL Tokens on Solana | SolTokenBurner Mint Tool",
     description:
       "Easily mint more SPL tokens on Solana with your mint authority. One-click secure minting.",
-    url: "https://www.soltokenburner.com/mint",
+    url: "https://www.soltokenburner.fun/mint",
     siteName: "SolTokenBurner",
     images: [
       {
-        url: "https://soltokenburner.com/og-image.png",
+        url: "https://soltokenburner.fun/og-image.png",
         width: 1200,
         height: 630,
         alt: "SolTokenBurner - Mint SPL Tokens",
@@ -33,7 +33,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Mint SPL Tokens on Solana | SolTokenBurner Mint Tool",
     description: "Mint more SPL tokens securely using SolTokenBurner's on-chain minting interface.",
-    images: ["https://soltokenburner.com/og-image.png"],
+    images: ["https://soltokenburner.fun/og-image.png"],
   },
 };
 

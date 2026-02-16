@@ -1,5 +1,4 @@
 import BlogLinks from "@/components/BlogLinks";
-import Footer from "@/components/Footer";
 import { Icon } from "@iconify/react";
 
 export const metadata = {
@@ -7,13 +6,13 @@ export const metadata = {
   description:
     "Solana does not use dead wallet addresses like Ethereum. Learn how burning really works on Solana and follow a step-by-step guide to burn SPL & LP tokens correctly using SolTokenBurner.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog/dead-wallet-address-solana",
+    canonical: "https://www.soltokenburner.fun/blog/dead-wallet-address-solana",
   },
   openGraph: {
     title: "How to Burn LP Tokens on Solana | Complete 2025 Guide",
     description:
       "Solana does not use dead wallet addresses like Ethereum. Learn how burning really works on Solana and follow a step-by-step guide to burn SPL & LP tokens correctly using SolTokenBurner.",
-    url: "https://www.soltokenburner.com/blog/dead-wallet-address-solana",
+    url: "https://www.soltokenburner.fun/blog/dead-wallet-address-solana",
     images: ["/og-image.png"],
   },
 };
@@ -112,12 +111,12 @@ export default function DeadWalletBurnGuide() {
         Visit{" "}
         <strong>
           <a
-            href="https://www.soltokenburner.com/"
+            href="https://www.soltokenburner.fun/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-300 underline"
           >
-            https://www.soltokenburner.com/
+            https://www.soltokenburner.fun/
           </a>
         </strong>{" "}
         and click <strong>Select Wallet</strong> to connect Phantom (or any wallet).

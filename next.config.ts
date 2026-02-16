@@ -6,7 +6,7 @@ const nextConfig = {
     return [
       {
         source: "/tokenburner",
-        destination: "https://www.soltokenburner.com/",
+        destination: "https://www.soltokenburner.fun/",
         permanent: true,
       },
     ];

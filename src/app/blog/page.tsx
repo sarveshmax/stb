@@ -7,13 +7,13 @@ export const metadata = {
   description:
     "Learn how to burn SPL tokens, LP tokens, lock liquidity, get the Dexscreener padlock, and more. Official Solana burning guides by SolTokenBurner.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog",
+    canonical: "https://www.soltokenburner.fun/blog",
   },
   openGraph: {
     title: "Solana Token Burner Blog | SolTokenBurner",
     description:
       "Guides and tutorials for burning tokens and LP tokens on the Solana blockchain using SolTokenBurner.",
-    url: "https://www.soltokenburner.com/blog",
+    url: "https://www.soltokenburner.fun/blog",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -113,7 +113,7 @@ export default function BlogIndex() {
       <BlogLink
         icon="fluent-emoji-flat:scroll"
         title="Whitepaper"
-        url="https://soltokenburner.com/whitepaper"
+        url="https://soltokenburner.fun/whitepaper"
       />
 
       <div className="h-20" />

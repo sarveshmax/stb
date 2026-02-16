@@ -45,7 +45,7 @@ const ICONS: Record<string, { src: string; alt: string }> = {
     src: "/sidebaricons/video.svg",
     alt: "Video Guide",
   },
-  "https://old.soltokenburner.com/": {
+  "https://old.soltokenburner.fun/": {
     src: "/sidebaricons/old.svg",
     alt: "Old SolTokenBurner",
   },
@@ -172,7 +172,7 @@ export default function SideBar({ open, setOpen }: Props) {
     },
     {
       name: "Old SolTokenBurner",
-      path: "https://old.soltokenburner.com/",
+      path: "https://old.soltokenburner.fun/",
       external: true,
     },
   ];

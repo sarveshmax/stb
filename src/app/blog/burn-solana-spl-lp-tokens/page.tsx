@@ -1,5 +1,4 @@
 import BlogLinks from "@/components/BlogLinks";
-import Footer from "@/components/Footer";
 import { Icon } from "@iconify/react";
 
 export const metadata = {
@@ -7,13 +6,13 @@ export const metadata = {
   description:
     "The most complete 2025 guide explaining how to burn SPL and LP tokens on Solana using Phantom Wallet through SolTokenBurner. No code required.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog/burn-solana-spl-lp-tokens",
+    canonical: "https://www.soltokenburner.fun/blog/burn-solana-spl-lp-tokens",
   },
   openGraph: {
     title: "How to Burn LP Tokens on Solana | Complete 2025 Guide",
     description:
       "The most complete 2025 guide explaining how to burn SPL and LP tokens on Solana using Phantom Wallet through SolTokenBurner. No code required.",
-    url: "https://www.soltokenburner.com/blog/burn-solana-spl-lp-tokens",
+    url: "https://www.soltokenburner.fun/blog/burn-solana-spl-lp-tokens",
     images: ["/og-image.png"],
   },
 };
@@ -89,12 +88,12 @@ export default function BurnSolanaGuide() {
         Go to{" "}
         <strong>
           <a
-            href="https://www.soltokenburner.com/"
+            href="https://www.soltokenburner.fun/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-300 underline"
           >
-            https://www.soltokenburner.com/
+            https://www.soltokenburner.fun/
           </a>
         </strong>
         . In the top-right corner, click <strong>Select Wallet</strong> and connect your wallet.

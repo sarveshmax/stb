@@ -8,13 +8,13 @@ export const metadata = {
   description:
     "A detailed comparison between SolTokenBurner and Sol Incinerator. Learn the safest and most flexible way to burn SPL and LP tokens on Solana in 2025.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog/sol-incinerator-alternative",
+    canonical: "https://www.soltokenburner.fun/blog/sol-incinerator-alternative",
   },
   openGraph: {
     title: "Sol Incinerator Alternative | Burn SPL & LP Tokens Safely (2025)",
     description:
       "A detailed comparison between SolTokenBurner and Sol Incinerator. Learn the safest and most flexible way to burn SPL and LP tokens on Solana in 2025.",
-    url: "https://www.soltokenburner.com/blog/sol-incinerator-alternative",
+    url: "https://www.soltokenburner.fun/blog/sol-incinerator-alternative",
     images: ["/og-image.png"],
   },
 };

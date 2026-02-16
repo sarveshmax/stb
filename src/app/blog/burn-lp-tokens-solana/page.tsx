@@ -1,5 +1,4 @@
 import BlogLinks from "@/components/BlogLinks";
-import Footer from "@/components/Footer";
 import { Icon } from "@iconify/react";
 
 export const metadata = {
@@ -7,13 +6,13 @@ export const metadata = {
   description:
     "A detailed guide explaining how to burn LP tokens on Solana using Phantom and SolTokenBurner. Works for Raydium, Orca, Meteora, and all SPL LP tokens.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog/burn-lp-tokens-solana",
+    canonical: "https://www.soltokenburner.fun/blog/burn-lp-tokens-solana",
   },
   openGraph: {
     title: "How to Burn LP Tokens on Solana | Complete 2025 Guide",
     description:
       "A detailed guide explaining how to burn LP tokens on Solana using Phantom and SolTokenBurner. Works for Raydium, Orca, Meteora, and all SPL LP tokens.",
-    url: "https://www.soltokenburner.com/blog/burn-lp-tokens-solana",
+    url: "https://www.soltokenburner.fun/blog/burn-lp-tokens-solana",
     images: ["/og-image.png"],
   },
 };
@@ -62,12 +61,12 @@ export default function BurnLPTokensGuide() {
       <p className="mb-4">
         Go to{" "}
         <a
-          href="https://www.soltokenburner.com/"
+          href="https://www.soltokenburner.fun/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-300 underline"
         >
-          https://www.soltokenburner.com/
+          https://www.soltokenburner.fun/
         </a>{" "}
         and connect your Phantom wallet.
       </p>

@@ -1,5 +1,4 @@
 import BlogLinks from "@/components/BlogLinks";
-import Footer from "@/components/Footer";
 import { Icon } from "@iconify/react";
 
 export const metadata = {
@@ -7,13 +6,13 @@ export const metadata = {
   description:
     "Learn how to get the padlock icon on Dexscreener by burning your LP tokens on Solana. Works for Raydium, Orca, Meteora and all SPL LP tokens.",
   alternates: {
-    canonical: "https://www.soltokenburner.com/blog/dexscreener-padlock-liquidity-lock",
+    canonical: "https://www.soltokenburner.fun/blog/dexscreener-padlock-liquidity-lock",
   },
   openGraph: {
     title: "How to Get the Padlock on Dexscreener | LP Lock Badge Guide 2025",
     description:
       "Learn how to get the padlock icon on Dexscreener by burning your LP tokens on Solana. Works for Raydium, Orca, Meteora and all SPL LP tokens.",
-    url: "https://www.soltokenburner.com/blog/dexscreener-padlock-liquidity-lock",
+    url: "https://www.soltokenburner.fun/blog/dexscreener-padlock-liquidity-lock",
     images: ["/og-image.png"],
   },
 };
@@ -56,12 +55,12 @@ export default function DexPadlockGuide() {
       <p className="mb-4">
         Go to{" "}
         <a
-          href="https://www.soltokenburner.com/"
+          href="https://www.soltokenburner.fun/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-300 underline"
         >
-          https://www.soltokenburner.com/
+          https://www.soltokenburner.fun/
         </a>{" "}
         and connect your Phantom wallet.
       </p>

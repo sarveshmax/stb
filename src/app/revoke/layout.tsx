@@ -12,17 +12,17 @@ export const metadata = {
     "soltokenburner revoke authority",
   ],
   alternates: {
-    canonical: "https://www.soltokenburner.com/revoke",
+    canonical: "https://www.soltokenburner.fun/revoke",
   },
   openGraph: {
     title: "Revoke Mint & Freeze Authority | SolTokenBurner Authority Manager",
     description:
       "Lock your token supply by revoking mint authority. Remove freeze authority for transparency.",
-    url: "https://www.soltokenburner.com/revoke",
+    url: "https://www.soltokenburner.fun/revoke",
     siteName: "SolTokenBurner",
     images: [
       {
-        url: "https://soltokenburner.com/og-image.png",
+        url: "https://soltokenburner.fun/og-image.png",
         width: 1200,
         height: 630,
         alt: "SolTokenBurner - Revoke Authority",
@@ -35,7 +35,7 @@ export const metadata = {
     title: "Revoke Mint & Freeze Authority | SolTokenBurner Authority Manager",
     description:
       "Secure your token: revoke mint or freeze authority in one click using SolTokenBurner.",
-    images: ["https://soltokenburner.com/og-image.png"],
+    images: ["https://soltokenburner.fun/og-image.png"],
   },
 };
 
