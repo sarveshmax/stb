@@ -13,17 +13,17 @@ export const metadata = {
     "SolTokenBurner",
   ],
   alternates: {
-    canonical: "https://www.soltokenburner.fun/cleaner",
+    canonical: "https://www.soltokenburner.com/cleaner",
   },
   openGraph: {
     title: "Burn Solana Tokens & Claim SOL | SolTokenBurner Cleaner",
     description:
       "Burn unwanted SPL tokens, burn liquidity pool tokens, and claim rent-exempt SOL from your Solana wallet using SolTokenBurner.",
-    url: "https://www.soltokenburner.fun/cleaner",
+    url: "https://www.soltokenburner.com/cleaner",
     siteName: "SolTokenBurner",
     images: [
       {
-        url: "https://soltokenburner.fun/og-image.png",
+        url: "https://soltokenburner.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "SolTokenBurner - Solana Wallet Cleaner",
@@ -36,7 +36,7 @@ export const metadata = {
     title: "Burn Solana Tokens & Claim SOL | SolTokenBurner Cleaner",
     description:
       "Clean your Solana wallet: burn SPL tokens, LP tokens, and claim SOL easily using SolTokenBurner.",
-    images: ["https://soltokenburner.fun/og-image.png"],
+    images: ["https://soltokenburner.com/og-image.png"],
   },
 };
 

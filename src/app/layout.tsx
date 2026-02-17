@@ -16,12 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.soltokenburner.fun"),
+  metadataBase: new URL("https://www.soltokenburner.com"),
   title: "Burn Solana Tokens | Burn LP | SolTokenBurner",
   description:
     "Burn Solana SPL and LP Tokens without any coding! Clean up your wallet by burning tokens and claim SOL. Solana Token Burner!",
   alternates: {
-    canonical: "https://www.soltokenburner.fun",
+    canonical: "https://www.soltokenburner.com",
   },
   keywords:
     "burn solana tokens, burn lp solana, solana token burner, burn spl tokens, burn tokens solana",

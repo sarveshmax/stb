@@ -26,7 +26,7 @@ export default function PhantomPartnership({ title }: PhantomPartnershipProps) {
 
         {/* Backpack */}
         <a
-          href="https://learn.backpack.exchange/articles/solana-burn-address-explained#:~:text=SolTokenBurner.fun"
+          href="https://learn.backpack.exchange/articles/solana-burn-address-explained#:~:text=SolTokenBurner.com"
           target="_blank"
           rel="noopener noreferrer"
           className="opacity-60 hover:opacity-80 transition"

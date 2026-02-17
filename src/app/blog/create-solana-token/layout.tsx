@@ -11,17 +11,17 @@ export const metadata = {
     "solana token creation tutorial",
   ],
   alternates: {
-    canonical: "https://www.soltokenburner.fun/blog/create-solana-token",
+    canonical: "https://www.soltokenburner.com/blog/create-solana-token",
   },
   openGraph: {
     title: "How to Create a Solana Token (2025 Guide) | SolTokenBurner",
     description:
       "Full guide on creating SPL tokens on Solana: token creator, minting, metadata, liquidity, and authorities.",
-    url: "https://www.soltokenburner.fun/blog/create-solana-token",
+    url: "https://www.soltokenburner.com/blog/create-solana-token",
     siteName: "SolTokenBurner",
     images: [
       {
-        url: "https://soltokenburner.fun/og-image.png",
+        url: "https://soltokenburner.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "SolTokenBurner - Solana Token Guide",
@@ -34,7 +34,7 @@ export const metadata = {
     title: "How to Create a Solana Token (2025 Guide)",
     description:
       "Learn step-by-step how to create your own SPL token on Solana with SolTokenBurner.",
-    images: ["https://soltokenburner.fun/og-image.png"],
+    images: ["https://soltokenburner.com/og-image.png"],
   },
 };
 

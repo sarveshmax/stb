@@ -6,13 +6,13 @@ export const metadata = {
   description:
     "Learn what the Solana burn address is, how burning works, and why developers use tools like SolTokenBurner instead of sending tokens to dead addresses.",
   alternates: {
-    canonical: "https://www.soltokenburner.fun/blog/solana-burn-address",
+    canonical: "https://www.soltokenburner.com/blog/solana-burn-address",
   },
   openGraph: {
     title: "Solana Burn Address Explained | 2025 Guide",
     description:
       "Learn what the Solana burn address is, how burning works, and why developers use tools like SolTokenBurner instead of sending tokens to dead addresses.",
-    url: "https://www.soltokenburner.fun/blog/solana-burn-address",
+    url: "https://www.soltokenburner.com/blog/solana-burn-address",
     images: ["/og-image.png"],
   },
 };
@@ -74,12 +74,12 @@ export default function SolanaBurnAddressGuide() {
         <li>
           Go to{" "}
           <a
-            href="https://www.soltokenburner.fun/"
+            href="https://www.soltokenburner.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-300 underline"
           >
-            https://www.soltokenburner.fun/
+            https://www.soltokenburner.com/
           </a>
         </li>
         <li>Connect your wallet on the top right</li>

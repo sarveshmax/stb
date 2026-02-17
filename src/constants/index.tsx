@@ -24,5 +24,5 @@ export const explorerURL = "https://solscan.io";
 export const theRpcURL = `https://solana-mainnet.g.alchemy.com/v2/${alchemyAPIKey}`;
 
 //UI
-export const showPhantomPartnership = true;
+export const showPhantomPartnership = false;
 export const showBottomBar = true;

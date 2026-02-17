@@ -12,17 +12,17 @@ export const metadata = {
     "solana token cleanup",
   ],
   alternates: {
-    canonical: "https://www.soltokenburner.fun/stuck",
+    canonical: "https://www.soltokenburner.com/stuck",
   },
   openGraph: {
     title: "Burn Stuck Tokens on Solana | SolTokenBurner Incinerator Tool",
     description:
       "Easily detect and burn tokens stuck in the Solana incinerator PDA. Supports SPL & Token-2022 tokens.",
-    url: "https://www.soltokenburner.fun/stuck",
+    url: "https://www.soltokenburner.com/stuck",
     siteName: "SolTokenBurner",
     images: [
       {
-        url: "https://soltokenburner.fun/og-image.png",
+        url: "https://soltokenburner.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "SolTokenBurner - Burn Stuck Solana Tokens",
@@ -35,7 +35,7 @@ export const metadata = {
     title: "Burn Stuck Tokens on Solana | SolTokenBurner Incinerator Tool",
     description:
       "Burn tokens trapped in the incinerator PDA. Full support for SPL and Token-2022 tokens.",
-    images: ["https://soltokenburner.fun/og-image.png"],
+    images: ["https://soltokenburner.com/og-image.png"],
   },
 };
 

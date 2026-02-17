@@ -1,7 +1,7 @@
 "use client";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { AlertTriangle } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { FaBars } from "react-icons/fa";
 
 interface Props {
@@ -25,41 +25,16 @@ export default function TopBar({
       <div id="site-header" className="fixed top-0 left-0 w-full z-50">
         {/* WARNING BANNER */}
         <div
-          className={`
-            overflow-hidden transition-all duration-300
-            max-h-40 opacity-100}
-          `}
+          className="
+    bg-[#2b1e44]/70 backdrop-blur-md
+    border-b border-[#8b5cf6]/30
+    text-purple-100 text-sm text-center
+    px-4 py-2 relative
+  "
         >
-          <div
-            className="
-              bg-red-900/60 backdrop-blur-md
-              border-b border-red-700/40
-              text-red-200 text-sm text-center
-              px-4 py-2 relative
-            "
-          >
-            <AlertTriangle size={16} className="inline mr-2 -mt-0.5 text-red-300" />
-            We need your help. SolTokenBurner is currently being incorrectly flagged as malicious by
-            Phantom. We are actively working to resolve this. Please visit{" "}
-            <a
-              href="https://help.phantom.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline font-semibold hover:text-red-100"
-            >
-              help.phantom.com
-            </a>
-            , click on the chat icon (bottom-right) and let them know that SolTokenBurner is a
-            legitimate SOL burn & rent reclaim tool. Your help is greatly appreciated.
-            {/* Close Button */}
-            {/* <button
-              onClick={dismissBanner}
-              className="absolute right-3 top-1/2 -translate-y-1/2
-                         p-1 rounded hover:bg-red-800/40 transition"
-            >
-              <X size={16} />
-            </button> */}
-          </div>
+          <ShieldCheck size={16} className="inline mr-2 -mt-0.5 text-purple-300" />
+          Some wallets may show a warning. SolTokenBurner is open-source. All balance changes are
+          shown before you approve.
         </div>
 
         {/* TOP BAR */}
@@ -81,7 +56,7 @@ export default function TopBar({
             </button>
           )}
 
-          <a href="https://www.soltokenburner.fun" className="flex items-center gap-3 ml-5">
+          <a href="https://www.soltokenburner.com" className="flex items-center gap-3 ml-5">
             <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
             <span className="hidden md:inline text-2xl font-extrabold tracking-wider text-white">
               SolTokenBurner
@@ -95,7 +70,7 @@ export default function TopBar({
       </div>
 
       {/* Spacer */}
-      <div className="pt-[160px] md:pt-[140px]" />
+      <div className="pt-[120px]" />
     </>
   );
 }
